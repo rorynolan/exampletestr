@@ -2,7 +2,6 @@
 
 language: R
 sudo: false
-cache: apt
 
 r_github_packages:
   - rorynolan/filesstrings
