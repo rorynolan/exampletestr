@@ -7,19 +7,30 @@
 #' @param r_file_name The name of the .R file within R/. Don't specify this as
 #'   "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
 #'   .R for convenience, however using the wrong case (e.g. .r) will produce an
-#'   error.
+#'   error. If instead, you wish to set the full path to the file here, set
+#'   \code{proj_dir} to \code{NULL}.
 #' @param proj_dir The directory of the R project for this package (defaults to
-#'   current directory). Note that this is the parent directory of man/.
+#'   current directory). Note that this is the parent directory of R/. If you
+#'   want to specify the full file path in the \code{r_file_name} argument, set
+#'   \code{proj_dir} to \code{NULL}.
 #'
 #' @examples
+#' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
+#' "'tempkg' folder.")
+#' dir.create("tempkg")
+#' devtools::create("tempkg")
+#' setwd("tempkg")
+#' file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"), "R")
 #' extract_examples("exemplar")
 #' extract_examples("exemplar")
-#' extract_examples("exemplar")
+#' setwd("..")
+#' filesstrings::RemoveDirs("tempkg")
 #'
 #' @return A charachter vector.
 #' @export
 extract_examples <- function(r_file_name, proj_dir = ".") {
-  r_file_lines <- stringr::str_c(proj_dir, "/R/", r_file_name) %>%
+  r_file_lines <- ifelse(is.null(proj_dir), r_file_name,
+                         stringr::str_c(proj_dir, "/R/", r_file_name)) %>%
     filesstrings::MakeExtName("R") %>%
     readLines %>%
     stringr::str_trim() %>% {
@@ -64,7 +75,8 @@ extract_examples <- function(r_file_name, proj_dir = ".") {
     lapply(function(x) stringr::str_sub(x, 1, nchar(atexs)) == atexs) %>%
     lapply(which)
   if (unique(sapply(atex_line_indices, length)) != 1) {
-    stop("Each roxygen block should contain at most 1 @examples tag.")
+    stop("Each roxygen block which documents a function ",
+         "should contain at most 1 @examples tag.")
   } else {
     atex_line_indices <- unlist(atex_line_indices)
   }
@@ -83,9 +95,6 @@ extract_examples <- function(r_file_name, proj_dir = ".") {
   exs_lines
 }
 
-braces <- rbind(curly = c("{", "}"), square = c("[", "]"), round = c("(", ")"))
-colnames(braces) <- c("opening", "closing")
-
 #' Make the shell of a `test_that` test.
 #'
 #' Given a character vector of the examples from a function, create the shell of
@@ -99,22 +108,43 @@ colnames(braces) <- c("opening", "closing")
 #'
 #' @return A character vector giving the shell of a test_that function call
 #'   testing all of the calls in the example block.
+#'
+#' @examples
+#' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
+#' "'tempkg' folder.")
+#' dir.create("tempkg")
+#' devtools::create("tempkg")
+#' setwd("tempkg")
+#' file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
+#' "R", overwrite = TRUE)
+#' make_test_shell(extract_examples("exemplar")[[1]])
+#' setwd("..")
+#' filesstrings::RemoveDirs("tempkg")
+#'
 #' @export
 make_test_shell <- function(example_block, desc = "") {
+  stopifnot(is.character(example_block))
   expressions <- extract_expressions(example_block)
-
-  assignments <- sapply(expressions, function(x) {
-    any(stringr::str_detect(x, "<-"))
-  })
+  for_checking <- expressions %>%
+    lapply(filesstrings::RemoveQuoted) %>%
+    lapply(stringr::str_replace_all, " ", "")
+  leave_alone <- vapply(for_checking, function(x) {
+      any(stringr::str_detect(x, "(?:<-|setwd\\(|stop\\(|warning\\(|^#)"))
+    }, logical(1))
+  plots <- vapply(for_checking, function(x) {
+    any(stringr::str_detect(x, "(?:plot\\()"))  # this will catch ggplot( too
+  }, logical(1))
   inside_test_that <- mapply(function(x, y) {
     if (x) {
       y
     } else {
       construct_expect_equal(y)
     }
-  }, assignments, expressions, SIMPLIFY = FALSE) %>% unlist
+  }, leave_alone, expressions, SIMPLIFY = FALSE) %>% {
+    .[!plots]
+    } %>% unlist
   c(paste0("test_that(\"", desc, "\", {"),
-    inside_test_that,
+    paste(" ", inside_test_that),  # this will prepend two spaces
     "})")
 }
 
@@ -123,20 +153,55 @@ make_test_shell <- function(example_block, desc = "") {
 #' Based on the roxygen-specified examples in a .R file in the R/ directory of
 #' the package, create the shell of a test file, to be completed by the user.
 #'
-#' @inheritParams extract_examples
+#' @param r_file_name The name of the .R file within R/. Don't specify this as
+#'   "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
+#'   .R for convenience, however using the wrong case (e.g. .r) will produce an
+#'   error. If instead, you wish to set the full path to the file here, set
+#'   \code{proj_dir} to \code{NULL}.
+#' @param proj_dir The directory of the R project for this package (defaults to
+#'   current directory). Note that this is the parent directory of R/.
+#' @param overwrite Overwrite if the test file you're trying to create already
+#'   exists?
 #'
 #' @return The shell of the test file is written into tests/testthat. It has the
 #'   same name as the .R file it was created from except it has "test_" tacked
 #'   onto the front.
+#' @examples
+#' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
+#' "'tempkg' folder.")
+#' dir.create("tempkg")
+#' devtools::create("tempkg")
+#' setwd("tempkg")
+#' devtools::use_testthat()
+#' file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
+#' "R", overwrite = TRUE)
+#' make_tests_shells_file("exemplar")
+#' # Now check your tempkg/tests/testthat directory to see what they look like
+#' # The next two lines clean up
+#' setwd("..")
+#' filesstrings::RemoveDirs("tempkg")
+#'
 #' @export
-make_tests_shells_file <- function(r_file_name, proj_dir = ".") {
+make_tests_shells_file <- function(r_file_name, proj_dir = ".",
+                                   overwrite = FALSE) {
+  current_wd <- getwd()
+  on.exit(setwd(current_wd))
+  setwd(proj_dir)
+  if (!dir.exists("tests/testthat")) {
+    stop ("To use this function, your project directory must have a tests ",
+          "directory containing a testthat directory i.e. 'tests/testthat'. ",
+          "To start using testthat, run devtools::use_testthat().")
+  }
   r_file_name <- filesstrings::MakeExtName(r_file_name, "R")
-  exampless <- extract_examples(r_file_name, proj_dir = proj_dir)
+  exampless <- extract_examples(r_file_name, proj_dir = ".")
   test_shells <- mapply(make_test_shell, SIMPLIFY = FALSE,
                         exampless, paste(names(exampless), "works"))
   combined <- Reduce(function(x, y) c(x, "", y), test_shells)
-  testthat_dir <- paste0(proj_dir, "/tests/testthat")
-  test_file_name <- paste0(testthat_dir, "/test_", r_file_name)
+  test_file_name <- paste0("tests/testthat/test_", r_file_name)
+  if (!overwrite && file.exists(test_file_name)) {
+    stop ("Stopping as to proceed would be to overwrite an existing test file ",
+          "to proceed, rerun with overwrite = TRUE.")
+  }
   writeLines(combined, test_file_name)
   invisible(combined)
 }

@@ -1,6 +1,6 @@
 Package: exampletestr
 Type: Package
-Title: Help for writing tests based on function examples.
+Title: Help for writing tests based on function examples
 Version: 0.0.0.9000
 Authors@R: person("Rory", "Nolan", email = "rorynoolan@gmail.com", role = c("aut", "cre"))
 Maintainer: The package maintainer <yourself@somewhere.net>
@@ -13,8 +13,8 @@ Imports:
     magrittr,
     stringr,
     BBmisc,
-    devtools,
-    formatR
+    devtools
 RoxygenNote: 6.0.1
-Suggests: testthat
+Suggests: testthat,
+    covr
 Roxygen: list(markdown = TRUE)

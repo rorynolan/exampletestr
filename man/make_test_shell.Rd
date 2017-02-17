@@ -22,3 +22,16 @@ Given a character vector of the examples from a function, create the shell of
 a \code{test_that} code block (to be filled in by the user) based upon those
 examples.
 }
+\examples{
+if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
+"'tempkg' folder.")
+dir.create("tempkg")
+devtools::create("tempkg")
+setwd("tempkg")
+file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
+"R", overwrite = TRUE)
+make_test_shell(extract_examples("exemplar")[[1]])
+setwd("..")
+filesstrings::RemoveDirs("tempkg")
+
+}

@@ -10,10 +10,13 @@ extract_examples(r_file_name, proj_dir = ".")
 \item{r_file_name}{The name of the .R file within R/. Don't specify this as
 "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
 .R for convenience, however using the wrong case (e.g. .r) will produce an
-error.}
+error. If instead, you wish to set the full path to the file here, set
+\code{proj_dir} to \code{NULL}.}
 
 \item{proj_dir}{The directory of the R project for this package (defaults to
-current directory). Note that this is the parent directory of man/.}
+current directory). Note that this is the parent directory of R/. If you
+want to specify the full file path in the \code{r_file_name} argument, set
+\code{proj_dir} to \code{NULL}.}
 }
 \value{
 A charachter vector.
@@ -24,8 +27,15 @@ within documented via the \link[roxygen2:roxygen2]{roxygen2} under the
 \code{@examples} roxygen tag..
 }
 \examples{
+if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
+"'tempkg' folder.")
+dir.create("tempkg")
+devtools::create("tempkg")
+setwd("tempkg")
+file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"), "R")
 extract_examples("exemplar")
 extract_examples("exemplar")
-extract_examples("exemplar")
+setwd("..")
+filesstrings::RemoveDirs("tempkg")
 
 }
