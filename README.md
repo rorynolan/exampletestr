@@ -3,7 +3,7 @@ exampletestr
 
 An R package to help developers create unit tests (designed for use with the testthat package) for their package, based on the examples in their package documentation. The documentation must be done with roxygen.
 
-[![Travis-CI Build Status](https://travis-ci.org/rorynolan/exampletestr.svg?branch=master)](https://travis-ci.org/rorynolan/exampletestr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
+[![Travis-CI Build Status](https://travis-ci.org/rorynolan/exampletestr.svg?branch=master)](https://travis-ci.org/rorynolan/exampletestr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr) [![Coverage Status](https://img.shields.io/codecov/c/github/rorynolan/exampletestr/master.svg)](https://codecov.io/github/rorynolan/exampletestr?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
 
 Installation
 ------------
