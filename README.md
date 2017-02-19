@@ -12,7 +12,7 @@ In R, enter
 
 ``` r
 install.packages("devtools")
-devtools::install_github("rorynolan/exampletestr")
+devtools::install_github("rorynolan/filesstrings", "rorynolan/exampletestr")
 ```
 
 and you're done!
