@@ -13,7 +13,9 @@ text_eval_error(text_expr)
 \code{TRUE} if the code gives an error and \code{FALSE} otherwise.
 }
 \description{
-Can a character vector (where each line is treated as a line of R code) be evaluated as an R expression (or several R expressions) without giving an error?
+Can a character vector (where each line is treated as a line of R code) be
+evaluated as an R expression (or several R expressions) without giving an
+error?
 }
 \examples{
 text_eval_error("a <- 1")

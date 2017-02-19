@@ -10,10 +10,12 @@ extract_expressions(text_expr)
 \item{text_expr}{A character vector.}
 }
 \value{
-A list of character vectors, each of which can be evaluated as a valid R expression.
+A list of character vectors, each of which can be evaluated as a
+valid R expression.
 }
 \description{
-Given a character vector of R expressions, break the vector up into groups of lines, where each group of lines is a valid R expression.
+Given a character vector of R expressions, break the vector up into groups of
+lines, where each group of lines is a valid R expression.
 }
 \examples{
 text_expr <- c("a <- 1",

@@ -20,7 +20,7 @@ and you're done!
 Use
 ---
 
-First, let's set up a dummy package directory with just the `utils.R` file from the source code of the `exampletestr` package. Take a look at the `utils.R` file:
+First, let's set up a dummy package directory with just the `utils.R` file from the source code of the `exampletestr` package.
 
 ``` r
 library(exampletestr)
@@ -71,7 +71,9 @@ The `utils.R` file looks like this:
 ``` r
 #' Does evaluation of text give an error?
 #'
-#' Can a character vector (where each line is treated as a line of R code) be evaluated as an R expression (or several R expressions) without giving an error?
+#' Can a character vector (where each line is treated as a line of R code) be
+#' evaluated as an R expression (or several R expressions) without giving an
+#' error?
 #'
 #' @param text_expr The expression to be evaluated, as a character vector.
 #'
@@ -86,11 +88,13 @@ text_eval_error <- function(text_expr) {
 
 #' Text expression groups.
 #'
-#' Given a character vector of R expressions, break the vector up into groups of lines, where each group of lines is a valid R expression.
+#' Given a character vector of R expressions, break the vector up into groups of
+#' lines, where each group of lines is a valid R expression.
 #'
 #' @param text_expr A character vector.
 #'
-#' @return A list of character vectors, each of which can be evaluated as a valid R expression.
+#' @return A list of character vectors, each of which can be evaluated as a
+#'   valid R expression.
 #' @examples
 #' text_expr <- c("a <- 1",
 #' "fx <- function(x) {",
@@ -184,13 +188,38 @@ extract_examples("utils")
 Indeed we get all of the lines of the documentation examples. Now with `make_test_shell`, we turn it into something usable with `testthat`:
 
 ``` r
-make_test_shell(extract_examples("utils")[[1]], "whatevs")
+lapply(extract_examples("utils"), make_test_shell, "whatevs")
 ```
 
+    #> $text_eval_error
     #> [1] "test_that(\"whatevs\", {"                     
     #> [2] "  expect_equal(text_eval_error(\"a <- 1\"), )"
     #> [3] "  expect_equal(text_eval_error(\"a <- \"), )" 
-    #> [4] "})"
+    #> [4] "})"                                           
+    #> 
+    #> $extract_expressions
+    #> [1] "test_that(\"whatevs\", {"                        
+    #> [2] "  text_expr <- c(\"a <- 1\","                    
+    #> [3] "  \"fx <- function(x) {\","                      
+    #> [4] "  \"paste('f', x)\","                            
+    #> [5] "  \"}\")"                                        
+    #> [6] "  expect_equal(extract_expressions(text_expr), )"
+    #> [7] "})"                                              
+    #> 
+    #> $TextEval
+    #> [1] "test_that(\"whatevs\", {"                   
+    #> [2] "  expect_equal(TextEval(\"3 + 4\"), )"      
+    #> [3] "  to.be.evaluated <- \"var(c(1, 6, 8))\""   
+    #> [4] "  expect_equal(TextEval(to.be.evaluated), )"
+    #> [5] "})"                                         
+    #> 
+    #> $construct_expect_equal
+    #> [1] "test_that(\"whatevs\", {"                                                           
+    #> [2] "  text_expr <- c(\"sum(1, \", \"2)\")"                                              
+    #> [3] "  expect_equal(cat(paste(text_expr, collapse = \"\\n\")), )"                        
+    #> [4] "  expect_equal(construct_expect_equal(text_expr), )"                                
+    #> [5] "  expect_equal(cat(paste(construct_expect_equal(text_expr), collapse = \"\\n\")), )"
+    #> [6] "})"
 
 This might look a little weird in the output but it's really just
 
@@ -201,7 +230,7 @@ test_that("whatevs", {
 })
 ```
 
-which is what we would want. Now we have something we can fill in ourselves to create a real unit test.
+and so on, which is what we would want. Now we have something we can fill in ourselves to create a real unit test.
 
 We can make the unit tests file ( because it needs to be filled in) via `make_tests_shell_file`. Running
 
@@ -272,3 +301,5 @@ test_that("construct_expect_equal works", {
                                                     "2), )"))
 })
 ```
+
+I would like to stress that whilst unit testing should be automatic, the creation of these tests is a manual process, a manual check. This package is supposed to help you start making those tests. It is not supposed to create fully functioning tests automatically, nor can it help you to write every type of test you might want.

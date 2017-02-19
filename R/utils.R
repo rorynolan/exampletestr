@@ -1,6 +1,8 @@
 #' Does evaluation of text give an error?
 #'
-#' Can a character vector (where each line is treated as a line of R code) be evaluated as an R expression (or several R expressions) without giving an error?
+#' Can a character vector (where each line is treated as a line of R code) be
+#' evaluated as an R expression (or several R expressions) without giving an
+#' error?
 #'
 #' @param text_expr The expression to be evaluated, as a character vector.
 #'
@@ -15,11 +17,13 @@ text_eval_error <- function(text_expr) {
 
 #' Text expression groups.
 #'
-#' Given a character vector of R expressions, break the vector up into groups of lines, where each group of lines is a valid R expression.
+#' Given a character vector of R expressions, break the vector up into groups of
+#' lines, where each group of lines is a valid R expression.
 #'
 #' @param text_expr A character vector.
 #'
-#' @return A list of character vectors, each of which can be evaluated as a valid R expression.
+#' @return A list of character vectors, each of which can be evaluated as a
+#'   valid R expression.
 #' @examples
 #' text_expr <- c("a <- 1",
 #' "fx <- function(x) {",
