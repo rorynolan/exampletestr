@@ -8,11 +8,11 @@
 #'   "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
 #'   .R for convenience, however using the wrong case (e.g. .r) will produce an
 #'   error. If instead, you wish to set the full path to the file here, set
-#'   \code{proj_dir} to \code{NULL}.
-#' @param proj_dir The directory of the R project for this package (defaults to
-#'   current directory). Note that this is the parent directory of man/. If you
+#'   \code{pkg_dir} to \code{NULL}.
+#' @param pkg_dir The directory of the R project for this package (defaults to
+#'   current directory). Note that this is the parent directory of R/. If you
 #'   want to specify the full file path in the \code{r_file_name} argument, set
-#'   \code{proj_dir} to \code{NULL}.
+#'   \code{pkg_dir} to \code{NULL}.
 #'
 #' @examples
 #' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
@@ -28,9 +28,9 @@
 #'
 #' @return A charachter vector.
 #' @export
-extract_examples <- function(r_file_name, proj_dir = ".") {
-  r_file_lines <- ifelse(is.null(proj_dir), r_file_name,
-                         stringr::str_c(proj_dir, "/R/", r_file_name)) %>%
+extract_examples <- function(r_file_name, pkg_dir = ".") {
+  r_file_lines <- ifelse(is.null(pkg_dir), r_file_name,
+                         stringr::str_c(pkg_dir, "/R/", r_file_name)) %>%
     filesstrings::MakeExtName("R") %>%
     readLines %>%
     stringr::str_trim() %>% {
@@ -76,7 +76,8 @@ extract_examples <- function(r_file_name, proj_dir = ".") {
     lapply(function(x) stringr::str_sub(x, 1, nchar(atexs)) == atexs) %>%
     lapply(which)
   if (unique(vapply(atex_line_indices, length, integer(1))) != 1) {
-    stop("Each roxygen block should contain at most 1 @examples tag.")
+    stop("Each roxygen block which documents a function ",
+         "should contain at most 1 @examples tag.")
   } else {
     atex_line_indices <- unlist(atex_line_indices)
   }
@@ -94,9 +95,6 @@ extract_examples <- function(r_file_name, proj_dir = ".") {
   names(exs_lines) <- function_names
   exs_lines
 }
-
-braces <- rbind(curly = c("{", "}"), square = c("[", "]"), round = c("(", ")"))
-colnames(braces) <- c("opening", "closing")
 
 #' Make the shell of a `test_that` test.
 #'
@@ -132,7 +130,7 @@ make_test_shell <- function(example_block, desc = "") {
     lapply(filesstrings::RemoveQuoted) %>%
     lapply(stringr::str_replace_all, " ", "")
   leave_alone <- vapply(for_checking, function(x) {
-      any(stringr::str_detect(x, "(?:<-|setwd\\(|stop\\(|warning\\()"))
+      any(stringr::str_detect(x, "(?:<-|setwd\\(|stop\\(|warning\\(|^#)"))
     }, logical(1))
   plots <- vapply(for_checking, function(x) {
     any(stringr::str_detect(x, "(?:plot\\()"))  # this will catch ggplot( too
@@ -154,9 +152,19 @@ make_test_shell <- function(example_block, desc = "") {
 #' Create the shell of a test file based on roxygen examples.
 #'
 #' Based on the roxygen-specified examples in a .R file in the R/ directory of
-#' the package, create the shell of a test file, to be completed by the user.
+#' the package, \code{make_tests_shells_file} create the shell of a test file,
+#' to be completed by the user. \code{make_tests_shells_pkg} does this for every
+#' file in R/.
 #'
-#' @inheritParams extract_examples
+#' @param r_file_name The name of the .R file within R/. Don't specify this as
+#'   "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
+#'   .R for convenience, however using the wrong case (e.g. .r) will produce an
+#'   error. If instead, you wish to set the full path to the file here, set
+#'   \code{pkg_dir} to \code{NULL}.
+#' @param pkg_dir The directory of the R project for this package (defaults to
+#'   current directory). Note that this is the parent directory of R/.
+#' @param overwrite Overwrite if the test file you're trying to create already
+#'   exists?
 #'
 #' @return The shell of the test file is written into tests/testthat. It has the
 #'   same name as the .R file it was created from except it has "test_" tacked
@@ -171,28 +179,45 @@ make_test_shell <- function(example_block, desc = "") {
 #' file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
 #' "R", overwrite = TRUE)
 #' make_tests_shells_file("exemplar")
+#' make_tests_shells_pkg(overwrite = TRUE)
 #' # Now check your tempkg/tests/testthat directory to see what they look like
 #' # The next two lines clean up
 #' setwd("..")
 #' filesstrings::RemoveDirs("tempkg")
 #'
 #' @export
-make_tests_shells_file <- function(r_file_name, proj_dir = ".") {
+make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
+                                   overwrite = FALSE) {
   current_wd <- getwd()
   on.exit(setwd(current_wd))
-  if (!is.null(proj_dir)) setwd(proj_dir)
+  setwd(pkg_dir)
+  if (!dir.exists("tests/testthat")) {
+    stop ("To use this function, your project directory must have a tests ",
+          "directory containing a testthat directory i.e. 'tests/testthat'. ",
+          "To start using testthat, run devtools::use_testthat().")
+  }
   r_file_name <- filesstrings::MakeExtName(r_file_name, "R")
-  exampless <- extract_examples(r_file_name, proj_dir = proj_dir)
+  exampless <- extract_examples(r_file_name, pkg_dir = ".")
   test_shells <- mapply(make_test_shell, SIMPLIFY = FALSE,
                         exampless, paste(names(exampless), "works"))
   combined <- Reduce(function(x, y) c(x, "", y), test_shells)
-  if (!dir.exists("tests/testthat")) {
-    stop ("To use this function, your project directory must have a tests ",
-          "directory containing a testthat directory i.e. 'tests/testthat'.")
+  test_file_name <- paste0("tests/testthat/test_", r_file_name)
+  if (!overwrite && file.exists(test_file_name)) {
+    stop ("Stopping as to proceed would be to overwrite an existing test file:",
+          " '", paste0("test_", r_file_name), "'. ",
+          "To proceed, rerun with overwrite = TRUE.")
   }
-  if (is.null(proj_dir)) proj_dir <- "."
-  testthat_dir <- paste0(proj_dir, "/tests/testthat")
-  test_file_name <- paste0(testthat_dir, "/test_", r_file_name)
   writeLines(combined, test_file_name)
   invisible(combined)
+}
+
+#' @rdname make_tests_shells_file
+#' @export
+make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE) {
+  current_wd <- getwd()
+  setwd(pkg_dir)
+  on.exit(setwd(current_wd))
+  list.files(path = "R") %>%
+    lapply(make_tests_shells_file, overwrite = overwrite) %>%
+    invisible
 }

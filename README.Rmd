@@ -148,7 +148,7 @@ and so on, which is what we would want. Now we have something we can fill in our
 
 We can make the unit tests \emph{shell} file (\emph{shell} because it needs to be filled in) via `make_tests_shell_file`. Running 
 ```{r make_tests_shells_file}
-make_tests_shells_file("utils", proj_dir = "tempkg")
+make_tests_shells_file("utils", pkg_dir = "tempkg")
 ```
 outputs a `test_utils.R` file in the `tests/testthat` folder with contents
 ```{r test_utils.R contents, eval=FALSE}
@@ -210,6 +210,12 @@ test_that("construct_expect_equal works", {
                                                     "2), )"))
 })
 ```
+
+To create these test shell files for each file in the `R/` directory of your package, run 
+```{r whole package, eval=FALSE}
+make_tests_shells_pkg()
+```
+
 
 ```{r setdown, include=FALSE, echo=FALSE}
 filesstrings::RemoveDirs("tempkg")

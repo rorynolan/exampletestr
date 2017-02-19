@@ -2,18 +2,21 @@
 % Please edit documentation in R/exemplar.R
 \name{make_tests_shells_file}
 \alias{make_tests_shells_file}
+\alias{make_tests_shells_pkg}
 \title{Create the shell of a test file based on roxygen examples.}
 \usage{
-make_tests_shells_file(r_file_name, proj_dir = ".", overwrite = FALSE)
+make_tests_shells_file(r_file_name, pkg_dir = ".", overwrite = FALSE)
+
+make_tests_shells_pkg(pkg_dir = ".", overwrite = FALSE)
 }
 \arguments{
 \item{r_file_name}{The name of the .R file within R/. Don't specify this as
 "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
 .R for convenience, however using the wrong case (e.g. .r) will produce an
 error. If instead, you wish to set the full path to the file here, set
-\code{proj_dir} to \code{NULL}.}
+\code{pkg_dir} to \code{NULL}.}
 
-\item{proj_dir}{The directory of the R project for this package (defaults to
+\item{pkg_dir}{The directory of the R project for this package (defaults to
 current directory). Note that this is the parent directory of R/.}
 
 \item{overwrite}{Overwrite if the test file you're trying to create already
@@ -26,7 +29,9 @@ onto the front.
 }
 \description{
 Based on the roxygen-specified examples in a .R file in the R/ directory of
-the package, create the shell of a test file, to be completed by the user.
+the package, \code{make_tests_shells_file} create the shell of a test file,
+to be completed by the user. \code{make_tests_shells_pkg} does this for every
+file in R/.
 }
 \examples{
 if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
@@ -38,6 +43,7 @@ devtools::use_testthat()
 file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
 "R", overwrite = TRUE)
 make_tests_shells_file("exemplar")
+make_tests_shells_pkg(overwrite = TRUE)
 # Now check your tempkg/tests/testthat directory to see what they look like
 # The next two lines clean up
 setwd("..")

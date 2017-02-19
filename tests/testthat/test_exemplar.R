@@ -53,6 +53,7 @@ test_that("extract_examples works", {
           "\"exemplar.R\", package = \"exampletestr\"),"),
     "\"R\", overwrite = TRUE)",
     "make_tests_shells_file(\"exemplar\")",
+    "make_tests_shells_pkg(overwrite = TRUE)",
     paste("# Now check your tempkg/tests/testthat",
           "directory to see what they look like"),
     "# The next two lines clean up",
@@ -98,7 +99,7 @@ test_that("make_tests_shells_file works", {
   if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
                                     "'tempkg' folder.")
   expect_true(dir.create("tempkg"))
-  expect_error(make_tests_shells_file("exemplar", proj_dir = "tempkg"))
+  expect_error(make_tests_shells_file("exemplar", pkg_dir = "tempkg"))
   expect_true(devtools::create("tempkg"))
   setwd("tempkg")
   expect_true(file.copy(system.file("extdata", "exemplar.R",
@@ -106,6 +107,9 @@ test_that("make_tests_shells_file works", {
                         "R"))
   expect_true(devtools::use_testthat())
   expect_equal(make_tests_shells_file("exemplar"),
+               readLines(system.file("extdata", "test_exemplar.R",
+                                     package = "exampletestr")))
+  expect_equal(make_tests_shells_pkg(overwrite = TRUE)[[1]],
                readLines(system.file("extdata", "test_exemplar.R",
                                      package = "exampletestr")))
   expect_error(make_tests_shells_file("exemplar"))

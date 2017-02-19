@@ -4,19 +4,19 @@
 \alias{extract_examples}
 \title{Extract examples lines from a roxygen-documented .R file.}
 \usage{
-extract_examples(r_file_name, proj_dir = ".")
+extract_examples(r_file_name, pkg_dir = ".")
 }
 \arguments{
 \item{r_file_name}{The name of the .R file within R/. Don't specify this as
 "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
 .R for convenience, however using the wrong case (e.g. .r) will produce an
 error. If instead, you wish to set the full path to the file here, set
-\code{proj_dir} to \code{NULL}.}
+\code{pkg_dir} to \code{NULL}.}
 
-\item{proj_dir}{The directory of the R project for this package (defaults to
+\item{pkg_dir}{The directory of the R project for this package (defaults to
 current directory). Note that this is the parent directory of R/. If you
 want to specify the full file path in the \code{r_file_name} argument, set
-\code{proj_dir} to \code{NULL}.}
+\code{pkg_dir} to \code{NULL}.}
 }
 \value{
 A charachter vector.

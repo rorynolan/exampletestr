@@ -235,7 +235,7 @@ and so on, which is what we would want. Now we have something we can fill in our
 We can make the unit tests file ( because it needs to be filled in) via `make_tests_shell_file`. Running
 
 ``` r
-make_tests_shells_file("utils", proj_dir = "tempkg")
+make_tests_shells_file("utils", pkg_dir = "tempkg")
 ```
 
 outputs a `test_utils.R` file in the `tests/testthat` folder with contents
@@ -300,6 +300,12 @@ test_that("construct_expect_equal works", {
   expect_equal(construct_expect_equal(text_expr), c("expect_equal(sum(1, ",
                                                     "2), )"))
 })
+```
+
+To create these test shell files for each file in the `R/` directory of your package, run
+
+``` r
+make_tests_shells_pkg()
 ```
 
 I would like to stress that whilst unit testing should be automatic, the creation of these tests is a manual process, a manual check. This package is supposed to help you start making those tests. It is not supposed to create fully functioning tests automatically, nor can it help you to write every type of test you might want.
