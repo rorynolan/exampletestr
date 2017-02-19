@@ -50,9 +50,10 @@ extract_examples <- function(r_file_name, proj_dir = ".") {
     lapply(stringr::str_locate, atexs) %>%
     vapply(function(x) any(x == 1, na.rm = TRUE), logical(1))
   roxygen_index_groups <- roxygen_index_groups[startwith_atexs]
-  roxygen_line_groups <- roxygen_line_groups[startwith_atexs]  # restrict both of these to what we're interested in (examples)
+  roxygen_line_groups <- roxygen_line_groups[startwith_atexs]  # restrict both
+    # of these to what we're interested in (examples)
   line_indices_after_roxygens <- roxygen_index_groups %>%
-    sapply(BBmisc::getLast) + 1
+    vapply(BBmisc::getLast, integer(1)) + 1
   lines_after_roxygens <- r_file_lines[line_indices_after_roxygens]
   are_all_functions <- lines_after_roxygens %>%
     stringr::str_replace_all(" ", "") %>%
@@ -74,7 +75,7 @@ extract_examples <- function(r_file_name, proj_dir = ".") {
   atex_line_indices <- roxygen_line_groups %>%
     lapply(function(x) stringr::str_sub(x, 1, nchar(atexs)) == atexs) %>%
     lapply(which)
-  if (unique(sapply(atex_line_indices, length)) != 1) {
+  if (unique(vapply(atex_line_indices, length, integer(1))) != 1) {
     stop("Each roxygen block which documents a function ",
          "should contain at most 1 @examples tag.")
   } else {
@@ -86,7 +87,7 @@ extract_examples <- function(r_file_name, proj_dir = ".") {
                                                        x - 1, length(y)),
                            at_tags_after_exs, roxygen_line_groups)
   exs_lines <- mapply(function(x, y, z) x[y:z], SIMPLIFY = FALSE,
-                      roxygen_line_groups, atex_line_indices, exs_lines_index_ends) %>%
+    roxygen_line_groups, atex_line_indices, exs_lines_index_ends) %>%
     lapply(function(x) {
       x[1] <- stringr::str_sub(x[1], nchar(atexs) + 1, -1)
       x
