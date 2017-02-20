@@ -2,7 +2,9 @@
 #'
 #' In each .R file in the R/ folder of a pcakage project, there can be examples
 #' within documented via the [roxygen2][roxygen2::roxygen2] under the
-#' `@examples` roxygen tag..
+#' `@examples` roxygen tag.
+#'
+#' Anything examples found within or after a \\dontrun\{\} block are ignored.
 #'
 #' @param r_file_name The name of the .R file within R/. Don't specify this as
 #'   "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
@@ -25,6 +27,8 @@
 #' extract_examples("exemplar")
 #' setwd("..")
 #' filesstrings::RemoveDirs("tempkg")
+#' \dontrun{
+#' extract_examples("non_existent_file")}
 #'
 #' @return A charachter vector.
 #' @export
@@ -75,6 +79,9 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
   atex_line_indices <- roxygen_line_groups %>%
     lapply(function(x) stringr::str_sub(x, 1, nchar(atexs)) == atexs) %>%
     lapply(which)
+  if (!length(atex_line_indices)) {
+    return(list())
+  }
   if (unique(vapply(atex_line_indices, length, integer(1))) != 1) {
     stop("Each roxygen block which documents a function ",
          "should contain at most 1 @examples tag.")
@@ -92,6 +99,15 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
       x[1] <- stringr::str_sub(x[1], nchar(atexs) + 1, -1)
       x
     }) %>% lapply(function(x) x[as.logical(nchar(stringr::str_trim(x)))])
+  for (i in seq_along(exs_lines)) {
+    if (any(stringr::str_detect(exs_lines[[i]], "^\\\\dontrun\\{"))) {
+      exs_lines[[i]] <- exs_lines[[i]] %>% {
+        .[seq_len(match(T, stringr::str_detect(., "^\\\\dontrun\\{")) - 1)]
+      } %>% stringr::str_trim() %>% {
+        .[as.logical(nchar(.))]
+      }
+    }
+  }
   names(exs_lines) <- function_names
   exs_lines
 }
@@ -179,6 +195,8 @@ make_test_shell <- function(example_block, desc = "") {
 #' file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
 #' "R", overwrite = TRUE)
 #' make_tests_shells_file("exemplar")
+#' file.copy(system.file("extdata", "exampletestr.R", package = "exampletestr"),
+#' "R", overwrite = TRUE)
 #' make_tests_shells_pkg(overwrite = TRUE)
 #' # Now check your tempkg/tests/testthat directory to see what they look like
 #' # The next two lines clean up
@@ -198,6 +216,11 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   }
   r_file_name <- filesstrings::MakeExtName(r_file_name, "R")
   exampless <- extract_examples(r_file_name, pkg_dir = ".")
+  if (!length(exampless)) {
+    message("No examples found in ", r_file_name, " so not making a ",
+            "corresponding test file.")
+    return(invisible(character(0)))
+  }
   test_shells <- mapply(make_test_shell, SIMPLIFY = FALSE,
                         exampless, paste(names(exampless), "works"))
   combined <- Reduce(function(x, y) c(x, "", y), test_shells)

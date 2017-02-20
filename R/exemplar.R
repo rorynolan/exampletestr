@@ -2,7 +2,9 @@
 #'
 #' In each .R file in the R/ folder of a pcakage project, there can be examples
 #' within documented via the [roxygen2][roxygen2::roxygen2] under the
-#' `@examples` roxygen tag..
+#' `@examples` roxygen tag.
+#'
+#' Anything examples found within or after a \\dontrun\{\} block are ignored.
 #'
 #' @param r_file_name The name of the .R file within R/. Don't specify this as
 #'   "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
@@ -25,6 +27,8 @@
 #' extract_examples("exemplar")
 #' setwd("..")
 #' filesstrings::RemoveDirs("tempkg")
+#' \dontrun{
+#' extract_examples("non_existent_file")}
 #'
 #' @return A charachter vector.
 #' @export
@@ -95,6 +99,13 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
       x[1] <- stringr::str_sub(x[1], nchar(atexs) + 1, -1)
       x
     }) %>% lapply(function(x) x[as.logical(nchar(stringr::str_trim(x)))])
+  for (i in seq_along(exs_lines)) {
+    if (any(stringr::str_detect(exs_lines[[i]], "^\\\\dontrun\\{"))) {
+      exs_lines[[i]] <- exs_lines[[i]] %>% {
+        .[seq_len(match(T, stringr::str_detect(., "^\\\\dontrun\\{")) - 1)]
+      }
+    }
+  }
   names(exs_lines) <- function_names
   exs_lines
 }

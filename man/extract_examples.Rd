@@ -24,7 +24,10 @@ A charachter vector.
 \description{
 In each .R file in the R/ folder of a pcakage project, there can be examples
 within documented via the \link[roxygen2:roxygen2]{roxygen2} under the
-\code{@examples} roxygen tag..
+\code{@examples} roxygen tag.
+}
+\details{
+Anything examples found within or after a \\dontrun{} block are ignored.
 }
 \examples{
 if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
@@ -37,5 +40,7 @@ extract_examples("exemplar")
 extract_examples("exemplar")
 setwd("..")
 filesstrings::RemoveDirs("tempkg")
+\dontrun{
+extract_examples("non_existent_file")}
 
 }
