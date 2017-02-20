@@ -75,6 +75,9 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
   atex_line_indices <- roxygen_line_groups %>%
     lapply(function(x) stringr::str_sub(x, 1, nchar(atexs)) == atexs) %>%
     lapply(which)
+  if (!length(atex_line_indices)) {
+    return(list())
+  }
   if (unique(vapply(atex_line_indices, length, integer(1))) != 1) {
     stop("Each roxygen block which documents a function ",
          "should contain at most 1 @examples tag.")
@@ -179,6 +182,8 @@ make_test_shell <- function(example_block, desc = "") {
 #' file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
 #' "R", overwrite = TRUE)
 #' make_tests_shells_file("exemplar")
+#' file.copy(system.file("extdata", "exampletestr.R", package = "exampletestr"),
+#' "R", overwrite = TRUE)
 #' make_tests_shells_pkg(overwrite = TRUE)
 #' # Now check your tempkg/tests/testthat directory to see what they look like
 #' # The next two lines clean up
@@ -198,6 +203,11 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   }
   r_file_name <- filesstrings::MakeExtName(r_file_name, "R")
   exampless <- extract_examples(r_file_name, pkg_dir = ".")
+  if (!length(exampless)) {
+    message("No examples found in ", r_file_name, " so not making a ",
+            "corresponding test file.")
+    return(invisible(character(0)))
+  }
   test_shells <- mapply(make_test_shell, SIMPLIFY = FALSE,
                         exampless, paste(names(exampless), "works"))
   combined <- Reduce(function(x, y) c(x, "", y), test_shells)

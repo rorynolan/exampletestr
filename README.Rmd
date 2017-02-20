@@ -130,12 +130,12 @@ construct_expect_equal <- function(text_expr) {
 ```
 So let's demonstrate `extract_examples`:
 ```{r Demonstrate extract_examples}
-extract_examples("utils")
+extract_examples("utils", pkg_dir = "tempkg")
 ```
 
 Indeed we get all of the lines of the documentation examples. Now with `make_test_shell`, we turn it into something usable with `testthat`:
 ```{r Demonstrate make_test_shell}
-lapply(extract_examples("utils"), make_test_shell, "whatevs")
+lapply(extract_examples("utils", pkg_dir = "tempkg"), make_test_shell, "whatevs")
 ```
 This might look a little weird in the output but it's really just 
 ```{r make make_test_shell look nice, eval=FALSE}
@@ -146,7 +146,7 @@ test_that("whatevs", {
 ```
 and so on, which is what we would want. Now we have something we can fill in ourselves to create a real unit test.
 
-We can make the unit tests \emph{shell} file (\emph{shell} because it needs to be filled in) via `make_tests_shell_file`. Running 
+We can make the unit tests _shell_ file (_shell_ because it needs to be filled in) via `make_tests_shell_file`. Running 
 ```{r make_tests_shells_file}
 make_tests_shells_file("utils", pkg_dir = "tempkg")
 ```

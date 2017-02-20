@@ -112,6 +112,11 @@ test_that("make_tests_shells_file works", {
   expect_equal(make_tests_shells_pkg(overwrite = TRUE)[[1]],
                readLines(system.file("extdata", "test_exemplar.R",
                                      package = "exampletestr")))
+  file.copy(system.file("extdata", "exampletestr.R", package = "exampletestr"),
+            "R", overwrite = TRUE)
+  expect_equal(make_tests_shells_pkg(overwrite = TRUE),
+               lapply(c("exampletestr", "exemplar"), make_tests_shells_file,
+                      overwrite = TRUE))
   expect_error(make_tests_shells_file("exemplar"))
   # Now check your tempkg/tests/testthat directory to see what they look like
   # The next two lines clean up

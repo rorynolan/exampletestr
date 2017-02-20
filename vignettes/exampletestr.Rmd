@@ -1,74 +1,33 @@
-exampletestr
-================
-
-An R package to help developers create unit tests (designed for use with the testthat package) for their package, based on the examples in their package documentation. The documentation must be done with roxygen.
-
-[![Travis-CI Build Status](https://travis-ci.org/rorynolan/exampletestr.svg?branch=master)](https://travis-ci.org/rorynolan/exampletestr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr) [![Coverage Status](https://img.shields.io/codecov/c/github/rorynolan/exampletestr/master.svg)](https://codecov.io/github/rorynolan/exampletestr?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
-
-Installation
-------------
-
-In R, enter
-
-``` r
-install.packages("devtools")
-devtools::install_github("rorynolan/filesstrings", "rorynolan/exampletestr")
-```
-
-and you're done!
-
-Use
+---
+title: "exampletestr"
+author: "Rory Nolan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{exampletestr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-First, let's set up a dummy package directory with just the `utils.R` file from the source code of the `exampletestr` package.
+## In a nutshell
+The primary use of `exampletestr` is from every file in the `R/` directory of a package, to create a corresponding _shell_ of a test file (something to get you started making tests (for use with `testthat`)) that will have to be filled in to create a fully functioning test file. This can be done for the whole package at once with `make_tests_shells_pkg()` or for individual files with `make_tests_shells_file()`. These tests are created by using the examples in the roxygen documentation of your package (yes, you must use `roxygen2` to use this package) as a basis for tests. I have often (but not always) found that I test my functions manually by making sure my examples work as intended, so why not use these as a basis for proper unit testing?
 
-``` r
+## Out of the nutshell
+First, let's set up a dummy package directory with just the `utils.R` file from the source code of the `exampletestr` package.
+```{r setup}
 library(exampletestr)
 library(testthat)
 if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
 "'tempkg' folder.")
 dir.create("tempkg")
 devtools::create("tempkg")
-```
-
-    #> Creating package 'tempkg' in '/Users/rnolan/Dropbox/DPhil/Misc/RStuff/exampletestr'
-
-    #> No DESCRIPTION found. Creating with values:
-
-    #> Package: tempkg
-    #> Title: What the Package Does (one line, title case)
-    #> Version: 0.0.0.9000
-    #> Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-    #> Description: What the package does (one paragraph).
-    #> Depends: R (>= 3.3.2)
-    #> License: What license is it under?
-    #> Encoding: UTF-8
-    #> LazyData: true
-
-    #> * Creating `tempkg.Rproj` from template.
-
-    #> * Adding `.Rproj.user`, `.Rhistory`, `.RData` to ./.gitignore
-
-``` r
 devtools::use_testthat("tempkg")
-```
-
-    #> * Adding testthat to Suggests
-
-    #> * Creating `tests/testthat`.
-
-    #> * Creating `tests/testthat.R` from template.
-
-``` r
-file.copy(system.file("extdata", "utils.R", package = "exampletestr"), 
+file.copy(system.file("extdata", c("exampletestr.R", "utils.R"), package = "exampletestr"), 
           "tempkg/R")
 ```
 
-    #> [1] TRUE
-
 The `utils.R` file looks like this:
-
-``` r
+```{r Look at utils file, eval=FALSE}
 #' Does evaluation of text give an error?
 #'
 #' Can a character vector (where each line is treated as a line of R code) be
@@ -159,88 +118,30 @@ construct_expect_equal <- function(text_expr) {
   text_expr
 }
 ```
-
 So let's demonstrate `extract_examples`:
-
-``` r
+```{r Demonstrate extract_examples}
 extract_examples("utils", pkg_dir = "tempkg")
 ```
 
-    #> $text_eval_error
-    #> [1] "text_eval_error(\"a <- 1\")" "text_eval_error(\"a <- \")" 
-    #> 
-    #> $extract_expressions
-    #> [1] "text_expr <- c(\"a <- 1\","     "\"fx <- function(x) {\","      
-    #> [3] "\"paste('f', x)\","             "\"}\")"                        
-    #> [5] "extract_expressions(text_expr)"
-    #> 
-    #> $TextEval
-    #> [1] "TextEval(\"3 + 4\")"                   
-    #> [2] "to.be.evaluated <- \"var(c(1, 6, 8))\""
-    #> [3] "TextEval(to.be.evaluated)"             
-    #> 
-    #> $construct_expect_equal
-    #> [1] "text_expr <- c(\"sum(1, \", \"2)\")"                              
-    #> [2] "cat(paste(text_expr, collapse = \"\\n\"))"                        
-    #> [3] "construct_expect_equal(text_expr)"                                
-    #> [4] "cat(paste(construct_expect_equal(text_expr), collapse = \"\\n\"))"
-
 Indeed we get all of the lines of the documentation examples. Now with `make_test_shell`, we turn it into something usable with `testthat`:
-
-``` r
+```{r Demonstrate make_test_shell}
 lapply(extract_examples("utils", pkg_dir = "tempkg"), make_test_shell, "whatevs")
 ```
-
-    #> $text_eval_error
-    #> [1] "test_that(\"whatevs\", {"                     
-    #> [2] "  expect_equal(text_eval_error(\"a <- 1\"), )"
-    #> [3] "  expect_equal(text_eval_error(\"a <- \"), )" 
-    #> [4] "})"                                           
-    #> 
-    #> $extract_expressions
-    #> [1] "test_that(\"whatevs\", {"                        
-    #> [2] "  text_expr <- c(\"a <- 1\","                    
-    #> [3] "  \"fx <- function(x) {\","                      
-    #> [4] "  \"paste('f', x)\","                            
-    #> [5] "  \"}\")"                                        
-    #> [6] "  expect_equal(extract_expressions(text_expr), )"
-    #> [7] "})"                                              
-    #> 
-    #> $TextEval
-    #> [1] "test_that(\"whatevs\", {"                   
-    #> [2] "  expect_equal(TextEval(\"3 + 4\"), )"      
-    #> [3] "  to.be.evaluated <- \"var(c(1, 6, 8))\""   
-    #> [4] "  expect_equal(TextEval(to.be.evaluated), )"
-    #> [5] "})"                                         
-    #> 
-    #> $construct_expect_equal
-    #> [1] "test_that(\"whatevs\", {"                                                           
-    #> [2] "  text_expr <- c(\"sum(1, \", \"2)\")"                                              
-    #> [3] "  expect_equal(cat(paste(text_expr, collapse = \"\\n\")), )"                        
-    #> [4] "  expect_equal(construct_expect_equal(text_expr), )"                                
-    #> [5] "  expect_equal(cat(paste(construct_expect_equal(text_expr), collapse = \"\\n\")), )"
-    #> [6] "})"
-
-This might look a little weird in the output but it's really just
-
-``` r
+This might look a little weird in the output but it's really just 
+```{r make make_test_shell look nice, eval=FALSE}
 test_that("whatevs", {
   expect_equal(text_eval_error("a <- 1"), )
   expect_equal(text_eval_error("a <- "), )
 })
 ```
-
 and so on, which is what we would want. Now we have something we can fill in ourselves to create a real unit test.
 
-We can make the unit tests *shell* file (*shell* because it needs to be filled in) via `make_tests_shell_file`. Running
-
-``` r
+We can make the unit tests _shell_ file (_shell_ because it needs to be filled in) via `make_tests_shell_file`. Running 
+```{r make_tests_shells_file}
 make_tests_shells_file("utils", pkg_dir = "tempkg")
 ```
-
 outputs a `test_utils.R` file in the `tests/testthat` folder with contents
-
-``` r
+```{r test_utils.R contents, eval=FALSE}
 test_that("text_eval_error works", {
   expect_equal(text_eval_error("a <- 1"), )
   expect_equal(text_eval_error("a <- "), )
@@ -267,10 +168,8 @@ test_that("construct_expect_equal works", {
   expect_equal(cat(paste(construct_expect_equal(text_expr), collapse = "\n")), )
 })
 ```
-
 which, for my purposes, I complete as
-
-``` r
+```{r fill in test shell}
 test_that("text_eval_error works", {
   expect_false(text_eval_error("a <- 1"))
   expect_true(text_eval_error("a <- "))
@@ -302,10 +201,14 @@ test_that("construct_expect_equal works", {
 })
 ```
 
-To create these test shell files for each file in the `R/` directory of your package, run
-
-``` r
+To create these test shell files for each file in the `R/` directory of your package, run 
+```{r whole package, eval=FALSE}
 make_tests_shells_pkg()
+```
+
+
+```{r setdown, include=FALSE, echo=FALSE}
+filesstrings::RemoveDirs("tempkg")
 ```
 
 I would like to stress that whilst unit testing should be automatic, the creation of these tests is a manual process, a manual check. This package is supposed to help you start making those tests. It is not supposed to create fully functioning tests automatically, nor can it help you to write every type of test you might want.
