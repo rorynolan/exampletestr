@@ -44,6 +44,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
   roxygen_line_indices <- r_file_lines %>%
     {stringr::str_locate(., "#'")[, "start"] == 1} %>%
     which
+  if (!length(roxygen_line_indices)) return(list())
   roxygen_index_groups <- filesstrings::GroupClose(roxygen_line_indices)
   roxygen_line_groups <- lapply(roxygen_index_groups,
                                 function(x) r_file_lines[x]) %>%
