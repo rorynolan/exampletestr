@@ -34,6 +34,7 @@ to be completed by the user. \code{make_tests_shells_pkg} does this for every
 file in R/.
 }
 \examples{
+setwd(tempdir())
 if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
 "'tempkg' folder.")
 dir.create("tempkg")

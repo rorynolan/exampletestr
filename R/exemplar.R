@@ -1,4 +1,4 @@
-#' Extract examples lines from a roxygen-documented .R file.
+ #' Extract examples lines from a roxygen-documented .R file.
 #'
 #' In each .R file in the R/ folder of a pcakage project, there can be examples
 #' within documented via the [roxygen2][roxygen2::roxygen2] under the
@@ -17,6 +17,7 @@
 #'   \code{pkg_dir} to \code{NULL}.
 #'
 #' @examples
+#' setwd(tempdir())
 #' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
 #' "'tempkg' folder.")
 #' dir.create("tempkg")
@@ -125,6 +126,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
 #'   testing all of the calls in the example block.
 #'
 #' @examples
+#' setwd(tempdir())
 #' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
 #' "'tempkg' folder.")
 #' dir.create("tempkg")
@@ -184,6 +186,7 @@ make_test_shell <- function(example_block, desc = "") {
 #'   same name as the .R file it was created from except it has "test_" tacked
 #'   onto the front.
 #' @examples
+#' setwd(tempdir())
 #' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
 #' "'tempkg' folder.")
 #' dir.create("tempkg")
@@ -215,8 +218,8 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   r_file_name <- filesstrings::MakeExtName(r_file_name, "R")
   exampless <- extract_examples(r_file_name, pkg_dir = ".")
   if (!length(exampless)) {
-    message("No examples found in ", r_file_name, " so not making a ",
-            "corresponding test file.")
+    message("Note: In the file '", r_file_name, "' no examples were found, so",
+            " not making a corresponding test file for '", r_file_name, "'.")
     return(invisible(character(0)))
   }
   test_shells <- mapply(make_test_shell, SIMPLIFY = FALSE,

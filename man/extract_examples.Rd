@@ -30,6 +30,7 @@ within documented via the \link[roxygen2:roxygen2]{roxygen2} under the
 Anything examples found within or after a \\dontrun{} block are ignored.
 }
 \examples{
+setwd(tempdir())
 if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
 "'tempkg' folder.")
 dir.create("tempkg")

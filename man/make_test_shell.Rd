@@ -23,6 +23,7 @@ a \code{test_that} code block (to be filled in by the user) based upon those
 examples.
 }
 \examples{
+setwd(tempdir())
 if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
 "'tempkg' folder.")
 dir.create("tempkg")

@@ -1,4 +1,5 @@
 test_that("extract_examples works", {
+  setwd(tempdir())
   if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
   "'tempkg' folder.")
   expect_true(dir.create("tempkg"))
@@ -70,6 +71,7 @@ test_that("extract_examples works", {
 })
 
 test_that("make_test_shell works", {
+  setwd(tempdir())
   if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
                                     "'tempkg' folder.")
   expect_true(dir.create("tempkg"))
@@ -99,6 +101,7 @@ test_that("make_test_shell works", {
 })
 
 test_that("make_tests_shells_file works", {
+  setwd(tempdir())
   if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
                                     "'tempkg' folder.")
   expect_true(dir.create("tempkg"))
