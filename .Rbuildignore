@@ -4,3 +4,4 @@
 ^Readme\.Rmd$
 ^codecov\.yml$
 ^appveyor\.yml$
+^cran-comments\.md$
