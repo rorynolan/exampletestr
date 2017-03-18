@@ -14,6 +14,9 @@ test_that("extract_examples works", {
   expect_true(file.copy(system.file("extdata", "extract_examples_error2.R",
                                     package = "exampletestr"),
                         "R"))
+  expect_true(file.copy(system.file("extdata", "extract_examples_error3.R",
+                                    package = "exampletestr"),
+                        "R"))
   expect_equal(extract_examples("exemplar")$extract_examples, c(
     paste("if (dir.exists(\"tempkg\"))",
           "warning(\"Do not proceed, you'll mess with your \","),
@@ -66,6 +69,7 @@ test_that("extract_examples works", {
   ))
   expect_error(extract_examples("extract_examples_error1.R"))
   expect_error(extract_examples("extract_examples_error2.R"))
+  expect_error(extract_examples("extract_examples_error3.R"))
   setwd("..")
   expect_true(filesstrings::RemoveDirs("tempkg"))
 })
@@ -87,12 +91,12 @@ test_that("make_test_shell works", {
     "  \"'tempkg' folder.\")",
     "  expect_equal(dir.create(\"tempkg\"), )",
     "  expect_equal(devtools::create(\"tempkg\"), )",
-    "  setwd(\"tempkg\")",
+    "  expect_equal(setwd(\"tempkg\"), )",
     paste("  expect_equal(file.copy(system.file(\"extdata\",",
           "\"exemplar.R\", package = \"exampletestr\"), \"R\"), )"),
     "  expect_equal(extract_examples(\"exemplar\"), )",
     "  expect_equal(extract_examples(\"exemplar\"), )",
-    "  setwd(\"..\")",
+    "  expect_equal(setwd(\"..\"), )",
     "  expect_equal(filesstrings::RemoveDirs(\"tempkg\"), )",
     "})"
   ))

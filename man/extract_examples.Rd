@@ -27,7 +27,7 @@ within documented via the \link[roxygen2:roxygen2]{roxygen2} under the
 \code{@examples} roxygen tag.
 }
 \details{
-Anything examples found within or after a \\dontrun{} block are ignored.
+Anything examples found within a \code{\\dontrun\{...\}} block are ignored.
 }
 \examples{
 setwd(tempdir())

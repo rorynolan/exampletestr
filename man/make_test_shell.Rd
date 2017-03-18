@@ -10,8 +10,7 @@ make_test_shell(example_block, desc = "")
 \item{example_block}{A character vector of the lines in the examples of a
 function's documentation.}
 
-\item{desc}{To be the \code{desc} argument of the
-\code{\link[testthat:test_that]{testthat::test_that()}} call.}
+\item{desc}{To be the \code{desc} argument of the \code{\link[testthat:test_that]{testthat::test_that()}} call.}
 }
 \value{
 A character vector giving the shell of a test_that function call
@@ -21,6 +20,11 @@ testing all of the calls in the example block.
 Given a character vector of the examples from a function, create the shell of
 a \code{test_that} code block (to be filled in by the user) based upon those
 examples.
+}
+\details{
+Assignment lines (lines with '<-') and lines with 'stop()' or 'warning()' are
+left alone, others are put in the shell of an 'expect_equal()' statement. See
+the examples.
 }
 \examples{
 setwd(tempdir())

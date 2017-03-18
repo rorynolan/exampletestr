@@ -1,9 +1,10 @@
 Package: exampletestr
 Type: Package
 Title: Help for writing tests based on function examples
-Version: 0.2.3
-Authors@R: person("Rory", "Nolan", email = "rorynoolan@gmail.com", role = c("aut", "cre"))
-Maintainer: The package maintainer <yourself@somewhere.net>
+Version: 0.3.0
+Authors@R: c(person("Rory", "Nolan", email = "rorynoolan@gmail.com", role = c("aut", "cre")),
+             person("Sergi", "Padilla-Parra", email = "spadilla@well.ox.ac.uk", role = c("ths")))
+Maintainer: Rory Nolan <rorynoolan@gmail.com>
 Description: This package takes the examples written in your documentation of functions and uses them to create shells (must be manually completed by the user) of test files to be tested with the testthat package.
 License: GPL-3
 Encoding: UTF-8

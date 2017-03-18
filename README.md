@@ -3,7 +3,7 @@ exampletestr
 
 An R package to help developers create unit tests (designed for use with the testthat package) for their package, based on the examples in their package documentation. The documentation must be done with roxygen.
 
-[![Travis-CI Build Status](https://travis-ci.org/rorynolan/exampletestr.svg?branch=master)](https://travis-ci.org/rorynolan/exampletestr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr) [![Coverage Status](https://img.shields.io/codecov/c/github/rorynolan/exampletestr/master.svg)](https://codecov.io/github/rorynolan/exampletestr?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
+[![Travis-CI Build Status](https://travis-ci.org/rorynolan/exampletestr.svg?branch=master)](https://travis-ci.org/rorynolan/exampletestr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr) [![codecov](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/gh/rorynolan/exampletestr) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr) ![RStudio CRAN downloads](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr) [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
 Installation
 ------------
@@ -40,7 +40,7 @@ devtools::create("tempkg")
     #> Version: 0.0.0.9000
     #> Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
     #> Description: What the package does (one paragraph).
-    #> Depends: R (>= 3.3.2)
+    #> Depends: R (>= 3.3.3)
     #> License: What license is it under?
     #> Encoding: UTF-8
     #> LazyData: true

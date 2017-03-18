@@ -35,7 +35,7 @@
 extract_examples <- function(r_file_name, pkg_dir = ".") {
   r_file_lines <- ifelse(is.null(pkg_dir), r_file_name,
                          stringr::str_c(pkg_dir, "/R/", r_file_name)) %>%
-    filesstrings::MakeExtName("R") %>%
+    filesstrings::GiveExt("R") %>%
     readLines %>%
     stringr::str_trim() %>% {
       .[as.logical(nchar(.))]
@@ -214,7 +214,7 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
           "directory containing a testthat directory i.e. 'tests/testthat'. ",
           "To start using testthat, run devtools::use_testthat().")
   }
-  r_file_name <- filesstrings::MakeExtName(r_file_name, "R")
+  r_file_name <- filesstrings::GiveExt(r_file_name, "R")
   exampless <- extract_examples(r_file_name, pkg_dir = ".")
   if (!length(exampless)) {
     message("No examples found in ", r_file_name, " so not making a ",
