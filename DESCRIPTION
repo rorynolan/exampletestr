@@ -1,6 +1,6 @@
 Package: exampletestr
 Type: Package
-Title: Help for writing tests based on function examples
+Title: Help for Writing Tests Based on Function Examples
 Version: 0.3.0
 Authors@R: c(person("Rory", "Nolan", email = "rorynoolan@gmail.com", role = c("aut", "cre")),
              person("Sergi", "Padilla-Parra", email = "spadilla@well.ox.ac.uk", role = c("ths")))
