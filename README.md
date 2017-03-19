@@ -308,4 +308,6 @@ To create these test shell files for each file in the `R/` directory of your pac
 make_tests_shells_pkg()
 ```
 
+### The Goal is NOT Fully Automated Unit Test Creation
+
 I would like to stress that whilst unit testing should be automatic, the creation of these tests is a manual process, a manual check. This package is supposed to help you start making those tests. It is not supposed to create fully functioning tests automatically, nor can it help you to write every type of test you might want.
