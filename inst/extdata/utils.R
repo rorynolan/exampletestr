@@ -58,7 +58,7 @@ extract_expressions <- function(text_expr) {
 #'
 #' @export
 TextEval <- function(string) {
-  stopifnot(is.character(string) && length(string) == 1)
+  stopifnot(is.character(string), length(string) == 1)
   eval(parse(text = string))
 }
 

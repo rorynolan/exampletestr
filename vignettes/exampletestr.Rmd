@@ -22,9 +22,6 @@ First, let's set up a dummy package directory with just the `utils.R` file from 
 ```{r setup}
 library(exampletestr)
 library(testthat)
-if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
-"'tempkg' folder.")
-dir.create("tempkg")
 devtools::create("tempkg")
 devtools::use_testthat("tempkg")
 file.copy(system.file("extdata", c("exampletestr.R", "utils.R"), package = "exampletestr"), 
@@ -93,7 +90,7 @@ extract_expressions <- function(text_expr) {
 #'
 #' @export
 TextEval <- function(string) {
-  stopifnot(is.character(string) && length(string) == 1)
+  stopifnot(is.character(string), length(string) == 1)
   eval(parse(text = string))
 }
 
@@ -202,19 +199,16 @@ test_that("TextEval works", {
 test_that("construct_expect_equal works", {
   text_expr <- c("sum(1, ", "2)")
   expect_equal(construct_expect_equal(text_expr), c("expect_equal(sum(1, ",
-                                                    "2), )"))
+                                                         "2), )"))
 })
 ```
 
-To create these test shell files for each file in the `R/` directory of your package, run 
-```{r whole package, eval=FALSE}
-setwd(tempdir())
-make_tests_shells_pkg("tempkg")
-```
+To create these test shell files for each file in the `R/` directory of your package, run check out `make_tests_shells_pkg()`.
 
 
 ```{r setdown, include=FALSE, echo=FALSE}
 filesstrings::RemoveDirs("tempkg")
 ```
 
+### The Goal is NOT Fully Automated Unit Test Creation
 I would like to stress that whilst unit testing should be automatic, the creation of these tests is a manual process, a manual check. This package is supposed to help you start making those tests. It is not supposed to create fully functioning tests automatically, nor can it help you to write every type of test you might want.
