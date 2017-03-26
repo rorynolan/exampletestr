@@ -1,103 +1,131 @@
 test_that("extract_examples works", {
+  cwd <- getwd()
+  on.exit(setwd(cwd))
   setwd(tempdir())
-  if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
-  "'tempkg' folder.")
-  expect_true(dir.create("tempkg"))
   expect_true(devtools::create("tempkg"))
   setwd("tempkg")
   expect_true(file.copy(system.file("extdata", "exemplar.R",
                                     package = "exampletestr"),
                         "R"))
-  expect_true(file.copy(system.file("extdata", "extract_examples_error1.R",
-                                    package = "exampletestr"),
-                        "R"))
-  expect_true(file.copy(system.file("extdata", "extract_examples_error2.R",
-                                    package = "exampletestr"),
-                        "R"))
-  expect_true(file.copy(system.file("extdata", "extract_examples_error3.R",
-                                    package = "exampletestr"),
-                        "R"))
+  suppressWarnings(devtools::document())
   expect_equal(extract_examples("exemplar")$extract_examples, c(
-    paste("if (dir.exists(\"tempkg\"))",
-          "warning(\"Do not proceed, you'll mess with your \","),
-    "\"'tempkg' folder.\")",
-    "dir.create(\"tempkg\")",
+    "### Name: extract_examples",
+    "### Title: Extract examples lines from the functions in a .R file of a",
+    "###   package.",
+    "### Aliases: extract_examples",
+    "",
+    "### ** Examples",
+    "",
+    "setwd(tempdir())",
     "devtools::create(\"tempkg\")",
     "setwd(\"tempkg\")",
-    paste("file.copy(system.file(\"extdata\",",
-          "\"exemplar.R\", package = \"exampletestr\"), \"R\")"),
-    "extract_examples(\"exemplar\")",
-    "extract_examples(\"exemplar\")",
+    "file.copy(system.file(\"extdata\", c(\"exemplar.R\", \"exampletestr.R\"),",
+    "                      package = \"exampletestr\"), \"R\")",
+    "devtools::document()",
+    "exampletestr::extract_examples(\"exemplar\")",
+    "exampletestr::extract_examples(\"exemplar\")",
     "setwd(\"..\")",
-    "filesstrings::RemoveDirs(\"tempkg\")"
+    "filesstrings::RemoveDirs(\"tempkg\")",
+    "## Not run: ",
+    "##D extract_examples(\"non_existent_file\")",
+    "## End(Not run)",
+    "",
+    "",
+    "",
+    ""
   ))
   expect_equal(extract_examples("exemplar")$make_test_shell, c(
-    paste("if (dir.exists(\"tempkg\"))",
-          "warning(\"Do not proceed, you'll mess with your \","),
-    "\"'tempkg' folder.\")",
-    "dir.create(\"tempkg\")",
+    "### Name: make_test_shell",
+    "### Title: Make the shell of a 'test_that' test.",
+    "### Aliases: make_test_shell",
+    "",
+    "### ** Examples",
+    "",
+    "setwd(tempdir())",
     "devtools::create(\"tempkg\")",
     "setwd(\"tempkg\")",
-    paste("file.copy(system.file(\"extdata\",",
-          "\"exemplar.R\", package = \"exampletestr\"),"),
-    "\"R\", overwrite = TRUE)",
-    "make_test_shell(extract_examples(\"exemplar\")[[1]])",
+    "file.copy(system.file(\"extdata\", c(\"exemplar.R\", \"exampletestr.R\"),",
+    "                      package = \"exampletestr\"), \"R\")",
+    "devtools::document()",
+    "exampletestr::make_test_shell(exampletestr::extract_examples(\"exemplar\")[[1]])",
+    "exampletestr::make_test_shell(exampletestr::extract_examples(\"exemplar\")[[1]],",
+    "                              desc = \"xyz\", e_e = FALSE)",
     "setwd(\"..\")",
-    "filesstrings::RemoveDirs(\"tempkg\")"
+    "filesstrings::RemoveDirs(\"tempkg\")",
+    "",
+    "",
+    "",
+    ""
   ))
   expect_equal(extract_examples("exemplar")$make_tests_shells_file, c(
-    paste("if (dir.exists(\"tempkg\"))",
-          "warning(\"Do not proceed, you'll mess with your \","),
-    "\"'tempkg' folder.\")",
-    "dir.create(\"tempkg\")",
+    "### Name: make_tests_shells_file",
+    "### Title: Create the shell of a test file.",
+    "### Aliases: make_tests_shells_file make_tests_shells_pkg",
+    "",
+    "### ** Examples",
+    "",
+    "setwd(tempdir())",
     "devtools::create(\"tempkg\")",
     "setwd(\"tempkg\")",
     "devtools::use_testthat()",
-    paste("file.copy(system.file(\"extdata\",",
-          "\"exemplar.R\", package = \"exampletestr\"),"),
-    "\"R\", overwrite = TRUE)",
-    "make_tests_shells_file(\"exemplar\")",
-    paste("file.copy(system.file(\"extdata\",",
-          "\"exampletestr.R\", package = \"exampletestr\"),"),
-    "\"R\", overwrite = TRUE)",
-    "make_tests_shells_pkg(overwrite = TRUE)",
-    paste("# Now check your tempkg/tests/testthat",
-          "directory to see what they look like"),
-    "# The next two lines clean up",
+    "file.copy(system.file(\"extdata\", c(\"exemplar.R\", \"exampletestr.R\"),",
+    "                      package = \"exampletestr\"), \"R\")",
+    "devtools::document()",
+    "exampletestr::make_tests_shells_file(\"exemplar\")",
+    "devtools::document()",
+    "exampletestr::make_tests_shells_pkg(overwrite = TRUE)",
     "setwd(\"..\")",
-    "filesstrings::RemoveDirs(\"tempkg\")"
+    "filesstrings::RemoveDirs(\"tempkg\")",
+    "",
+    "",
+    "",
+    ""
   ))
-  expect_error(extract_examples("extract_examples_error1.R"))
-  expect_error(extract_examples("extract_examples_error2.R"))
-  expect_error(extract_examples("extract_examples_error3.R"))
+  expect_equal(extract_examples("exemplar")$extract_examples,
+               extract_examples("R/exemplar")$extract_examples)
   setwd("..")
   expect_true(filesstrings::RemoveDirs("tempkg"))
 })
 
 test_that("make_test_shell works", {
+  cwd <- getwd()
+  on.exit(setwd(cwd))
   setwd(tempdir())
-  if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
-                                    "'tempkg' folder.")
   expect_true(dir.create("tempkg"))
   expect_true(devtools::create("tempkg"))
   setwd("tempkg")
   expect_true(file.copy(system.file("extdata", "exemplar.R",
                                     package = "exampletestr"),
                         "R"))
+  devtools::document()
   expect_equal(make_test_shell(extract_examples("exemplar")[[1]], "abc"), c(
     "test_that(\"abc\", {",
-    paste("  if (dir.exists(\"tempkg\"))",
-          "warning(\"Do not proceed, you'll mess with your \","),
-    "  \"'tempkg' folder.\")",
-    "  expect_equal(dir.create(\"tempkg\"), )",
+    "  setwd(tempdir())",
     "  expect_equal(devtools::create(\"tempkg\"), )",
-    "  expect_equal(setwd(\"tempkg\"), )",
-    paste("  expect_equal(file.copy(system.file(\"extdata\",",
-          "\"exemplar.R\", package = \"exampletestr\"), \"R\"), )"),
-    "  expect_equal(extract_examples(\"exemplar\"), )",
-    "  expect_equal(extract_examples(\"exemplar\"), )",
-    "  expect_equal(setwd(\"..\"), )",
+    "  setwd(\"tempkg\")",
+    "  expect_equal(file.copy(system.file(\"extdata\", c(\"exemplar.R\", \"exampletestr.R\"),",
+    "    package = \"exampletestr\"), \"R\"), )",
+    "  expect_equal(devtools::document(), )",
+    "  expect_equal(exampletestr::extract_examples(\"exemplar\"), )",
+    "  expect_equal(exampletestr::extract_examples(\"exemplar\"), )",
+    "  setwd(\"..\")",
     "  expect_equal(filesstrings::RemoveDirs(\"tempkg\"), )",
+    "})"
+  ))
+  expect_equal(make_test_shell(extract_examples("exemplar")[[1]], "abc",
+                               e_e = FALSE),
+               c(
+    "test_that(\"abc\", {",
+    "  setwd(tempdir())",
+    "  devtools::create(\"tempkg\")",
+    "  setwd(\"tempkg\")",
+    "  file.copy(system.file(\"extdata\", c(\"exemplar.R\", \"exampletestr.R\"),",
+    "    package = \"exampletestr\"), \"R\")",
+    "  devtools::document()",
+    "  exampletestr::extract_examples(\"exemplar\")",
+    "  exampletestr::extract_examples(\"exemplar\")",
+    "  setwd(\"..\")",
+    "  filesstrings::RemoveDirs(\"tempkg\")",
     "})"
   ))
   setwd("..")
@@ -105,27 +133,32 @@ test_that("make_test_shell works", {
 })
 
 test_that("make_tests_shells_file works", {
+  cwd <- getwd()
+  on.exit(setwd(cwd))
   setwd(tempdir())
-  if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
-                                    "'tempkg' folder.")
-  expect_true(dir.create("tempkg"))
   expect_error(make_tests_shells_file("exemplar", pkg_dir = "tempkg"))
   expect_true(devtools::create("tempkg"))
   setwd("tempkg")
   expect_true(file.copy(system.file("extdata", "exemplar.R",
                                     package = "exampletestr"),
                         "R"))
+  expect_true(file.copy(system.file("extdata", "non_documented_fun.R",
+                                    package = "exampletestr"),
+                        "R"))
+  expect_error(make_tests_shells_file("exemplar"))
   expect_true(devtools::use_testthat())
+  devtools::document()
   expect_equal(make_tests_shells_file("exemplar"),
-               readLines(system.file("extdata", "test_exemplar.R",
+               readLines(system.file("extdata", "test_exemplar_uncompleted.R",
                                      package = "exampletestr")))
   expect_equal(make_tests_shells_pkg(overwrite = TRUE)[[1]],
-               readLines(system.file("extdata", "test_exemplar.R",
+               readLines(system.file("extdata", "test_exemplar_uncompleted.R",
                                      package = "exampletestr")))
   file.copy(system.file("extdata", "exampletestr.R", package = "exampletestr"),
             "R", overwrite = TRUE)
   expect_equal(make_tests_shells_pkg(overwrite = TRUE),
-               lapply(c("exampletestr", "exemplar"), make_tests_shells_file,
+               lapply(c("exampletestr", "exemplar",
+                        "non_documented_fun"), make_tests_shells_file,
                       overwrite = TRUE))
   expect_error(make_tests_shells_file("exemplar"))
   # Now check your tempkg/tests/testthat directory to see what they look like

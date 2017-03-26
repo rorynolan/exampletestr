@@ -13,7 +13,7 @@ single output.}
 \value{
 A character vector. The lines of text containing the
 \code{expect_equal} code corresponding to the input, which will help to
-write the test file based on an example detailed with roxgen. Remember that
+write the test file based on documentation examples. Remember that
 this is something that you're intended to fill the gaps in later.
 }
 \description{

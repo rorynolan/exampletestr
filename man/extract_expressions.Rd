@@ -4,10 +4,12 @@
 \alias{extract_expressions}
 \title{Text expression groups.}
 \usage{
-extract_expressions(text_expr)
+extract_expressions(text_expr, remove_comments = TRUE)
 }
 \arguments{
 \item{text_expr}{A character vector.}
+
+\item{remove_comments}{Should comments be removed?}
 }
 \value{
 A list of character vectors, each of which can be evaluated as a
@@ -20,7 +22,7 @@ lines, where each group of lines is a valid R expression.
 \examples{
 text_expr <- c("a <- 1",
 "fx <- function(x) {",
-"paste('f', x)",
-"}")
+"  x + 1",
+"}  # this comment should disappear")
 extract_expressions(text_expr)
 }

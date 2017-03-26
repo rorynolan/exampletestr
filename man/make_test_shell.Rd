@@ -4,13 +4,16 @@
 \alias{make_test_shell}
 \title{Make the shell of a \code{test_that} test.}
 \usage{
-make_test_shell(example_block, desc = "")
+make_test_shell(example_block, desc = "", e_e = TRUE)
 }
 \arguments{
 \item{example_block}{A character vector of the lines in the examples of a
 function's documentation.}
 
 \item{desc}{To be the \code{desc} argument of the \code{\link[testthat:test_that]{testthat::test_that()}} call.}
+
+\item{e_e}{Set this to \code{FALSE} to prevent anything from being put in the
+shell of an \code{expect_equal()} statement.}
 }
 \value{
 A character vector giving the shell of a test_that function call
@@ -18,24 +21,26 @@ testing all of the calls in the example block.
 }
 \description{
 Given a character vector of the examples from a function, create the shell of
-a \code{test_that} code block (to be filled in by the user) based upon those
-examples.
+a \code{\link[testthat:test_that]{testthat::test_that()}} code block (to be filled in by the user) based upon
+those examples.
 }
 \details{
-Assignment lines (lines with '<-') and lines with 'stop()' or 'warning()' are
-left alone, others are put in the shell of an 'expect_equal()' statement. See
-the examples.
+Assignment lines (lines with \code{<-}, or even an \code{=} assignment (naughty, I
+know)) and lines starting with \code{stop(}, \code{warning(}, \code{setwd(}, \code{plot(},
+\code{ggplot(} or \code{library(} are left alone, others are put in the shell of an
+\code{expect_equal()} statement. To prevent anything from being put in the shell
+of an \code{expect_equal()} statement, set \code{e_e = FALSE}.
 }
 \examples{
 setwd(tempdir())
-if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
-"'tempkg' folder.")
-dir.create("tempkg")
 devtools::create("tempkg")
 setwd("tempkg")
-file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
-"R", overwrite = TRUE)
-make_test_shell(extract_examples("exemplar")[[1]])
+file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
+                      package = "exampletestr"), "R")
+devtools::document()
+exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]])
+exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]],
+                              desc = "xyz", e_e = FALSE)
 setwd("..")
 filesstrings::RemoveDirs("tempkg")
 

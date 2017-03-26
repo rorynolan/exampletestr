@@ -1,18 +1,21 @@
-#' Does evaluation of text give an error?
+#' Does parsing of text give an error?
 #'
 #' Can a character vector (where each line is treated as a line of R code) be
-#' evaluated as an R expression (or several R expressions) without giving an
+#' parsed as an R expression (or several R expressions) without giving an
 #' error?
 #'
 #' @param text_expr The expression to be evaluated, as a character vector.
 #'
 #' @return `TRUE` if the code gives an error and `FALSE` otherwise.
 #' @examples
-#' text_eval_error("a <- 1")
-#' text_eval_error("a <- ")
+#' text_parse_error("a <- 1")
+#' text_parse_error("a <- ")
 #' @export
-text_eval_error <- function(text_expr) {
-  try(parse(text = text_expr), silent = TRUE) %>% inherits("try-error")
+text_parse_error <- function(text_expr) {
+  try_res <- try(parse(text = text_expr), silent = TRUE)
+  error <- inherits(try_res, "try-error")
+  if (error) attr(error, "message") <- attr(try_res, "message")
+  error
 }
 
 #' Text expression groups.
@@ -21,45 +24,47 @@ text_eval_error <- function(text_expr) {
 #' lines, where each group of lines is a valid R expression.
 #'
 #' @param text_expr A character vector.
+#' @param remove_comments Should comments be removed?
 #'
 #' @return A list of character vectors, each of which can be evaluated as a
 #'   valid R expression.
 #' @examples
 #' text_expr <- c("a <- 1",
 #' "fx <- function(x) {",
-#' "paste('f', x)",
-#' "}")
+#' "  x + 1",
+#' "}  # this comment should disappear")
 #' extract_expressions(text_expr)
 #' @export
-extract_expressions <- function(text_expr) {
+extract_expressions <- function(text_expr, remove_comments = TRUE) {
+  stopifnot(length(text_expr) > 0)
   expr_groups <- list()
   i <- 1
   while (i <= length(text_expr)) {
     j <- 0
     expr <- text_expr[i]
-    while(text_eval_error(expr)) {
+    while(text_parse_error(expr)) {
       j <- j + 1
       expr <- text_expr[i:(i + j)]
     }
     expr_groups <- append(expr_groups, list(expr))
     i <- i + j + 1
   }
-  expr_groups
-}
-
-#' Evaluate a text string
-#'
-#' @param string The string to evaluate (as if it were a command).
-#'
-#' @examples
-#' TextEval("3 + 4")
-#' to.be.evaluated <- "var(c(1, 6, 8))"
-#' TextEval(to.be.evaluated)
-#'
-#' @export
-TextEval <- function(string) {
-  stopifnot(is.character(string), length(string) == 1)
-  eval(parse(text = string))
+  if (remove_comments) {
+    expr_groups <- purrr::map(expr_groups, ~ formatR::tidy_source(text = .,
+        comment = !remove_comments, arrow = TRUE, indent = 2, output = FALSE,
+        width.cutoff = 50)) %>%
+      purrr::map(getElement, "text.tidy") %>%
+      purrr::map(~ readLines(textConnection(.)))
+    for (i in seq_along(expr_groups)) {
+      if (filesstrings::AllEqual(expr_groups[[i]], character(0))) {
+        expr_groups[[i]] <- ""
+      }
+    }
+  }
+  empties <- purrr::map_lgl(expr_groups, ~ isTRUE(all.equal(., "")))
+  expr_groups <- expr_groups[!empties]
+  lapply(expr_groups, stringr::str_trim, side = "right")
+  # str_trim because sometimes formatR leaves unnecessary trailing whitespace
 }
 
 #' Construct an `expect_equal` expression
@@ -72,7 +77,7 @@ TextEval <- function(string) {
 #'
 #' @return A character vector. The lines of text containing the
 #'   `expect_equal` code corresponding to the input, which will help to
-#'   write the test file based on an example detailed with roxgen. Remember that
+#'   write the test file based on documentation examples. Remember that
 #'   this is something that you're intended to fill the gaps in later.
 #'
 #' @examples
@@ -86,4 +91,25 @@ construct_expect_equal <- function(text_expr) {
   l <- length(text_expr)
   text_expr[l] <- paste0(text_expr[l], ", )")
   text_expr
+}
+
+#' Extract examples from a `.Rd` file as a character vector.
+#'
+#' This is a convenient wrapper to [tools::Rd2ex] which actually returns a character vector of the examples in the `.Rd` file.
+#'
+#' @param rd_file_path The path to the `.Rd` file.
+#'
+#' @return A character vector.
+#'
+#' @examples
+#' this_function_rd <- system.file("extdata", "extract_examples_rd.Rd",
+#'                                 package = "exampletestr")
+#' extract_examples_rd(this_function_rd)
+#' @export
+extract_examples_rd <- function(rd_file_path) {
+  tc <- textConnection(" ", "w")
+  tools::Rd2ex(rd_file_path, tc)
+  examples_lines <- textConnectionValue(tc)
+  close(tc)
+  examples_lines
 }

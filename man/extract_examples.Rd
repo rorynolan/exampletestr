@@ -2,43 +2,41 @@
 % Please edit documentation in R/exemplar.R
 \name{extract_examples}
 \alias{extract_examples}
-\title{Extract examples lines from a roxygen-documented .R file.}
+\title{Extract examples lines from the functions in a .R file of a package.}
 \usage{
 extract_examples(r_file_name, pkg_dir = ".")
 }
 \arguments{
-\item{r_file_name}{The name of the .R file within R/. Don't specify this as
-"R/x.R", just use "x.R" for whichever file x it is. You can also omit the
-.R for convenience, however using the wrong case (e.g. .r) will produce an
-error. If instead, you wish to set the full path to the file here, set
-\code{pkg_dir} to \code{NULL}.}
+\item{r_file_name}{The name of the \code{.R} file within \code{R/}. There's no need to
+specify the file path (as \code{R/x.R}, but you can do this if you want), you
+can just use \code{x.R} for whichever file \code{x} it is. You can also omit the \code{.R}
+for convenience, however using the wrong case (e.g. \code{.r}) will produce an
+error.}
 
 \item{pkg_dir}{The directory of the R project for this package (defaults to
-current directory). Note that this is the parent directory of R/. If you
-want to specify the full file path in the \code{r_file_name} argument, set
-\code{pkg_dir} to \code{NULL}.}
+current directory). This is the parent directory of \code{R/} and \code{man/}.}
 }
 \value{
-A charachter vector.
+A list of charachter vectors.
 }
 \description{
-In each .R file in the R/ folder of a pcakage project, there can be examples
-within documented via the \link[roxygen2:roxygen2]{roxygen2} under the
-\code{@examples} roxygen tag.
+In each \code{.R} file in the \code{R/} folder of a pcakage project, for the functions
+defined therein, there can corresponding examples in the \code{.Rd} files of the
+man/` folder. This function extracts those examples into a list of character
+vectors, one list element for each documented function.
 }
 \details{
 Anything examples found within a \code{\\dontrun\{...\}} block are ignored.
 }
 \examples{
 setwd(tempdir())
-if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
-"'tempkg' folder.")
-dir.create("tempkg")
 devtools::create("tempkg")
 setwd("tempkg")
-file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"), "R")
-extract_examples("exemplar")
-extract_examples("exemplar")
+file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
+                      package = "exampletestr"), "R")
+devtools::document()
+exampletestr::extract_examples("exemplar")
+exampletestr::extract_examples("exemplar")
 setwd("..")
 filesstrings::RemoveDirs("tempkg")
 \dontrun{

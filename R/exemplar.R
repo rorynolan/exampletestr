@@ -1,199 +1,157 @@
- #' Extract examples lines from a roxygen-documented .R file.
+#' Extract examples lines from the functions in a .R file of a package.
 #'
-#' In each .R file in the R/ folder of a pcakage project, there can be examples
-#' within documented via the [roxygen2][roxygen2::roxygen2] under the
-#' `@examples` roxygen tag.
+#' In each `.R` file in the `R/` folder of a pcakage project, for the functions
+#' defined therein, there can corresponding examples in the `.Rd` files of the
+#' man/` folder. This function extracts those examples into a list of character
+#' vectors, one list element for each documented function.
 #'
 #' Anything examples found within a `\\dontrun\{...\}` block are ignored.
 #'
-#' @param r_file_name The name of the .R file within R/. Don't specify this as
-#'   "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
-#'   .R for convenience, however using the wrong case (e.g. .r) will produce an
-#'   error. If instead, you wish to set the full path to the file here, set
-#'   \code{pkg_dir} to \code{NULL}.
+#' @param r_file_name The name of the `.R` file within `R/`. There's no need to
+#'   specify the file path (as `R/x.R`, but you can do this if you want), you
+#'   can just use `x.R` for whichever file `x` it is. You can also omit the `.R`
+#'   for convenience, however using the wrong case (e.g. `.r`) will produce an
+#'   error.
 #' @param pkg_dir The directory of the R project for this package (defaults to
-#'   current directory). Note that this is the parent directory of R/. If you
-#'   want to specify the full file path in the \code{r_file_name} argument, set
-#'   \code{pkg_dir} to \code{NULL}.
+#'   current directory). This is the parent directory of `R/` and `man/`.
 #'
 #' @examples
 #' setwd(tempdir())
-#' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
-#' "'tempkg' folder.")
-#' dir.create("tempkg")
 #' devtools::create("tempkg")
 #' setwd("tempkg")
-#' file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"), "R")
-#' extract_examples("exemplar")
-#' extract_examples("exemplar")
+#' file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
+#'                       package = "exampletestr"), "R")
+#' devtools::document()
+#' exampletestr::extract_examples("exemplar")
+#' exampletestr::extract_examples("exemplar")
 #' setwd("..")
 #' filesstrings::RemoveDirs("tempkg")
 #' \dontrun{
 #' extract_examples("non_existent_file")}
 #'
-#' @return A charachter vector.
+#' @return A list of charachter vectors.
 #' @export
 extract_examples <- function(r_file_name, pkg_dir = ".") {
-  r_file_lines <- ifelse(is.null(pkg_dir), r_file_name,
+  if (stringr::str_detect(r_file_name, "/")) {
+    r_file_name <- filesstrings::StrAfterNth(r_file_name, "/", -1)
+  }
+  r_file_name <- ifelse(is.null(pkg_dir), r_file_name,
                          stringr::str_c(pkg_dir, "/R/", r_file_name)) %>%
-    filesstrings::GiveExt("R") %>%
-    readLines %>%
-    stringr::str_trim() %>% {
-      .[as.logical(nchar(.))]
-    }
-  roxygen_line_indices <- r_file_lines %>%
-    {stringr::str_locate(., "#'")[, "start"] == 1} %>%
-    which
-  if (!length(roxygen_line_indices)) return(list())
-  roxygen_index_groups <- filesstrings::GroupClose(roxygen_line_indices)
-  roxygen_line_groups <- lapply(roxygen_index_groups,
-                                function(x) r_file_lines[x]) %>%
-    lapply(stringr::str_sub, 3, -1) %>%  # remove roxygen tags
-    lapply(stringr::str_trim) %>%  # remove whitespace padding
-    {.[as.logical(nchar(.))]}  # remove empty lines
-  atexs <- "@examples"
-  startwith_atexs <- roxygen_line_groups %>%
-    lapply(stringr::str_locate, atexs) %>%
-    vapply(function(x) any(x == 1, na.rm = TRUE), logical(1))
-  roxygen_index_groups <- roxygen_index_groups[startwith_atexs]
-  roxygen_line_groups <- roxygen_line_groups[startwith_atexs]  # restrict both
-    # of these to what we're interested in (examples)
-  line_indices_after_roxygens <- roxygen_index_groups %>%
-    vapply(BBmisc::getLast, integer(1)) + 1
-  lines_after_roxygens <- r_file_lines[line_indices_after_roxygens]
-  are_all_functions <- lines_after_roxygens %>%
-    stringr::str_replace_all(" ", "") %>%
-    stringr::str_detect(stringr::coll("<-function(")) %>%
-    all
-  if (!are_all_functions) {
-    stop("Lines in the .R file which follow roxygen blocks which contain an ",
-         "@examples tag must be the start of a function definition and hence ",
-         "contain ' <- function(' or something like that. ",
-         "The equals assignment '= function(' is not allowed.")
-  }
-  function_names <- lines_after_roxygens %>%
-    stringr::str_split_fixed("<-", 2) %>% {
-      stringr::str_trim(.[, 1])
-    }
-  at_tag_line_indices <- roxygen_line_groups %>%
-    lapply(function(x) filesstrings::StrElem(x, 1) == "@") %>%
-    lapply(which)
-  atex_line_indices <- roxygen_line_groups %>%
-    lapply(function(x) stringr::str_sub(x, 1, nchar(atexs)) == atexs) %>%
-    lapply(which)
-  if (!length(atex_line_indices)) {
-    return(list())
-  }
-  if (unique(vapply(atex_line_indices, length, integer(1))) != 1) {
-    stop("Each roxygen block which documents a function ",
-         "should contain at most 1 @examples tag.")
-  } else {
-    atex_line_indices <- unlist(atex_line_indices)
-  }
-  at_tags_after_exs <- mapply(function(x, y) x[x > y], SIMPLIFY = FALSE,
-                              at_tag_line_indices, atex_line_indices)
-  exs_lines_index_ends <- mapply(function(x, y) ifelse(length(x),
-                                                       x - 1, length(y)),
-                           at_tags_after_exs, roxygen_line_groups)
-  exs_lines <- mapply(function(x, y, z) x[y:z], SIMPLIFY = FALSE,
-    roxygen_line_groups, atex_line_indices, exs_lines_index_ends) %>%
-    lapply(function(x) {
-      x[1] <- stringr::str_sub(x[1], nchar(atexs) + 1, -1)
-      x
-    }) %>% lapply(function(x) x[as.logical(nchar(stringr::str_trim(x)))])
-  for (i in seq_along(exs_lines)) {
-    if (any(stringr::str_detect(exs_lines[[i]], "^\\\\dontrun\\{"))) {
-      quoted_gone <- filesstrings::RemoveQuoted(exs_lines[[i]])
-      starts <- which(stringr::str_detect(quoted_gone, "^\\\\dontrun\\{"))
-      ends <- integer(0)
-      for (j in starts) {
-        k <- 0
-        closes <- 0
-        while (closes != 1) {
-          if (k == 0) closes <- closes + 1
-          if (j + k > length(quoted_gone)) {
-            stop ("One on the examples blocks is malformed. ",
-                  "It seems that a \\dontrun{...} block has no closing '}'.")
-          }
-          closes <- closes - filesstrings::CountMatches(quoted_gone[j + k],
-                                                        "\\{")
-          closes <- closes + filesstrings::CountMatches(quoted_gone[j + k],
-                                                        "\\}")
-          k <- k + 1
-        }
-        ends <- append(ends, j + k)
+    filesstrings::GiveExt("R")
+  r_file_lines_quotes_gone <- readLines(r_file_name) %>%
+    formatR::tidy_source(text = ., comment = FALSE, arrow = TRUE,
+                         output = FALSE, width.cutoff = 500) %>%
+    getElement("text.tidy") %>%
+    textConnection() %>%
+    readLines() %>%
+    filesstrings::RemoveQuoted()
+  r_file_funs <- stringr::str_match(r_file_lines_quotes_gone,
+                                    "([^ ]*) <- function\\(")[, 2] %>%
+    stats::na.omit()
+  rd_file_paths <- list.files(paste0(pkg_dir, "/man"), pattern = "\\.Rd$") %>%
+    paste0(pkg_dir, "/man/", .)
+  rd_file_lines <- lapply(rd_file_paths, readLines)
+  rd_file_short_names <- rd_file_paths %>% filesstrings::BeforeLastDot() %>%
+    filesstrings::StrAfterNth("/", -1)
+  names(rd_file_lines) <- rd_file_short_names
+  documented_funs_in_alias_tags <- unlist(rd_file_lines) %>%
+    stringr::str_extract("\\\\alias\\{.*\\}") %>%
+    stats::na.omit()
+  documented_funs <- stringr::str_sub(documented_funs_in_alias_tags, 8, -2) %>%
+    stringr::str_trim()
+  file_documented_funs <- intersect(documented_funs, r_file_funs)
+  if (length(file_documented_funs) == 0) return(list(character(0)))
+  documented_where <- paste0("\\alias{", file_documented_funs, "}") %>%
+    purrr::map_int(function(x) {
+      i <- 1
+      while (!any(stringr::str_detect(rd_file_lines[[i]], stringr::coll(x)))) {
+        i <- i + 1
       }
-      to_remove <- unlist(mapply(seq, starts, ends, SIMPLIFY = FALSE))
-      exs_lines[[i]] <- exs_lines[[i]][-to_remove]
-    }
-  }
-  names(exs_lines) <- function_names
-  exs_lines
+      as.integer(i)
+    }) %>%
+    purrr::map_chr(~ rd_file_short_names[.])
+  wanted_rds <- unique(documented_where)
+  wanted_rd_paths <- paste0(pkg_dir, "/man/",
+                            filesstrings::GiveExt(wanted_rds, "Rd"))
+  examples <- lapply(wanted_rd_paths, extract_examples_rd)
+  names(examples) <- wanted_rds
+  ls_exs <- lengths(examples)
+  if (filesstrings::AllEqual(ls_exs, 0)) return(list(character(0)))
+  examples[as.logical(lengths(examples))]
 }
 
 #' Make the shell of a `test_that` test.
 #'
 #' Given a character vector of the examples from a function, create the shell of
-#' a `test_that` code block (to be filled in by the user) based upon those
-#' examples.
+#' a [testthat::test_that()] code block (to be filled in by the user) based upon
+#' those examples.
 #'
-#' Assignment lines (lines with '<-') and lines with 'stop()' or 'warning()' are
-#' left alone, others are put in the shell of an 'expect_equal()' statement. See
-#' the examples.
+#' Assignment lines (lines with `<-`, or even an `=` assignment (naughty, I
+#' know)) and lines starting with `stop(`, `warning(`, `setwd(`, `plot(`,
+#' `ggplot(` or `library(` are left alone, others are put in the shell of an
+#' `expect_equal()` statement. To prevent anything from being put in the shell
+#' of an `expect_equal()` statement, set `e_e = FALSE`.
 #'
 #' @param example_block A character vector of the lines in the examples of a
 #'   function's documentation.
 #' @param desc To be the `desc` argument of the [testthat::test_that()] call.
+#' @param e_e Set this to `FALSE` to prevent anything from being put in the
+#'   shell of an `expect_equal()` statement.
 #'
 #' @return A character vector giving the shell of a test_that function call
 #'   testing all of the calls in the example block.
 #'
 #' @examples
 #' setwd(tempdir())
-#' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
-#' "'tempkg' folder.")
-#' dir.create("tempkg")
 #' devtools::create("tempkg")
 #' setwd("tempkg")
-#' file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
-#' "R", overwrite = TRUE)
-#' make_test_shell(extract_examples("exemplar")[[1]])
+#' file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
+#'                       package = "exampletestr"), "R")
+#' devtools::document()
+#' exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]])
+#' exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]],
+#'                               desc = "xyz", e_e = FALSE)
 #' setwd("..")
 #' filesstrings::RemoveDirs("tempkg")
 #'
 #' @export
-make_test_shell <- function(example_block, desc = "") {
+make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
   stopifnot(is.character(example_block))
+  if (filesstrings::AllEqual(example_block, character(0))) return(character(0))
   expressions <- extract_expressions(example_block)
-  for_checking <- expressions %>%
-    lapply(filesstrings::RemoveQuoted) %>%
-    lapply(stringr::str_replace_all, " ", "")
-  leave_alone <- vapply(for_checking, function(x) {
-      any(stringr::str_detect(x, "(?:<-|stop\\(|warning\\(|^#)"))
+  if (e_e) {
+    for_checking <- expressions %>%
+      lapply(filesstrings::RemoveQuoted) %>%
+      lapply(stringr::str_replace_all, " ", "")
+    leave_alone <- vapply(for_checking, function(x) {
+      any(stringr::str_detect(x,
+            paste0("(?:<-|^stop\\(|^warning\\(|^#|^setwd\\(|^library\\(|",
+                   "^plot\\(|^ggplot\\()")))
     }, logical(1))
-  plots <- vapply(for_checking, function(x) {
-    any(stringr::str_detect(x, "(?:plot\\()"))  # this will catch ggplot too
-  }, logical(1))
-  inside_test_that <- mapply(function(x, y) {
-    if (x) {
-      y
-    } else {
-      construct_expect_equal(y)
-    }
-  }, leave_alone, expressions, SIMPLIFY = FALSE) %>% {
-    .[!plots]
-    } %>% unlist
+    inside_test_that <- mapply(function(x, y) {
+      if (x) {
+        y
+      } else {
+        construct_expect_equal(y)
+      }
+    }, leave_alone, expressions, SIMPLIFY = FALSE) %>%
+      unlist
+  } else {
+    inside_test_that <- unlist(expressions)
+  }
   c(paste0("test_that(\"", desc, "\", {"),
     paste(" ", inside_test_that),  # this will prepend two spaces
     "})")
 }
 
-#' Create the shell of a test file based on roxygen examples.
+#' Create the shell of a test file.
 #'
-#' Based on the roxygen-specified examples in a .R file in the R/ directory of
-#' the package, \code{make_tests_shells_file} create the shell of a test file,
-#' to be completed by the user. \code{make_tests_shells_pkg} does this for every
-#' file in R/.
+#' For a given `.R` file in the `R/` directory of a package, for each function
+#' defined in that `.R` file, `make_tests_shells_file` checks if there are
+#' examples for that function detailed in the `man/` directory (in a `.Rd` file)
+#' and if so creates a shell (skeleton) of a [testthat::test_that] test based on
+#' those examples. The created shells are then written to a file in
+#' `tests/testthat`.
 #'
 #' @param r_file_name The name of the .R file within R/. Don't specify this as
 #'   "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
@@ -204,32 +162,29 @@ make_test_shell <- function(example_block, desc = "") {
 #'   current directory). Note that this is the parent directory of R/.
 #' @param overwrite Overwrite if the test file you're trying to create already
 #'   exists?
+#' @param e_e Set this to `FALSE` to prevent anything from being put in the
+#'   shell of an `expect_equal()` statement.
 #'
 #' @return The shell of the test file is written into tests/testthat. It has the
 #'   same name as the .R file it was created from except it has "test_" tacked
 #'   onto the front.
 #' @examples
 #' setwd(tempdir())
-#' if (dir.exists("tempkg")) warning("Do not proceed, you'll mess with your ",
-#' "'tempkg' folder.")
-#' dir.create("tempkg")
 #' devtools::create("tempkg")
 #' setwd("tempkg")
 #' devtools::use_testthat()
-#' file.copy(system.file("extdata", "exemplar.R", package = "exampletestr"),
-#' "R", overwrite = TRUE)
-#' make_tests_shells_file("exemplar")
-#' file.copy(system.file("extdata", "exampletestr.R", package = "exampletestr"),
-#' "R", overwrite = TRUE)
-#' make_tests_shells_pkg(overwrite = TRUE)
-#' # Now check your tempkg/tests/testthat directory to see what they look like
-#' # The next two lines clean up
+#' file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
+#'                       package = "exampletestr"), "R")
+#' devtools::document()
+#' exampletestr::make_tests_shells_file("exemplar")
+#' devtools::document()
+#' exampletestr::make_tests_shells_pkg(overwrite = TRUE)
 #' setwd("..")
 #' filesstrings::RemoveDirs("tempkg")
 #'
 #' @export
 make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
-                                   overwrite = FALSE) {
+                                   overwrite = FALSE, e_e = TRUE) {
   current_wd <- getwd()
   on.exit(setwd(current_wd))
   setwd(pkg_dir)
@@ -240,13 +195,20 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   }
   r_file_name <- filesstrings::GiveExt(r_file_name, "R")
   exampless <- extract_examples(r_file_name, pkg_dir = ".")
+  not_making_message <- paste0("No examples found for file \"",
+                               r_file_name, "\", ",
+                              "so no corresponding test file will be made ",
+                              "for this file.")
   if (!length(exampless)) {
-    message("Note: In the file '", r_file_name, "' no examples were found, so",
-            " not making a corresponding test file for '", r_file_name, "'.")
+    message(not_making_message)
     return(invisible(character(0)))
   }
   test_shells <- mapply(make_test_shell, SIMPLIFY = FALSE,
-                        exampless, paste(names(exampless), "works"))
+                        exampless, paste(names(exampless), "works"), e_e = e_e)
+  if (filesstrings::AllEqual(unique(test_shells), list(character(0)))) {
+    message(not_making_message)
+    return(invisible(character(0)))
+  }
   combined <- Reduce(function(x, y) c(x, "", y), test_shells)
   test_file_name <- paste0("tests/testthat/test_", r_file_name)
   if (!overwrite && file.exists(test_file_name)) {
@@ -260,11 +222,11 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
 
 #' @rdname make_tests_shells_file
 #' @export
-make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE) {
+make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE, e_e = TRUE) {
   current_wd <- getwd()
   setwd(pkg_dir)
   on.exit(setwd(current_wd))
   list.files(path = "R") %>%
-    lapply(make_tests_shells_file, overwrite = overwrite) %>%
+    lapply(make_tests_shells_file, overwrite = overwrite, e_e = e_e) %>%
     invisible
 }
