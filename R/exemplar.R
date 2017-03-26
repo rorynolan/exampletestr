@@ -35,8 +35,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
   if (stringr::str_detect(r_file_name, "/")) {
     r_file_name <- filesstrings::StrAfterNth(r_file_name, "/", -1)
   }
-  r_file_name <- ifelse(is.null(pkg_dir), r_file_name,
-                         stringr::str_c(pkg_dir, "/R/", r_file_name)) %>%
+  r_file_name <- stringr::str_c(pkg_dir, "/R/", r_file_name) %>%
     filesstrings::GiveExt("R")
   r_file_lines_quotes_gone <- readLines(r_file_name) %>%
     formatR::tidy_source(text = ., comment = FALSE, arrow = TRUE,
@@ -46,7 +45,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
     readLines() %>%
     filesstrings::RemoveQuoted()
   r_file_funs <- stringr::str_match(r_file_lines_quotes_gone,
-                                    "([^ ]*) <- function\\(")[, 2] %>%
+                                    "(^[^ ]*) <- function\\(")[, 2] %>%
     stats::na.omit()
   rd_file_paths <- list.files(paste0(pkg_dir, "/man"), pattern = "\\.Rd$") %>%
     paste0(pkg_dir, "/man/", .)
@@ -153,11 +152,11 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
 #' those examples. The created shells are then written to a file in
 #' `tests/testthat`.
 #'
-#' @param r_file_name The name of the .R file within R/. Don't specify this as
-#'   "R/x.R", just use "x.R" for whichever file x it is. You can also omit the
-#'   .R for convenience, however using the wrong case (e.g. .r) will produce an
-#'   error. If instead, you wish to set the full path to the file here, set
-#'   \code{pkg_dir} to \code{NULL}.
+#' @param r_file_name The name of the `.R` file within `R/`. There's no need to
+#'   specify the file path (as `R/x.R`, but you can do this if you want), you
+#'   can just use `x.R` for whichever file `x` it is. You can also omit the `.R`
+#'   for convenience, however using the wrong case (e.g. `.r`) will produce an
+#'   error.
 #' @param pkg_dir The directory of the R project for this package (defaults to
 #'   current directory). Note that this is the parent directory of R/.
 #' @param overwrite Overwrite if the test file you're trying to create already
@@ -192,6 +191,9 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
     stop ("To use this function, your project directory must have a tests ",
           "directory containing a testthat directory i.e. 'tests/testthat'. ",
           "To start using testthat, run devtools::use_testthat().")
+  }
+  if (stringr::str_detect(r_file_name, "/")) {
+    r_file_name <- filesstrings::StrAfterNth(r_file_name, "/", -1)
   }
   r_file_name <- filesstrings::GiveExt(r_file_name, "R")
   exampless <- extract_examples(r_file_name, pkg_dir = ".")

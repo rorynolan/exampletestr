@@ -11,11 +11,11 @@ make_tests_shells_file(r_file_name, pkg_dir = ".", overwrite = FALSE,
 make_tests_shells_pkg(pkg_dir = ".", overwrite = FALSE, e_e = TRUE)
 }
 \arguments{
-\item{r_file_name}{The name of the .R file within R/. Don't specify this as
-"R/x.R", just use "x.R" for whichever file x it is. You can also omit the
-.R for convenience, however using the wrong case (e.g. .r) will produce an
-error. If instead, you wish to set the full path to the file here, set
-\code{pkg_dir} to \code{NULL}.}
+\item{r_file_name}{The name of the \code{.R} file within \code{R/}. There's no need to
+specify the file path (as \code{R/x.R}, but you can do this if you want), you
+can just use \code{x.R} for whichever file \code{x} it is. You can also omit the \code{.R}
+for convenience, however using the wrong case (e.g. \code{.r}) will produce an
+error.}
 
 \item{pkg_dir}{The directory of the R project for this package (defaults to
 current directory). Note that this is the parent directory of R/.}
