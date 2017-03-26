@@ -20,7 +20,8 @@ Imports:
     devtools,
     formatR,
     purrr,
-    utils
+    utils,
+    roxygen2
 RoxygenNote: 6.0.1
 URL: https://www.github.com/rorynolan/autothresholdr
 BugReports: https://www.github.com/rorynolan/autothresholdr/issues

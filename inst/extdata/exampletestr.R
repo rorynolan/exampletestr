@@ -1,4 +1,5 @@
 #' @importFrom magrittr "%>%"
+#' @importFrom roxygen2 roclet
 NULL
 
 ## quiets concerns of R CMD check re: the .'s that appear in pipelines
