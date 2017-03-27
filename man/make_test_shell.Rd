@@ -26,10 +26,7 @@ those examples.
 }
 \details{
 Assignment lines (lines with \code{<-}, or even an \code{=} assignment (naughty, I
-know)) and lines starting with \code{stop(}, \code{warning(}, \code{setwd(}, \code{plot(},
-\code{ggplot(} or \code{library(} are left alone, others are put in the shell of an
-\code{expect_equal()} statement. To prevent anything from being put in the shell
-of an \code{expect_equal()} statement, set \code{e_e = FALSE}.
+know)) and lines starting with \code{print(}, stop(\code{,}warning(\code{,}setwd(\code{,}plot(\code{,}ggplot(\code{or}library(\code{are left alone, others are put in the shell of an}expect_equal()\code{statement. To prevent anything from being put in the shell of an}expect_equal()\code{statement, set}e_e = FALSE`.
 }
 \examples{
 setwd(tempdir())

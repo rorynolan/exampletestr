@@ -86,7 +86,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
 #' those examples.
 #'
 #' Assignment lines (lines with `<-`, or even an `=` assignment (naughty, I
-#' know)) and lines starting with `stop(`, `warning(`, `setwd(`, `plot(`,
+#' know)) and lines starting with `print(`, stop(`, `warning(`, `setwd(`, `plot(`,
 #' `ggplot(` or `library(` are left alone, others are put in the shell of an
 #' `expect_equal()` statement. To prevent anything from being put in the shell
 #' of an `expect_equal()` statement, set `e_e = FALSE`.
@@ -125,7 +125,7 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
     leave_alone <- vapply(for_checking, function(x) {
       any(stringr::str_detect(x,
             paste0("(?:<-|^stop\\(|^warning\\(|^#|^setwd\\(|^library\\(|",
-                   "^plot\\(|^ggplot\\()")))
+                   "^plot\\(|^ggplot\\(|^print\\()")))
     }, logical(1))
     inside_test_that <- mapply(function(x, y) {
       if (x) {
