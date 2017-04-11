@@ -7,7 +7,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE, comment = "#>")
 ```
 
-An R package to help developers create unit tests (designed for use with the testthat package) for their package, based on the examples in their package documentation. The documentation must be done with roxygen.
+An R package to help developers create unit tests (designed for use with the testthat package) for their package, based on the examples in their package documentation.
 
 [![Travis-CI Build Status](https://travis-ci.org/rorynolan/exampletestr.svg?branch=master)](https://travis-ci.org/rorynolan/exampletestr)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr)
@@ -230,7 +230,7 @@ test_that("construct_expect_equal works", {
 })
 ```
 
-To create these test shell files for each file in the `R/` directory of your package, run `make_tests_shells_pkg()`
+To create these test shell files for each file in the `R/` directory of your package, run `make_tests_shells_pkg()`.
 
 
 ```{r setdown, include=FALSE, echo=FALSE}

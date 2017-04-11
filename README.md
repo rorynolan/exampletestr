@@ -1,7 +1,7 @@
 exampletestr
 ================
 
-An R package to help developers create unit tests (designed for use with the testthat package) for their package, based on the examples in their package documentation. The documentation must be done with roxygen.
+An R package to help developers create unit tests (designed for use with the testthat package) for their package, based on the examples in their package documentation.
 
 [![Travis-CI Build Status](https://travis-ci.org/rorynolan/exampletestr.svg?branch=master)](https://travis-ci.org/rorynolan/exampletestr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr) [![codecov](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/gh/rorynolan/exampletestr) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr) ![RStudio CRAN downloads](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr) [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
@@ -370,7 +370,7 @@ test_that("construct_expect_equal works", {
 })
 ```
 
-To create these test shell files for each file in the `R/` directory of your package, run `make_tests_shells_pkg()`
+To create these test shell files for each file in the `R/` directory of your package, run `make_tests_shells_pkg()`.
 
 ### The Goal is NOT Fully Automated Unit Test Creation
 

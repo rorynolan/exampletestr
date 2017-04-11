@@ -15,7 +15,7 @@ knitr::opts_knit$set(root.dir = tempdir())
 ```
 
 ## In a nutshell
-The primary use of `exampletestr` is from every file in the `R/` directory of a package, to create a corresponding _shell_ of a test file (something to get you started making tests (for use with `testthat`)) that will have to be filled in to create a fully functioning test file. This can be done for the whole package at once with `make_tests_shells_pkg()` or for individual files with `make_tests_shells_file()`. These tests are created by using the examples in the roxygen documentation of your package (yes, you must use `roxygen2` to use this package) as a basis for tests. I have often (but not always) found that I test my functions manually by making sure my examples work as intended, so why not use these as a basis for proper unit testing?
+The primary use of `exampletestr` is from every file in the `R/` directory of a package, to create a corresponding _shell_ of a test file (something to get you started making tests (for use with `testthat`)) that will have to be filled in to create a fully functioning test file. This can be done for the whole package at once with `make_tests_shells_pkg()` or for individual files with `make_tests_shells_file()`. These tests are created by using the examples in the documentation of your package as a basis for tests. I have often (but not always) found that I test my functions manually by making sure my examples work as intended, so why not use these as a basis for proper unit testing?
 
 ## Out of the nutshell
 First, let's set up a dummy package directory with just the `utils.R` file from the source code of the `exampletestr` package.
@@ -223,7 +223,7 @@ test_that("construct_expect_equal works", {
 })
 ```
 
-To create these test shell files for each file in the `R/` directory of your package, run `make_tests_shells_pkg()`
+To create these test shell files for each file in the `R/` directory of your package, run `make_tests_shells_pkg()`.
 
 
 ```{r setdown, include=FALSE, echo=FALSE}
