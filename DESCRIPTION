@@ -22,8 +22,8 @@ Imports:
     utils,
     roxygen2
 RoxygenNote: 6.0.1
-URL: https://www.github.com/rorynolan/autothresholdr
-BugReports: https://www.github.com/rorynolan/autothresholdr/issues
+URL: https://www.github.com/rorynolan/exampletestr
+BugReports: https://www.github.com/rorynolan/exampletestr/issues
 Suggests: testthat,
     covr,
     knitr,
