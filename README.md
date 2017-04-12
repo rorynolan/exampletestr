@@ -11,8 +11,7 @@ Installation
 In R, enter
 
 ``` r
-install.packages("devtools")
-devtools::install_github("rorynolan/exampletestr")
+install.packages("exampletestr")
 ```
 
 and you're done!

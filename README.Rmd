@@ -19,8 +19,7 @@ An R package to help developers create unit tests (designed for use with the tes
 ## Installation
 In R, enter
 ```{r Install exampletestr, eval=FALSE}
-install.packages("devtools")
-devtools::install_github("rorynolan/exampletestr")
+install.packages("exampletestr")
 ```
 and you're done!
 
