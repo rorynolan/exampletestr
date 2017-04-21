@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: RJwrapper.aux
+The style file: abbrvnat.bst
+Database file #1: nolan.bib
+You're missing a field name---line 11 of file nolan.bib
+ :  year = {2015}, 
+ :                 % I looked it up
+I'm skipping whatever remains of this entry
+Warning--empty publisher in r-pkgs
+You've used 9 entries,
+            2773 wiz_defined-function locations,
+            641 strings with 5757 characters,
+and the built_in function-call counts, 3061 in all, are:
+= -- 283
+> -- 129
+< -- 7
++ -- 48
+- -- 39
+* -- 214
+:= -- 502
+add.period$ -- 34
+call.type$ -- 9
+change.case$ -- 32
+chr.to.int$ -- 9
+cite$ -- 19
+duplicate$ -- 164
+empty$ -- 261
+format.name$ -- 48
+if$ -- 614
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 4
+newline$ -- 60
+num.names$ -- 36
+pop$ -- 66
+preamble$ -- 1
+purify$ -- 30
+quote$ -- 0
+skip$ -- 119
+stack$ -- 0
+substring$ -- 59
+swap$ -- 15
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 94
+warning$ -- 1
+while$ -- 31
+width$ -- 0
+write$ -- 131
+(There was 1 error message)

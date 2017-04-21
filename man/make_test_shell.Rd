@@ -16,7 +16,7 @@ function's documentation.}
 shell of an \code{expect_equal()} statement.}
 }
 \value{
-A character vector giving the shell of a test_that function call
+A character vector giving the shell of a \code{test_that} function call
 testing all of the calls in the example block.
 }
 \description{

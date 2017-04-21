@@ -97,7 +97,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
 #' @param e_e Set this to `FALSE` to prevent anything from being put in the
 #'   shell of an `expect_equal()` statement.
 #'
-#' @return A character vector giving the shell of a test_that function call
+#' @return A character vector giving the shell of a `test_that` function call
 #'   testing all of the calls in the example block.
 #'
 #' @examples
@@ -145,11 +145,11 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
 
 #' Create the shell of a test file.
 #'
-#' For a given `.R` file in the `R/` directory of a package, for each function
+#' For a given file `x.R` in the `R/` directory of a package, for each function
 #' defined in that `.R` file, `make_tests_shells_file` checks if there are
 #' examples for that function detailed in the `man/` directory (in a `.Rd` file)
 #' and if so creates a shell (skeleton) of a [testthat::test_that] test based on
-#' those examples. The created shells are then written to a file in
+#' those examples. The created shells are then written to a file `test_x.R` in
 #' `tests/testthat`.
 #'
 #' @param r_file_name The name of the `.R` file within `R/`. There's no need to
@@ -224,7 +224,8 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
 
 #' @rdname make_tests_shells_file
 #' @export
-make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE, e_e = TRUE) {
+make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE,
+                                  e_e = TRUE) {
   current_wd <- getwd()
   setwd(pkg_dir)
   on.exit(setwd(current_wd))

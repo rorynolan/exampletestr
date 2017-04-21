@@ -1,3 +1,7 @@
+# 0.4.1
+* Fix to an error in DESCRIPTION
+* Minor documentation improvement
+
 # 0.4.0
 * The package now uses .Rd files to read the examples rather than roxygen2 tags
 * Comments in examples are handled better
