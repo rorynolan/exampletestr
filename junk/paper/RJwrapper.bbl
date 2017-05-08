@@ -1,4 +1,4 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{10}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -22,6 +22,12 @@ P.~Grosjean.
 \newblock \emph{SciViews-R: A GUI API for R}.
 \newblock UMONS, MONS, Belgium, 2017.
 \newblock URL \url{http://www.sciviews.org/SciViews-R}.
+
+\bibitem[Hester(2017)]{covr}
+J.~Hester.
+\newblock \emph{covr: Test Coverage for Packages}, 2017.
+\newblock URL \url{https://CRAN.R-project.org/package=covr}.
+\newblock R package version 2.2.2.
 
 \bibitem[{Huber} et~al.(2015){Huber}, {W.}, et~al.]{bioc}
 {Huber}, {W.}, et~al.

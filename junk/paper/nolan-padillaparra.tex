@@ -1,0 +1,143 @@
+% !TeX root = RJwrapper.tex
+%\title{\pkg{exampletestr}: Making it Easier to Start Writing Unit Tests with \pkg{testthat}.}
+\title{Easier Unit Tests and Better Examples with \pkg{exampletestr} and \pkg{covr}}
+\author{by Rory Nolan and Sergi Padilla-Parra}
+
+\maketitle
+
+\abstract{
+In spite of the utility of unit tests, most R package developers do not write them. \CRANpkg{exampletestr} makes it easier to \emph{start} writing unit tests by creating shells/skeletons of unit tests based on the examples in the user's package documentation. When completed, these unit tests test whether said examples run \emph{correctly}.
+By combining the functionality of \pkg{exampletestr} with that of \CRANpkg{covr}, having ensured that their examples adequately demonstrate the features of their package, the developer can have much of the work of constructing a comprehensive set of unit tests done for them.
+}
+
+\section{A survey of unit testing}
+Let us take a look at how many packages on CRAN employ unit tests by checking whether their source code contains a non-empty \file{tests/} directory (using \url{https://rdrr.io}). We examine first all packages and then the subset that were authored or updated in 2016 or 2017. We will also compare the popularity of the testing frameworks \CRANpkg{testthat} \citep{testthat}, \CRANpkg{RUnit} \citep{RUnit}, \CRANpkg{svUnit} \citep{svUnit} and \CRANpkg{unitizer} \citep{unitizer} [code adapted from \citet{mango}].
+
+\begin{example}
+required_pkgs <- c("tidyverse", "stringr", "lubridate", "rvest", "RCurl")
+lapply(required_pkgs, library, character.only = TRUE)
+check_for_tests <- function(pkg_name) {
+  rdrr_address <- paste0("https://rdrr.io/cran/", pkg_name)
+  if (url.exists(rdrr_address)) {
+    rdrr_page_text <- rdrr_address %>% read_html %>% html_text
+    trimmed_lines <- str_split(rdrr_page_text, "\n") %>% unlist %>% str_trim()
+    trimmed_lines %>% str_detect("^tests/.+") %>% any
+  } else {
+    NA  # allow for not found
+  }
+}
+
+download.file("http://cran.R-project.org/web/packages/packages.rds",
+              "packages.rds", mode = "wb")
+cran_packages_info <- readRDS("packages.rds")
+cran_packages <- cran_packages_info[, "Package"]
+post2015 <- ymd(cran_packages_info[, "Published"]) >= ymd("2016-01-01")
+new_packages <- cran_packages[post2015]
+
+tested_check <- cran_packages %>%
+map_lgl(check_for_tests) %>%
+set_names(cran_packages) %>%
+na.omit  # allow for not found on rdrr
+length(tested_check)
+#> [1] 10464
+sum(tested_check)
+#> [1] 2622
+new_packages <- intersect(new_packages,
+                          names(tested_check))  # allow for not found on rdrr
+length(new_packages)
+#> [1] 6013
+sum(tested_check[new_packages])
+#> [1] 2024
+
+unit_test_packages <- c("testthat", "RUnit", "svUnit", "unitizer")
+reverse_deps <- tools:::package_dependencies(packages = unit_test_packages,
+                          cran_packages_info, recursive=FALSE, reverse=TRUE,
+                          which = c("Depends","Imports","LinkingTo", "Suggests"))
+map_int(reverse_deps, length)
+#> testthat    RUnit   svUnit unitizer
+#>     1938      133       11        0
+\end{example}
+So we see that (at the time of writing) of the 10464 packages on CRAN found by \url{https://rdrr.io}, 25\% (2622) are unit tested. Of the 6013 authored or updated since $1^\text{st}$ January 2016, 34\% (2024) are unit tested. We also see that \pkg{testthat} is the most popular testing framework, preferred in 93\% of cases.
+Although these statistics suggest that developers' propensity to write tests is improving, it is still low. Perhaps this is because the task of unit testing an entire package from scratch can seem daunting.
+\pkg{exampletestr} makes it easier, providing a template of tests to be filled in. Those beginning to unit test no longer need to start with a blank page.
+
+\section{Unit test shells based on documentation examples}
+Most packages \emph{do} contain examples in their documentation (indeed Bioconductor \citep{bioc} requires documented functions to have at least one example). \samp{R CMD check} checks that these examples run without error, but cannot verify that they run \emph{as intended}. Most package developers run their examples interactively at the command prompt to verify that they run correctly; this clearly suggests a corresponding unit test that automatically performs the same check. The \pkg{exampletestr} package \citep{exampletestr} does much of the work of writing \emph{these} tests. It uses the \pkg{testthat} testing framework.
+
+The best way to display the functionality of \pkg{exampletestr} is by example. Take the \samp{str\_detect} function from the \CRANpkg{stringr} package \citep{stringr}. The man file \file{str\_detect.Rd} has the examples section:
+\begin{verbatim}
+\examples{
+fruit <- c("apple", "banana", "pear", "pinapple")
+str_detect(fruit, "a")
+str_detect(fruit, "^a")
+str_detect(fruit, "a$")
+str_detect(fruit, "b")
+str_detect(fruit, "[aeiou]")
+# Also vectorised over pattern
+str_detect("aecfg", letters)
+}
+\end{verbatim}
+The \dfn{test shell} that would be automatically created by \pkg{exampletestr} from these examples is:
+\begin{verbatim}
+test_that("str_detect works", {
+  fruit <- c("apple", "banana", "pear", "pinapple")
+  expect_equal(str_detect(fruit, "a"), )
+  expect_equal(str_detect(fruit, "^a"), )
+  expect_equal(str_detect(fruit, "a$"), )
+  expect_equal(str_detect(fruit, "b"), )
+  expect_equal(str_detect(fruit, "[aeiou]"), )
+  expect_equal(str_detect("aecfg", letters), )
+})
+\end{verbatim}
+which can then be filled in by the package developer to give the complete and passing test:
+\begin{verbatim}
+test_that("str_detect works", {
+  fruit <- c("apple", "banana", "pear", "pinapple")
+  expect_equal(str_detect(fruit, "a"), rep(TRUE, 4))
+  expect_equal(str_detect(fruit, "^a"), c(TRUE, rep(FALSE, 3)))
+  expect_equal(str_detect(fruit, "a$"), c(FALSE, TRUE, FALSE, FALSE))
+  expect_equal(str_detect(fruit, "b"), c(FALSE, TRUE, FALSE, FALSE))
+  expect_equal(str_detect(fruit, "[aeiou]"), rep(TRUE, 4))
+  expect_equal(str_detect("aecfg", letters),
+               c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, rep(FALSE, 19)))
+})
+\end{verbatim}
+By running \samp{make\_tests\_shells\_pkg()} in the root directory of a package, for each \file{x.R} file in the \file{R/} directory that has at least one function documented with an example, one gets a corresponding file \file{test\_x.R} in the \file{tests/testthat/} directory of the package, containing these corresponding test shells to be filled in to create fully functional unit tests.
+For a complete overview of \pkg{exampletestr}'s capabilities, consult the package's manual and vignette.
+
+The important point is that \pkg{exampletestr} takes care of much of the formulation of many unit tests for developers who have already created a package with adequate examples. This should encourage those who have never written unit tests to make a start and should also make unit testing easier for those who already do it.
+
+\section{A workflow for writing comprehensive examples and unit tests}
+The idea of basing unit tests around documentation examples suggests the use of \pkg{covr} \citep{covr} in the following way to ensure both that the examples in the documentation exhibit as much of the functionality of the package as possible and that the unit tests cover as much of the code as feasible:
+\begin{enumerate}
+	\item Write comprehensive documentation examples for your package, using \pkg{covr}'s\\
+	\samp{package\_coverage(type = "examples") \%>\% shine()} \\
+	to ensure that all sections of code that the package user may find useful are demonstrated.
+	\item Write unit tests corresponding to \emph{all} of your examples using \pkg{exampletestr}.
+	\item Complete the writing of unit tests, checking your code coverage with \\ \samp{package\_coverage(type = "tests") \%>\% shine()}.
+\end{enumerate}
+Using this workflow, the developer ensures that their \dfn{example coverage} (the portion of package features covered by documentation examples) is adequate, and simultaneously obtains a reduction in the work required to write comprehensive unit tests.
+
+\section{Good practice}
+One should not necessarily leave unit testing until last in the package creation workflow. However, that is already the case for the packages on CRAN that are not unit tested (a majority). \pkg{exampletestr} is the ideal companion to begin testing these packages.
+
+\pkg{exampletestr} promotes a "one test per function" model. This will not always be ideal so take care to reorganise tests into a better structure when necessary. Consult \citet{r-pkgs} for general advice on writing tests.
+
+This package will not write a single \emph{complete} expectation (\samp{expect\_equal()},  \samp{expect\_true()}, etc.) expression, nor should there be a routine that does so. Unit tests are meant to be automatic in the sense that they can be run automatically, however their creation is intended to involve a manual check. With \pkg{exampletestr}, this manual check is one's manual completion of the expectation expression.
+
+\section{Conclusion}
+Unit tests are crucial to ensuring that a package functions correctly, yet most developers do not write them. Most package developers do, however, write documentation examples. With \pkg{exampletestr}, documentation examples are easily transformed into unit tests; thereby promoting the inclusion of unit tests in new and existing packages.
+
+\bibliography{Nolan}
+
+\address{Rory Nolan\\
+  Wellcome Trust Centre for Human Genetics, University of Oxford\\
+  OX3 7BN\\
+  United Kingdom\\}
+\email{rnolan@well.ox.ac.uk}
+
+\address{Sergi Padilla-Parra\\
+  Wellcome Trust Centre for Human Genetics and Division of Structural Biology, University of Oxford\\
+  OX3 7BN\\
+  United Kingdom\\}
+\email{spadilla@well.ox.ac.uk}

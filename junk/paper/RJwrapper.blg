@@ -8,45 +8,45 @@ You're missing a field name---line 11 of file nolan.bib
  :                 % I looked it up
 I'm skipping whatever remains of this entry
 Warning--empty publisher in r-pkgs
-You've used 9 entries,
+You've used 10 entries,
             2773 wiz_defined-function locations,
-            641 strings with 5757 characters,
-and the built_in function-call counts, 3061 in all, are:
-= -- 283
-> -- 129
-< -- 7
-+ -- 48
-- -- 39
-* -- 214
-:= -- 502
-add.period$ -- 34
-call.type$ -- 9
-change.case$ -- 32
-chr.to.int$ -- 9
-cite$ -- 19
-duplicate$ -- 164
-empty$ -- 261
-format.name$ -- 48
-if$ -- 614
+            646 strings with 5865 characters,
+and the built_in function-call counts, 3351 in all, are:
+= -- 311
+> -- 139
+< -- 8
++ -- 52
+- -- 42
+* -- 231
+:= -- 550
+add.period$ -- 38
+call.type$ -- 10
+change.case$ -- 35
+chr.to.int$ -- 10
+cite$ -- 21
+duplicate$ -- 181
+empty$ -- 286
+format.name$ -- 52
+if$ -- 672
 int.to.chr$ -- 1
 int.to.str$ -- 1
 missing$ -- 4
-newline$ -- 60
-num.names$ -- 36
-pop$ -- 66
+newline$ -- 66
+num.names$ -- 40
+pop$ -- 72
 preamble$ -- 1
-purify$ -- 30
+purify$ -- 33
 quote$ -- 0
-skip$ -- 119
+skip$ -- 132
 stack$ -- 0
-substring$ -- 59
-swap$ -- 15
+substring$ -- 61
+swap$ -- 17
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 94
+type$ -- 105
 warning$ -- 1
-while$ -- 31
+while$ -- 34
 width$ -- 0
-write$ -- 131
+write$ -- 145
 (There was 1 error message)

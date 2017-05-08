@@ -12,10 +12,9 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-    filesstrings,
+    filesstrings (>= 0.4.0),
     magrittr,
     stringr,
-    BBmisc,
     devtools,
     formatR,
     purrr,
