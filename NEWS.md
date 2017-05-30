@@ -1,3 +1,7 @@
+# 0.4.2 
+* Add explicit LICENSE file to github
+* Publish to Wellcome Open Research
+
 # 0.4.1
 * Fix to an error in DESCRIPTION
 * Minor documentation improvement
