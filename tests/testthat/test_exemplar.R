@@ -25,7 +25,7 @@ test_that("extract_examples works", {
     "exampletestr::extract_examples(\"exemplar\")",
     "exampletestr::extract_examples(\"exemplar\")",
     "setwd(\"..\")",
-    "filesstrings::RemoveDirs(\"tempkg\")",
+    "filesstrings::dir.remove(\"tempkg\")",
     "## Not run: ",
     "##D extract_examples(\"non_existent_file\")",
     "## End(Not run)",
@@ -51,7 +51,7 @@ test_that("extract_examples works", {
     "exampletestr::make_test_shell(exampletestr::extract_examples(\"exemplar\")[[1]],",
     "                              desc = \"xyz\", e_e = FALSE)",
     "setwd(\"..\")",
-    "filesstrings::RemoveDirs(\"tempkg\")",
+    "filesstrings::dir.remove(\"tempkg\")",
     "",
     "",
     "",
@@ -67,7 +67,6 @@ test_that("extract_examples works", {
     "setwd(tempdir())",
     "devtools::create(\"tempkg\")",
     "setwd(\"tempkg\")",
-    "devtools::use_testthat()",
     "file.copy(system.file(\"extdata\", c(\"exemplar.R\", \"exampletestr.R\"),",
     "                      package = \"exampletestr\"), \"R\")",
     "devtools::document()",
@@ -75,7 +74,7 @@ test_that("extract_examples works", {
     "devtools::document()",
     "exampletestr::make_tests_shells_pkg(overwrite = TRUE)",
     "setwd(\"..\")",
-    "filesstrings::RemoveDirs(\"tempkg\")",
+    "filesstrings::dir.remove(\"tempkg\")",
     "",
     "",
     "",
@@ -84,7 +83,7 @@ test_that("extract_examples works", {
   expect_equal(extract_examples("exemplar")$extract_examples,
                extract_examples("R/exemplar")$extract_examples)
   setwd("..")
-  expect_true(filesstrings::RemoveDirs("tempkg"))
+  expect_true(filesstrings::dir.remove("tempkg"))
 })
 
 test_that("make_test_shell works", {
@@ -109,7 +108,7 @@ test_that("make_test_shell works", {
     "  expect_equal(exampletestr::extract_examples(\"exemplar\"), )",
     "  expect_equal(exampletestr::extract_examples(\"exemplar\"), )",
     "  setwd(\"..\")",
-    "  expect_equal(filesstrings::RemoveDirs(\"tempkg\"), )",
+    "  expect_equal(filesstrings::dir.remove(\"tempkg\"), )",
     "})"
   ))
   expect_equal(make_test_shell(extract_examples("exemplar")[[1]], "abc",
@@ -125,11 +124,11 @@ test_that("make_test_shell works", {
     "  exampletestr::extract_examples(\"exemplar\")",
     "  exampletestr::extract_examples(\"exemplar\")",
     "  setwd(\"..\")",
-    "  filesstrings::RemoveDirs(\"tempkg\")",
+    "  filesstrings::dir.remove(\"tempkg\")",
     "})"
   ))
   setwd("..")
-  expect_true(filesstrings::RemoveDirs("tempkg"))
+  expect_true(filesstrings::dir.remove("tempkg"))
 })
 
 test_that("make_tests_shells_file works", {
@@ -145,8 +144,6 @@ test_that("make_tests_shells_file works", {
   expect_true(file.copy(system.file("extdata", "non_documented_fun.R",
                                     package = "exampletestr"),
                         "R"))
-  expect_error(make_tests_shells_file("exemplar"))
-  expect_true(devtools::use_testthat())
   devtools::document()
   expect_equal(make_tests_shells_file("exemplar"),
                readLines(system.file("extdata", "test_exemplar_uncompleted.R",
@@ -167,5 +164,5 @@ test_that("make_tests_shells_file works", {
   # Now check your tempkg/tests/testthat directory to see what they look like
   # The next two lines clean up
   setwd("..")
-  expect_true(filesstrings::RemoveDirs("tempkg"))
+  expect_true(filesstrings::dir.remove("tempkg"))
 })

@@ -26,7 +26,7 @@ man/` folder. This function extracts those examples into a list of character
 vectors, one list element for each documented function.
 }
 \details{
-Anything examples found within a \code{\\dontrun\{...\}} block are ignored.
+Anything found within a \code{\\dontrun\{...\}} block is ignored.
 }
 \examples{
 setwd(tempdir())
@@ -38,7 +38,7 @@ devtools::document()
 exampletestr::extract_examples("exemplar")
 exampletestr::extract_examples("exemplar")
 setwd("..")
-filesstrings::RemoveDirs("tempkg")
+filesstrings::dir.remove("tempkg")
 \dontrun{
 extract_examples("non_existent_file")}
 

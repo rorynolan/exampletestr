@@ -30,6 +30,7 @@ know)) and lines starting with \code{print(}, \code{stop(}, \code{warning(}, \co
 \code{plot(}, \code{ggplot(}, \code{set.seed} or \code{library(} are left alone, others are put
 in the shell of an \code{expect_equal()} statement. To prevent anything from being
 put in the shell of an \code{expect_equal()} statement, set \code{e_e = FALSE}.
+Anything found within a \code{\\dontrun\{...\}} block is ignored.
 }
 \examples{
 setwd(tempdir())
@@ -42,6 +43,6 @@ exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]])
 exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]],
                               desc = "xyz", e_e = FALSE)
 setwd("..")
-filesstrings::RemoveDirs("tempkg")
+filesstrings::dir.remove("tempkg")
 
 }

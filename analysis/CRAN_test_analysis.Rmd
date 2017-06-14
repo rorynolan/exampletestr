@@ -37,9 +37,9 @@ post2015 <- ymd(cran_packages_info[, "Published"]) >= ymd("2016-01-01")
 new_packages <- cran_packages[post2015]
 
 tested_check <- cran_packages %>%
-map_lgl(check_for_tests) %>%
-set_names(cran_packages) %>%
-na.omit  # allow for not found on rdrr
+  map_lgl(check_for_tests) %>%
+  set_names(cran_packages) %>%
+  na.omit  # allow for not found on rdrr
 n_packages <- length(tested_check)
 n_tested_packages <- sum(tested_check)
 print(c(n_packages, n_tested_packages))

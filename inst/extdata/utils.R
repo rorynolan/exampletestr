@@ -56,7 +56,7 @@ extract_expressions <- function(text_expr, remove_comments = TRUE) {
       purrr::map(getElement, "text.tidy") %>%
       purrr::map(~ readLines(textConnection(.)))
     for (i in seq_along(expr_groups)) {
-      if (filesstrings::AllEqual(expr_groups[[i]], character(0))) {
+      if (filesstrings::all_equal(expr_groups[[i]], character(0))) {
         expr_groups[[i]] <- ""
       }
     }

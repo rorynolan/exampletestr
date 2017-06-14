@@ -35,15 +35,14 @@ onto the front.
 For a given file \code{x.R} in the \code{R/} directory of a package, for each function
 defined in that \code{.R} file, \code{make_tests_shells_file} checks if there are
 examples for that function detailed in the \code{man/} directory (in a \code{.Rd} file)
-and if so creates a shell (skeleton) of a \link[testthat:test_that]{testthat::test_that} test based on
-those examples. The created shells are then written to a file \code{test_x.R} in
+and if so creates a shell (skeleton) of a \code{\link[testthat:test_that]{testthat::test_that()}} test based on
+those examples via \code{\link[=make_test_shell]{make_test_shell()}}. The created shells are then written to a file \code{test_x.R} in
 \code{tests/testthat}.
 }
 \examples{
 setwd(tempdir())
 devtools::create("tempkg")
 setwd("tempkg")
-devtools::use_testthat()
 file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
                       package = "exampletestr"), "R")
 devtools::document()
@@ -51,6 +50,6 @@ exampletestr::make_tests_shells_file("exemplar")
 devtools::document()
 exampletestr::make_tests_shells_pkg(overwrite = TRUE)
 setwd("..")
-filesstrings::RemoveDirs("tempkg")
+filesstrings::dir.remove("tempkg")
 
 }
