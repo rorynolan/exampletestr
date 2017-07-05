@@ -1,3 +1,8 @@
+## 1.0.0
+
+* The package has now passed peer review.
+
+
 ### 0.5.0
 
 #### MINOR IMPROVEMENTS

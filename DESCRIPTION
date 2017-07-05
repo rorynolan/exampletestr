@@ -1,9 +1,9 @@
 Package: exampletestr
 Type: Package
 Title: Help for Writing Unit Tests Based on Function Examples
-Version: 0.5.0
+Version: 1.0.0
 Authors@R: c(person("Rory", "Nolan", email = "rorynoolan@gmail.com", role = c("aut", "cre")),
-             person("Sergi", "Padilla-Parra", email = "spadilla@well.ox.ac.uk", role = c("ths")))
+             person("Sergi", "Padilla-Parra", email = "spadilla@well.ox.ac.uk", role = "ths"))
 Maintainer: Rory Nolan <rorynoolan@gmail.com>
 Description: Take the examples written in your documentation of functions and 
     use them to create shells (skeletons which must be manually completed by
