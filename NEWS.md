@@ -1,3 +1,9 @@
+### 1.0.1
+
+#### BUG FIXES
+* The CITATION is now correct.
+
+
 ## 1.0.0
 
 * The package has now passed peer review.
