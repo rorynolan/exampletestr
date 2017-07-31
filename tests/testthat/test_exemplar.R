@@ -132,6 +132,7 @@ test_that("make_test_shell works", {
 })
 
 test_that("make_tests_shells_file works", {
+  skip_on_cran()
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(tempdir())
@@ -161,8 +162,6 @@ test_that("make_tests_shells_file works", {
                         "non_documented_fun"), make_tests_shells_file,
                       overwrite = TRUE))
   expect_error(make_tests_shells_file("exemplar"))
-  # Now check your tempkg/tests/testthat directory to see what they look like
-  # The next two lines clean up
   setwd("..")
   expect_true(filesstrings::dir.remove("tempkg"))
 })
