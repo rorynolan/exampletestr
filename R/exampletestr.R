@@ -1,4 +1,4 @@
-#' @importFrom magrittr "%>%"
+#' @importFrom magrittr '%>%' '%T>%'
 #' @importFrom roxygen2 roclet
 #' @importFrom utils globalVariables
 #' @importFrom devtools use_cran_badge

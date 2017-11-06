@@ -178,6 +178,8 @@ make_tests_shells_file("utils", pkg_dir = "tempkg")
 ```
 outputs a `test_utils.R` file in the `tests/testthat` folder with contents
 ```{r test_utils.R contents, eval=FALSE}
+context("Utils")
+
 test_that("construct_expect_equal works", {
   text_expr <- c("sum(1, ", "2)")
   expect_equal(cat(paste(text_expr, collapse = "\n")), )
@@ -204,6 +206,8 @@ test_that("text_parse_error works", {
 ```
 which, for my purposes, I complete as
 ```{r fill in test shell}
+context("Utils")
+
 test_that("text_parse_error works", {
   expect_false(text_parse_error("a <- 1"))
   expect_true(text_parse_error("a <- "))
@@ -238,3 +242,6 @@ filesstrings::RemoveDirs("tempkg")
 
 ### The Goal is NOT Fully Automated Unit Test Creation
 I would like to stress that whilst unit testing should be automatic, the creation of these tests is a manual process, a manual check. This package is supposed to help you *start* making those tests. It is not supposed to create fully functioning tests automatically, nor can it help you to write every type of test you might want.
+
+# Contribution
+Contributions to this package are welcome. The preferred method of contribution is through a github pull request. Feel free to contact me by creating an issue. Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.

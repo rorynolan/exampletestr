@@ -1,3 +1,5 @@
+context("Exemplar")
+
 test_that("extract_examples works", {
   setwd(tempdir())
   expect_equal(devtools::create("tempkg"), )

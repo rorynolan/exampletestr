@@ -1,3 +1,4 @@
+context("Extract examples")
 test_that("extract_examples works", {
   cwd <- getwd()
   on.exit(setwd(cwd))
@@ -86,6 +87,7 @@ test_that("extract_examples works", {
   expect_true(filesstrings::dir.remove("tempkg"))
 })
 
+context("Make test shells")
 test_that("make_test_shell works", {
   cwd <- getwd()
   on.exit(setwd(cwd))
@@ -131,6 +133,7 @@ test_that("make_test_shell works", {
   expect_true(filesstrings::dir.remove("tempkg"))
 })
 
+context("Make test shell files")
 test_that("make_tests_shells_file works", {
   skip_on_cran()
   cwd <- getwd()

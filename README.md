@@ -36,7 +36,7 @@ devtools::create("tempkg")
     #> Version: 0.0.0.9000
     #> Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
     #> Description: What the package does (one paragraph).
-    #> Depends: R (>= 3.3.3)
+    #> Depends: R (>= 3.4.2)
     #> License: What license is it under?
     #> Encoding: UTF-8
     #> LazyData: true
@@ -316,6 +316,8 @@ make_tests_shells_file("utils", pkg_dir = "tempkg")
 outputs a `test_utils.R` file in the `tests/testthat` folder with contents
 
 ``` r
+context("Utils")
+
 test_that("construct_expect_equal works", {
   text_expr <- c("sum(1, ", "2)")
   expect_equal(cat(paste(text_expr, collapse = "\n")), )
@@ -344,6 +346,8 @@ test_that("text_parse_error works", {
 which, for my purposes, I complete as
 
 ``` r
+context("Utils")
+
 test_that("text_parse_error works", {
   expect_false(text_parse_error("a <- 1"))
   expect_true(text_parse_error("a <- "))
@@ -374,3 +378,8 @@ To create these test shell files for each file in the `R/` directory of your pac
 ### The Goal is NOT Fully Automated Unit Test Creation
 
 I would like to stress that whilst unit testing should be automatic, the creation of these tests is a manual process, a manual check. This package is supposed to help you *start* making those tests. It is not supposed to create fully functioning tests automatically, nor can it help you to write every type of test you might want.
+
+Contribution
+============
+
+Contributions to this package are welcome. The preferred method of contribution is through a github pull request. Feel free to contact me by creating an issue. Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.

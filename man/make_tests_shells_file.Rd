@@ -14,8 +14,8 @@ make_tests_shells_pkg(pkg_dir = ".", overwrite = FALSE, e_e = TRUE)
 \item{r_file_name}{The name of the \code{.R} file within \code{R/}. There's no need to
 specify the file path (as \code{R/x.R}, but you can do this if you want), you
 can just use \code{x.R} for whichever file \code{x} it is. You can also omit the \code{.R}
-for convenience, however using the wrong case (e.g. \code{.r}) will produce an
-error.}
+for convenience, however using the wrong case (e.g. \code{.r} when the file
+actually has the extension \code{.R}) will produce an error.}
 
 \item{pkg_dir}{The directory of the R project for this package (defaults to
 current directory). Note that this is the parent directory of R/.}
@@ -35,9 +35,9 @@ onto the front.
 For a given file \code{x.R} in the \code{R/} directory of a package, for each function
 defined in that \code{.R} file, \code{make_tests_shells_file} checks if there are
 examples for that function detailed in the \code{man/} directory (in a \code{.Rd} file)
-and if so creates a shell (skeleton) of a \code{\link[testthat:test_that]{testthat::test_that()}} test based on
-those examples via \code{\link[=make_test_shell]{make_test_shell()}}. The created shells are then written to a file \code{test_x.R} in
-\code{tests/testthat}.
+and if so creates a shell (skeleton) of a \code{\link[testthat:test_that]{testthat::test_that()}} test based
+on those examples via \code{\link[=make_test_shell]{make_test_shell()}}. The created shells are then
+written to a file \code{test_x.R} in \code{tests/testthat}.
 }
 \examples{
 setwd(tempdir())

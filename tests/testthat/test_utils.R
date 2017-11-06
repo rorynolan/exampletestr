@@ -1,3 +1,5 @@
+context("Utils")
+
 test_that("text_parse_error works", {
   expect_false(text_parse_error("a <- 1"))
   expect_true(text_parse_error("a <- "))
