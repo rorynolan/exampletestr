@@ -1,6 +1,6 @@
 #' Extract examples lines from the functions in a .R file of a package.
 #'
-#' In each `.R` file in the `R/` folder of a pcakage project, for the functions
+#' In each `.R` file in the `R/` folder of a package project, for the functions
 #' defined therein, there can corresponding examples in the `.Rd` files of the
 #' man/` folder. This function extracts those examples into a list of character
 #' vectors, one list element for each documented function.
@@ -29,7 +29,7 @@
 #' \dontrun{
 #' extract_examples("non_existent_file")}
 #'
-#' @return A list of charachter vectors.
+#' @return A list of character vectors.
 #' @export
 extract_examples <- function(r_file_name, pkg_dir = ".") {
   if (stringr::str_detect(r_file_name, "/")) {

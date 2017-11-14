@@ -17,10 +17,10 @@ error.}
 current directory). This is the parent directory of \code{R/} and \code{man/}.}
 }
 \value{
-A list of charachter vectors.
+A list of character vectors.
 }
 \description{
-In each \code{.R} file in the \code{R/} folder of a pcakage project, for the functions
+In each \code{.R} file in the \code{R/} folder of a package project, for the functions
 defined therein, there can corresponding examples in the \code{.Rd} files of the
 man/` folder. This function extracts those examples into a list of character
 vectors, one list element for each documented function.

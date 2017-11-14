@@ -1,3 +1,9 @@
+### 1.1.0
+
+#### MINOR IMPROVEMENTS
+Add `testthat::context()` to test shells.
+
+
 ### 1.0.1
 
 #### BUG FIXES

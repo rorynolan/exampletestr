@@ -231,7 +231,7 @@ To create these test shell files for each file in the `R/` directory of your pac
 
 
 ```{r setdown, include=FALSE, echo=FALSE}
-filesstrings::RemoveDirs("tempkg")
+filesstrings::dir.remove("tempkg")
 ```
 
 ### The Goal is NOT Fully Automated Unit Test Creation
