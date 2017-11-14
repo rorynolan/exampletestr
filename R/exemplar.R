@@ -33,7 +33,7 @@
 #' @export
 extract_examples <- function(r_file_name, pkg_dir = ".") {
   if (stringr::str_detect(r_file_name, "/")) {
-    r_file_name <- filesstrings::str_after_nth(r_file_name, "/", -1)
+    r_file_name <- filesstrings::str_after_last(r_file_name, "/")
   }
   r_file_name <- stringr::str_c(pkg_dir, "/R/", r_file_name) %>%
     filesstrings::give_ext("R")
@@ -51,7 +51,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
     paste0(pkg_dir, "/man/", .)
   rd_file_lines <- lapply(rd_file_paths, readLines)
   rd_file_short_names <- rd_file_paths %>% filesstrings::before_last_dot() %>%
-    filesstrings::str_after_nth("/", -1)
+    filesstrings::str_after_last("/")
   names(rd_file_lines) <- rd_file_short_names
   documented_funs_in_alias_tags <- unlist(rd_file_lines) %>%
     stringr::str_extract("\\\\alias\\{.*\\}") %>%
@@ -190,7 +190,7 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   setwd(pkg_dir)
   if (!dir.exists("tests/testthat")) devtools::use_testthat()
   if (stringr::str_detect(r_file_name, "/")) {
-    r_file_name <- filesstrings::str_after_nth(r_file_name, "/", -1)
+    r_file_name <- filesstrings::str_after_last(r_file_name, "/")
   }
   r_file_name <- filesstrings::give_ext(r_file_name, "R")
   exampless <- extract_examples(r_file_name, pkg_dir = ".")
