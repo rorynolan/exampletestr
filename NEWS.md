@@ -1,7 +1,11 @@
 ### 1.1.0
 
 #### MINOR IMPROVEMENTS
-Add `testthat::context()` to test shells.
+* Add `testthat::context()` to test shells.
+* Now using `ijtiff` for TIFF I/O.
+
+#### BUG FIXES
+* Fix issues with open text connections.
 
 
 ### 1.0.1

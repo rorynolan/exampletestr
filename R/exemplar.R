@@ -37,19 +37,20 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
   }
   r_file_name <- stringr::str_c(pkg_dir, "/R/", r_file_name) %>%
     filesstrings::give_ext("R")
-  r_file_lines_quotes_gone <- readLines(r_file_name) %>%
+  r_file_lines_quotes_gone <- readr::read_lines(r_file_name) %>%
     formatR::tidy_source(text = ., comment = FALSE, arrow = TRUE,
                          output = FALSE, width.cutoff = 500) %>%
     getElement("text.tidy") %>%
-    textConnection() %>%
-    readLines() %>%
+    paste0("\n") %>%
+    purrr::map(readr::read_lines) %>%
+    unlist() %>%
     filesstrings::remove_quoted()
   r_file_funs <- stringr::str_match(r_file_lines_quotes_gone,
                                     "(^[^ ]*) <- function\\(")[, 2] %>%
     stats::na.omit()
   rd_file_paths <- list.files(paste0(pkg_dir, "/man"), pattern = "\\.Rd$") %>%
     paste0(pkg_dir, "/man/", .)
-  rd_file_lines <- lapply(rd_file_paths, readLines)
+  rd_file_lines <- lapply(rd_file_paths, readr::read_lines)
   rd_file_short_names <- rd_file_paths %>% filesstrings::before_last_dot() %>%
     filesstrings::str_after_last("/")
   names(rd_file_lines) <- rd_file_short_names
@@ -227,7 +228,7 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
           " '", paste0("test_", r_file_name), "'. ",
           "To proceed, rerun with overwrite = TRUE.")
   }
-  writeLines(combined, test_file_name)
+  readr::write_lines(combined, test_file_name)
   invisible(combined)
 }
 

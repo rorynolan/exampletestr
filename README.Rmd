@@ -14,7 +14,7 @@ An R package to help developers create unit tests (designed for use with the tes
 [![codecov](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/gh/rorynolan/exampletestr)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
 ![RStudio CRAN downloads](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr)
-[![RStudio CRAN monthly downloads](http://cranlogs.r-pkg.org/badges/exampletestr)](http://cran.rstudio.com/web/packages/exampletestr/index.html)
+[![RStudio CRAN monthly downloads](http://cranlogs.r-pkg.org/badges/exampletestr)](https://cran.rstudio.com/web/packages/exampletestr/index.html)
 [![Rdocumentation](http://www.rdocumentation.org/badges/version/exampletestr)](http://www.rdocumentation.org/packages/exampletestr)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
@@ -95,9 +95,10 @@ extract_expressions <- function(text_expr, remove_comments = TRUE) {
         comment = !remove_comments, arrow = TRUE, indent = 2, output = FALSE,
         width.cutoff = 50)) %>%
       purrr::map(getElement, "text.tidy") %>%
-      purrr::map(~ readLines(textConnection(.)))
+      purrr::map(paste0, "\n") %>%
+      purrr::map(readr::read_lines)
     for (i in seq_along(expr_groups)) {
-      if (filesstrings::AllEqual(expr_groups[[i]], character(0))) {
+      if (filesstrings::all_equal(expr_groups[[i]], character(0))) {
         expr_groups[[i]] <- ""
       }
     }
@@ -108,18 +109,18 @@ extract_expressions <- function(text_expr, remove_comments = TRUE) {
   # str_trim because sometimes formatR leaves unnecessary trailing whitespace
 }
 
-#' Construct the shell of an `expect_equal` expression.
+#' Construct an `expect_equal` expression
 #'
-#' Construct the shell an `expect_equal` expression from a character vector
+#' Construct an `expect_equal` expression from a character vector
 #' containing an expression to be evaluated.
 #'
-#' @param text_expr A character vector of lines that, when executed produce an
-#'   output.
+#' @param text_expr A character vector of lines that, when executed produce a
+#'   single output.
 #'
-#' @return A character vector. The lines of text containing the `expect_equal`
-#'   code (corresponding to the input `text_expr`), which will help to write the
-#'   test file based on documentation examples. Remember that this is something
-#'   that you're intended to fill the gaps in later.
+#' @return A character vector. The lines of text containing the
+#'   `expect_equal` code corresponding to the input, which will help to
+#'   write the test file based on documentation examples. Remember that
+#'   this is something that you're intended to fill the gaps in later.
 #'
 #' @examples
 #' text_expr <- c("sum(1, ", "2)")

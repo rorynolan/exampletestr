@@ -137,9 +137,10 @@ extract_expressions <- function(text_expr, remove_comments = TRUE) {
         comment = !remove_comments, arrow = TRUE, indent = 2, output = FALSE,
         width.cutoff = 50)) %>%
       purrr::map(getElement, "text.tidy") %>%
-      purrr::map(~ readLines(textConnection(.)))
+      purrr::map(paste0, "\n") %>%
+      purrr::map(readr::read_lines)
     for (i in seq_along(expr_groups)) {
-      if (filesstrings::AllEqual(expr_groups[[i]], character(0))) {
+      if (filesstrings::all_equal(expr_groups[[i]], character(0))) {
         expr_groups[[i]] <- ""
       }
     }
@@ -150,18 +151,18 @@ extract_expressions <- function(text_expr, remove_comments = TRUE) {
   # str_trim because sometimes formatR leaves unnecessary trailing whitespace
 }
 
-#' Construct the shell of an `expect_equal` expression.
+#' Construct an `expect_equal` expression
 #'
-#' Construct the shell an `expect_equal` expression from a character vector
+#' Construct an `expect_equal` expression from a character vector
 #' containing an expression to be evaluated.
 #'
-#' @param text_expr A character vector of lines that, when executed produce an
-#'   output.
+#' @param text_expr A character vector of lines that, when executed produce a
+#'   single output.
 #'
-#' @return A character vector. The lines of text containing the `expect_equal`
-#'   code (corresponding to the input `text_expr`), which will help to write the
-#'   test file based on documentation examples. Remember that this is something
-#'   that you're intended to fill the gaps in later.
+#' @return A character vector. The lines of text containing the
+#'   `expect_equal` code corresponding to the input, which will help to
+#'   write the test file based on documentation examples. Remember that
+#'   this is something that you're intended to fill the gaps in later.
 #'
 #' @examples
 #' text_expr <- c("sum(1, ", "2)")
@@ -206,7 +207,7 @@ extract_examples("utils", pkg_dir = "tempkg")
 
     #> $construct_expect_equal
     #>  [1] "### Name: construct_expect_equal"                                 
-    #>  [2] "### Title: Construct the shell of an 'expect_equal' expression."  
+    #>  [2] "### Title: Construct an 'expect_equal' expression"                
     #>  [3] "### Aliases: construct_expect_equal"                              
     #>  [4] ""                                                                 
     #>  [5] "### ** Examples"                                                  

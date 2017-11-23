@@ -19,7 +19,8 @@ Imports:
     formatR,
     purrr,
     roxygen2,
-    checkmate
+    checkmate,
+    readr
 RoxygenNote: 6.0.1
 URL: https://www.github.com/rorynolan/exampletestr
 BugReports: https://www.github.com/rorynolan/exampletestr/issues

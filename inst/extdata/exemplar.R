@@ -1,6 +1,6 @@
 #' Extract examples lines from the functions in a .R file of a package.
 #'
-#' In each `.R` file in the `R/` folder of a pcakage project, for the functions
+#' In each `.R` file in the `R/` folder of a package project, for the functions
 #' defined therein, there can corresponding examples in the `.Rd` files of the
 #' man/` folder. This function extracts those examples into a list of character
 #' vectors, one list element for each documented function.
@@ -29,29 +29,30 @@
 #' \dontrun{
 #' extract_examples("non_existent_file")}
 #'
-#' @return A list of charachter vectors.
+#' @return A list of character vectors.
 #' @export
 extract_examples <- function(r_file_name, pkg_dir = ".") {
   if (stringr::str_detect(r_file_name, "/")) {
-    r_file_name <- filesstrings::str_after_nth(r_file_name, "/", -1)
+    r_file_name <- filesstrings::str_after_last(r_file_name, "/")
   }
   r_file_name <- stringr::str_c(pkg_dir, "/R/", r_file_name) %>%
     filesstrings::give_ext("R")
-  r_file_lines_quotes_gone <- readLines(r_file_name) %>%
+  r_file_lines_quotes_gone <- readr::read_lines(r_file_name) %>%
     formatR::tidy_source(text = ., comment = FALSE, arrow = TRUE,
                          output = FALSE, width.cutoff = 500) %>%
     getElement("text.tidy") %>%
-    textConnection() %>%
-    readLines() %>%
+    paste0("\n") %>%
+    purrr::map(readr::read_lines) %>%
+    unlist() %>%
     filesstrings::remove_quoted()
   r_file_funs <- stringr::str_match(r_file_lines_quotes_gone,
                                     "(^[^ ]*) <- function\\(")[, 2] %>%
     stats::na.omit()
   rd_file_paths <- list.files(paste0(pkg_dir, "/man"), pattern = "\\.Rd$") %>%
     paste0(pkg_dir, "/man/", .)
-  rd_file_lines <- lapply(rd_file_paths, readLines)
+  rd_file_lines <- lapply(rd_file_paths, readr::read_lines)
   rd_file_short_names <- rd_file_paths %>% filesstrings::before_last_dot() %>%
-    filesstrings::str_after_nth("/", -1)
+    filesstrings::str_after_last("/")
   names(rd_file_lines) <- rd_file_short_names
   documented_funs_in_alias_tags <- unlist(rd_file_lines) %>%
     stringr::str_extract("\\\\alias\\{.*\\}") %>%
@@ -149,15 +150,15 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
 #' For a given file `x.R` in the `R/` directory of a package, for each function
 #' defined in that `.R` file, `make_tests_shells_file` checks if there are
 #' examples for that function detailed in the `man/` directory (in a `.Rd` file)
-#' and if so creates a shell (skeleton) of a [testthat::test_that()] test based on
-#' those examples via [make_test_shell()]. The created shells are then written to a file `test_x.R` in
-#' `tests/testthat`.
+#' and if so creates a shell (skeleton) of a [testthat::test_that()] test based
+#' on those examples via [make_test_shell()]. The created shells are then
+#' written to a file `test_x.R` in `tests/testthat`.
 #'
 #' @param r_file_name The name of the `.R` file within `R/`. There's no need to
 #'   specify the file path (as `R/x.R`, but you can do this if you want), you
 #'   can just use `x.R` for whichever file `x` it is. You can also omit the `.R`
-#'   for convenience, however using the wrong case (e.g. `.r`) will produce an
-#'   error.
+#'   for convenience, however using the wrong case (e.g. `.r` when the file
+#'   actually has the extension `.R`) will produce an error.
 #' @param pkg_dir The directory of the R project for this package (defaults to
 #'   current directory). Note that this is the parent directory of R/.
 #' @param overwrite Overwrite if the test file you're trying to create already
@@ -184,12 +185,13 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
 #' @export
 make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
                                    overwrite = FALSE, e_e = TRUE) {
+  checkmate::check_string(r_file_name)
   current_wd <- getwd()
   on.exit(setwd(current_wd))
   setwd(pkg_dir)
   if (!dir.exists("tests/testthat")) devtools::use_testthat()
   if (stringr::str_detect(r_file_name, "/")) {
-    r_file_name <- filesstrings::str_after_nth(r_file_name, "/", -1)
+    r_file_name <- filesstrings::str_after_last(r_file_name, "/")
   }
   r_file_name <- filesstrings::give_ext(r_file_name, "R")
   exampless <- extract_examples(r_file_name, pkg_dir = ".")
@@ -207,7 +209,19 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
     message(not_making_message)
     return(invisible(character(0)))
   }
-  combined <- Reduce(function(x, y) c(x, "", y), test_shells)
+  context <- r_file_name %>%
+    filesstrings::before_last_dot() %>%
+    filesstrings::str_split_camel_case() %>%
+    unlist() %>%
+    paste() %>%
+    stringr::str_replace_all("[-_]", " ") %T>% {
+      if (nchar(.) > 0) {
+        . <- paste0(toupper(filesstrings::str_elem(., 1)),
+                    stringr::str_sub(., 2, -1))
+      }
+    }
+  combined <- c(paste0("context(\"", context, "\")"), "",
+                purrr::reduce(test_shells, ~ c(.x, "", .y)))
   test_file_name <- paste0("tests/testthat/test_", r_file_name)
   if (!overwrite && file.exists(test_file_name)) {
     stop ("Stopping as to proceed would be to overwrite an existing test file:",

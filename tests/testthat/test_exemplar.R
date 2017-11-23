@@ -135,7 +135,6 @@ test_that("make_test_shell works", {
 
 context("Make test shell files")
 test_that("make_tests_shells_file works", {
-  skip_on_cran()
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(tempdir())
