@@ -14,7 +14,7 @@ An R package to help developers create unit tests (designed for use with the tes
 [![codecov](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/gh/rorynolan/exampletestr)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
 ![RStudio CRAN downloads](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr)
-[![RStudio CRAN monthly downloads](http://cranlogs.r-pkg.org/badges/exampletestr)](https://cran.rstudio.com/web/packages/exampletestr/index.html)
+[![RStudio CRAN monthly downloads](http://cranlogs.r-pkg.org/badges/exampletestr)](https://cran.r-project.org/package=exampletestr)
 [![Rdocumentation](http://www.rdocumentation.org/badges/version/exampletestr)](http://www.rdocumentation.org/packages/exampletestr)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 

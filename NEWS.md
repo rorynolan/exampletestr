@@ -2,7 +2,7 @@
 
 #### MINOR IMPROVEMENTS
 * Add `testthat::context()` to test shells.
-* Now using `ijtiff` for TIFF I/O.
+* Update for `filesstrings` v2.0.0.
 
 #### BUG FIXES
 * Fix issues with open text connections.
