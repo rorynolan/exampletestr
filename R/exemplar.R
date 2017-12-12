@@ -16,7 +16,7 @@
 #'   current directory). This is the parent directory of `R/` and `man/`.
 #'
 #' @examples
-#' setwd(tempdir())
+#' \dontrun{
 #' devtools::create("tempkg")
 #' setwd("tempkg")
 #' file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
@@ -26,7 +26,6 @@
 #' exampletestr::extract_examples("exemplar")
 #' setwd("..")
 #' filesstrings::dir.remove("tempkg")
-#' \dontrun{
 #' extract_examples("non_existent_file")}
 #'
 #' @return A list of character vectors.
@@ -103,7 +102,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
 #'   testing all of the calls in the example block.
 #'
 #' @examples
-#' setwd(tempdir())
+#' \dontrun{
 #' devtools::create("tempkg")
 #' setwd("tempkg")
 #' file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
@@ -113,7 +112,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
 #' exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]],
 #'                               desc = "xyz", e_e = FALSE)
 #' setwd("..")
-#' filesstrings::dir.remove("tempkg")
+#' filesstrings::dir.remove("tempkg")}
 #'
 #' @export
 make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
@@ -170,7 +169,7 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
 #'   same name as the .R file it was created from except it has "test_" tacked
 #'   onto the front.
 #' @examples
-#' setwd(tempdir())
+#' \dontrun{
 #' devtools::create("tempkg")
 #' setwd("tempkg")
 #' file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
@@ -180,7 +179,7 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
 #' devtools::document()
 #' exampletestr::make_tests_shells_pkg(overwrite = TRUE)
 #' setwd("..")
-#' filesstrings::dir.remove("tempkg")
+#' filesstrings::dir.remove("tempkg")}
 #'
 #' @export
 make_tests_shells_file <- function(r_file_name, pkg_dir = ".",

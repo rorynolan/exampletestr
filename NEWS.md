@@ -1,3 +1,9 @@
+### 1.1.1
+
+#### BUG FIXES
+* The new R doesn't like it when the working directory is changed by running examples. This required a fix which this patch provides.
+
+
 ### 1.1.0
 
 #### MINOR IMPROVEMENTS

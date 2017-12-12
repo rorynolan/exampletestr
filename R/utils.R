@@ -30,13 +30,13 @@ text_parse_error <- function(text_expr) {
 #'   valid R expression.
 #' @examples
 #' text_expr <- c("a <- 1",
-#' "fx <- function(x) {",
-#' "  x + 1",
-#' "}  # this comment should disappear")
+#'                "fx <- function(x) {",
+#'                "  x + 1",
+#'                "}  # this comment should disappear")
 #' extract_expressions(text_expr)
 #' @export
 extract_expressions <- function(text_expr, remove_comments = TRUE) {
-  stopifnot(length(text_expr) > 0)
+  checkmate::assert_character(text_expr, min.len = 1)
   expr_groups <- list()
   i <- 1
   while (i <= length(text_expr)) {
@@ -56,15 +56,10 @@ extract_expressions <- function(text_expr, remove_comments = TRUE) {
       purrr::map(getElement, "text.tidy") %>%
       purrr::map(paste0, "\n") %>%
       purrr::map(readr::read_lines)
-    for (i in seq_along(expr_groups)) {
-      if (filesstrings::all_equal(expr_groups[[i]], character(0))) {
-        expr_groups[[i]] <- ""
-      }
-    }
   }
   empties <- purrr::map_lgl(expr_groups, ~ isTRUE(all.equal(., "")))
   expr_groups <- expr_groups[!empties]
-  lapply(expr_groups, stringr::str_trim, side = "right")
+  purrr::map(expr_groups, stringr::str_trim, side = "right")
   # str_trim because sometimes formatR leaves unnecessary trailing whitespace
 }
 

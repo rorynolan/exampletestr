@@ -21,8 +21,8 @@ lines, where each group of lines is a valid R expression.
 }
 \examples{
 text_expr <- c("a <- 1",
-"fx <- function(x) {",
-"  x + 1",
-"}  # this comment should disappear")
+               "fx <- function(x) {",
+               "  x + 1",
+               "}  # this comment should disappear")
 extract_expressions(text_expr)
 }

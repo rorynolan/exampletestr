@@ -29,7 +29,7 @@ vectors, one list element for each documented function.
 Anything found within a \code{\\dontrun\{...\}} block is ignored.
 }
 \examples{
-setwd(tempdir())
+\dontrun{
 devtools::create("tempkg")
 setwd("tempkg")
 file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
@@ -39,7 +39,6 @@ exampletestr::extract_examples("exemplar")
 exampletestr::extract_examples("exemplar")
 setwd("..")
 filesstrings::dir.remove("tempkg")
-\dontrun{
 extract_examples("non_existent_file")}
 
 }
