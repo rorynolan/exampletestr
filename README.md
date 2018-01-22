@@ -36,7 +36,7 @@ devtools::create("tempkg")
     #> Version: 0.0.0.9000
     #> Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
     #> Description: What the package does (one paragraph).
-    #> Depends: R (>= 3.4.2)
+    #> Depends: R (>= 3.4.3)
     #> License: What license is it under?
     #> Encoding: UTF-8
     #> LazyData: true

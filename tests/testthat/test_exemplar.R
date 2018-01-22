@@ -149,13 +149,13 @@ test_that("make_tests_shells_file works", {
                         "R"))
   devtools::document()
   expect_equal(make_tests_shells_file("exemplar"),
-               readLines(system.file("extdata", "test_exemplar_uncompleted.R",
+               readLines(system.file("extdata", "test-exemplar_uncompleted.R",
                                      package = "exampletestr")))
   expect_equal(make_tests_shells_file("R/exemplar", overwrite = TRUE),
-               readLines(system.file("extdata", "test_exemplar_uncompleted.R",
+               readLines(system.file("extdata", "test-exemplar_uncompleted.R",
                                      package = "exampletestr")))
   expect_equal(make_tests_shells_pkg(overwrite = TRUE)[[1]],
-               readLines(system.file("extdata", "test_exemplar_uncompleted.R",
+               readLines(system.file("extdata", "test-exemplar_uncompleted.R",
                                      package = "exampletestr")))
   file.copy(system.file("extdata", "exampletestr.R", package = "exampletestr"),
             "R", overwrite = TRUE)

@@ -1,3 +1,9 @@
+### 1.2.0
+
+#### NEW FEATURES
+* `exampletestr` now names its test files in the same way as `devtools::use_test()`.
+
+
 ### 1.1.1
 
 #### BUG FIXES

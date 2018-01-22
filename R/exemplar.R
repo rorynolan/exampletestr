@@ -221,7 +221,7 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
     }
   combined <- c(paste0("context(\"", context, "\")"), "",
                 purrr::reduce(test_shells, ~ c(.x, "", .y)))
-  test_file_name <- paste0("tests/testthat/test_", r_file_name)
+  test_file_name <- paste0("tests/testthat/test-", r_file_name)
   if (!overwrite && file.exists(test_file_name)) {
     stop ("Stopping as to proceed would be to overwrite an existing test file:",
           " '", paste0("test_", r_file_name), "'. ",
