@@ -10,7 +10,7 @@ test_that("extract_expressions works", {
                  "fx <- function(x) {",
                  "  x + 1",
                  "}")
-  expect_equal(extract_expressions(text_expr), list(
+  expect_equal(purrr::map(extract_expressions(text_expr), as.character), list(
     "a <- 1",
     c("fx <- function(x) {",
       "  x + 1",

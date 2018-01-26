@@ -40,16 +40,13 @@ on those examples via \code{\link[=make_test_shell]{make_test_shell()}}. The cre
 written to a file \code{test_x.R} in \code{tests/testthat}.
 }
 \examples{
-\dontrun{
 devtools::create("tempkg")
 setwd("tempkg")
-file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
-                      package = "exampletestr"), "R")
+file.copy(system.file("extdata", "detect.R", package = "exampletestr"), "R")
 devtools::document()
-exampletestr::make_tests_shells_file("exemplar")
-devtools::document()
-exampletestr::make_tests_shells_pkg(overwrite = TRUE)
+make_tests_shells_file("detect")
+make_tests_shells_pkg(overwrite = TRUE)
 setwd("..")
-filesstrings::dir.remove("tempkg")}
+filesstrings::dir.remove("tempkg")
 
 }

@@ -18,220 +18,196 @@ knitr::opts_knit$set(root.dir = tempdir())
 The primary use of `exampletestr` is from every file in the `R/` directory of a package, to create a corresponding _shell_ of a test file (something to get you started making tests (for use with `testthat`)) that will have to be filled in to create a fully functioning test file. This can be done for the whole package at once with `make_tests_shells_pkg()` or for individual files with `make_tests_shells_file()`. These tests are created by using the examples in the documentation of your package as a basis for tests. I have often (but not always) found that I test my functions manually by making sure my examples work as intended, so why not use these as a basis for proper unit testing?
 
 ## Out of the nutshell
-First, let's set up a dummy package directory with just the `utils.R` file from the source code of the `exampletestr` package.
+First, let's set up a dummy package directory with just the `match.R` and `detect.R` files from the source code of the `stringr` package.
 ```{r setup}
 library(exampletestr)
 library(testthat)
 devtools::create("tempkg")
 devtools::use_testthat("tempkg")
-file.copy(system.file("extdata", "utils.R", package = "exampletestr"), 
+file.copy(system.file("extdata", c("match.R", "detect.R"), package = "exampletestr"), 
           "tempkg/R")
 devtools::document("tempkg")
 ```
 
-The `utils.R` file looks like this:
-```{r Look at utils file, eval=FALSE}
-#' Does parsing of text give an error?
+The `match.R` file looks like this:
+```{r Look at match.R file, eval=FALSE}
+#' Extract matched groups from a string.
 #'
-#' Can a character vector (where each line is treated as a line of R code) be
-#' parsed as an R expression (or several R expressions) without giving an
-#' error?
+#' Vectorised over `string` and `pattern`.
 #'
-#' @param text_expr The expression to be evaluated, as a character vector.
+#' @inheritParams str_detect
+#' @param pattern Pattern to look for, as defined by an ICU regular
+#'   expression. See [stringi::stringi-search-regex] for more details.
+#' @return For `str_match`, a character matrix. First column is the
+#'   complete match, followed by one column for each capture group.
+#'   For `str_match_all`, a list of character matrices.
 #'
-#' @return `TRUE` if the code gives an error and `FALSE` otherwise.
-#' @examples
-#' text_parse_error("a <- 1")
-#' text_parse_error("a <- ")
+#' @seealso [str_extract()] to extract the complete match,
+#'   [stringi::stri_match()] for the underlying
+#'   implementation.
 #' @export
-text_parse_error <- function(text_expr) {
-  try_res <- try(parse(text = text_expr), silent = TRUE)
-  error <- inherits(try_res, "try-error")
-  if (error) attr(error, "message") <- attr(try_res, "message")
-  error
-}
-
-#' Text expression groups.
-#'
-#' Given a character vector of R expressions, break the vector up into groups of
-#' lines, where each group of lines is a valid R expression.
-#'
-#' @param text_expr A character vector.
-#' @param remove_comments Should comments be removed?
-#'
-#' @return A list of character vectors, each of which can be evaluated as a
-#'   valid R expression.
 #' @examples
-#' text_expr <- c("a <- 1",
-#' "fx <- function(x) {",
-#' "  x + 1",
-#' "}  # this comment should disappear")
-#' extract_expressions(text_expr)
-#' @export
-extract_expressions <- function(text_expr, remove_comments = TRUE) {
-  stopifnot(length(text_expr) > 0)
-  expr_groups <- list()
-  i <- 1
-  while (i <= length(text_expr)) {
-    j <- 0
-    expr <- text_expr[i]
-    while(text_parse_error(expr)) {
-      j <- j + 1
-      expr <- text_expr[i:(i + j)]
-    }
-    expr_groups <- append(expr_groups, list(expr))
-    i <- i + j + 1
+#' strings <- c(" 219 733 8965", "329-293-8753 ", "banana", "595 794 7569",
+#'   "387 287 6718", "apple", "233.398.9187  ", "482 952 3315",
+#'   "239 923 8115 and 842 566 4692", "Work: 579-499-7527", "$1000",
+#'   "Home: 543.355.3679")
+#' phone <- "([2-9][0-9]{2})[- .]([0-9]{3})[- .]([0-9]{4})"
+#'
+#' str_extract(strings, phone)
+#' str_match(strings, phone)
+#'
+#' # Extract/match all
+#' str_extract_all(strings, phone)
+#' str_match_all(strings, phone)
+#'
+#' x <- c("<a> <b>", "<a> <>", "<a>", "", NA)
+#' str_match(x, "<(.*?)> <(.*?)>")
+#' str_match_all(x, "<(.*?)>")
+#'
+#' str_extract(x, "<.*?>")
+#' str_extract_all(x, "<.*?>")
+str_match <- function(string, pattern) {
+  if (type(pattern) != "regex") {
+    stop("Can only match regular expressions", call. = FALSE)
   }
-  if (remove_comments) {
-    expr_groups <- purrr::map(expr_groups, ~ formatR::tidy_source(text = .,
-        comment = !remove_comments, arrow = TRUE, indent = 2, output = FALSE,
-        width.cutoff = 50)) %>%
-      purrr::map(getElement, "text.tidy") %>%
-      purrr::map(paste0, "\n") %>%
-      purrr::map(readr::read_lines)
-    for (i in seq_along(expr_groups)) {
-      if (filesstrings::all_equal(expr_groups[[i]], character(0))) {
-        expr_groups[[i]] <- ""
-      }
-    }
+
+  stri_match_first_regex(string,
+    pattern,
+    opts_regex = opts(pattern)
+  )
+}
+
+#' @rdname str_match
+#' @export
+str_match_all <- function(string, pattern) {
+  if (type(pattern) != "regex") {
+    stop("Can only match regular expressions", call. = FALSE)
   }
-  empties <- purrr::map_lgl(expr_groups, ~ isTRUE(all.equal(., "")))
-  expr_groups <- expr_groups[!empties]
-  lapply(expr_groups, stringr::str_trim, side = "right")
-  # str_trim because sometimes formatR leaves unnecessary trailing whitespace
-}
 
-#' Construct an `expect_equal` expression
-#'
-#' Construct an `expect_equal` expression from a character vector
-#' containing an expression to be evaluated.
-#'
-#' @param text_expr A character vector of lines that, when executed produce a
-#'   single output.
-#'
-#' @return A character vector. The lines of text containing the
-#'   `expect_equal` code corresponding to the input, which will help to
-#'   write the test file based on documentation examples. Remember that
-#'   this is something that you're intended to fill the gaps in later.
-#'
-#' @examples
-#' text_expr <- c("sum(1, ", "2)")
-#' cat(paste(text_expr, collapse = "\n"))
-#' construct_expect_equal(text_expr)
-#' cat(paste(construct_expect_equal(text_expr), collapse = "\n"))
-#' @export
-construct_expect_equal <- function(text_expr) {
-  text_expr[1] <- paste0("expect_equal(", text_expr[1])
-  l <- length(text_expr)
-  text_expr[l] <- paste0(text_expr[l], ", )")
-  text_expr
+  stri_match_all_regex(string,
+    pattern,
+    omit_no_match = TRUE,
+    opts_regex = opts(pattern)
+  )
 }
-
-#' Extract examples from a `.Rd` file as a character vector.
-#'
-#' This is a convenient wrapper to [tools::Rd2ex] which actually returns a character vector of the examples in the `.Rd` file.
-#'
-#' @param rd_file_path The path to the `.Rd` file.
-#'
-#' @return A character vector.
-#'
-#' @examples
-#' this_function_rd <- system.file("extdata", "extract_examples_rd.Rd",
-#'                                 package = "exampletestr")
-#' extract_examples_rd(this_function_rd)
-#' @export
-extract_examples_rd <- function(rd_file_path) {
-  tc <- textConnection(" ", "w")
-  tools::Rd2ex(rd_file_path, tc)
-  examples_lines <- textConnectionValue(tc)
-  close(tc)
-  examples_lines
-}
-
 ```
 So let's demonstrate `extract_examples`:
 ```{r Demonstrate extract_examples}
-extract_examples("utils", pkg_dir = "tempkg")
+extract_examples("match", pkg_dir = "tempkg")
 ```
 
 Indeed we get all of the lines of the documentation examples. Now with `make_test_shell`, we turn it into something usable with `testthat`:
 ```{r Demonstrate make_test_shell}
-lapply(extract_examples("utils", pkg_dir = "tempkg"), make_test_shell, "whatevs")
+lapply(extract_examples("match", pkg_dir = "tempkg"), make_test_shell, "whatevs")
 ```
-This might look a little weird in the output but it's really just 
-```{r make make_test_shell look nice, eval=FALSE}
-test_that("whatevs", {
-  expect_equal(text_eval_error("a <- 1"), )
-  expect_equal(text_eval_error("a <- "), )
-})
-```
-and so on, which is what we would want. Now we have something we can fill in ourselves to create a real unit test.
 
 We can make the unit tests _shell_ file (_shell_ because it needs to be filled in) via `make_tests_shell_file`. Running 
 ```{r make_tests_shells_file}
-make_tests_shells_file("utils", pkg_dir = "tempkg")
+make_tests_shells_file("match", pkg_dir = "tempkg")
 ```
-outputs a `test_utils.R` file in the `tests/testthat` folder with contents
-```{r test_utils.R contents, eval=FALSE}
-context("Utils")
+```{r load stringr, include=FALSE}
+library(stringr)
+```
+outputs a `test-utils.R` file in the `tests/testthat` folder with contents
+```{r test-utils.R contents, eval=FALSE}
+context("Match")
 
-test_that("construct_expect_equal works", {
-  text_expr <- c("sum(1, ", "2)")
-  expect_equal(cat(paste(text_expr, collapse = "\n")), )
-  expect_equal(construct_expect_equal(text_expr), )
-  expect_equal(cat(paste(construct_expect_equal(text_expr), collapse = "\n")), )
-})
-
-test_that("extract_examples_rd works", {
-  this_function_rd <- system.file("extdata", "extract_examples_rd.Rd",
-    package = "exampletestr")
-  expect_equal(extract_examples_rd(this_function_rd), )
-})
-
-test_that("extract_expressions works", {
-  text_expr <- c("a <- 1", "fx <- function(x) {", "  x + 1",
-    "}  # this comment should disappear")
-  expect_equal(extract_expressions(text_expr), )
-})
-
-test_that("text_parse_error works", {
-  expect_equal(text_parse_error("a <- 1"), )
-  expect_equal(text_parse_error("a <- "), )
+test_that("str_match() works", {
+  strings <- c(
+    " 219 733 8965", "329-293-8753 ", "banana", "595 794 7569",
+    "387 287 6718", "apple", "233.398.9187  ", "482 952 3315",
+    "239 923 8115 and 842 566 4692", "Work: 579-499-7527", "$1000",
+    "Home: 543.355.3679"
+  )
+  phone <- "([2-9][0-9]{2})[- .]([0-9]{3})[- .]([0-9]{4})"
+  expect_equal(str_extract(strings, phone), )
+  expect_equal(str_match(strings, phone), )
+  expect_equal(str_extract_all(strings, phone), )
+  expect_equal(str_match_all(strings, phone), )
+  x <- c("<a> <b>", "<a> <>", "<a>", "", NA)
+  expect_equal(str_match(x, "<(.*?)> <(.*?)>"), )
+  expect_equal(str_match_all(x, "<(.*?)>"), )
+  expect_equal(str_extract(x, "<.*?>"), )
+  expect_equal(str_extract_all(x, "<.*?>"), )
 })
 ```
-which, for my purposes, I complete as
+which can be sensibly completed as
 ```{r fill in test shell}
-context("Utils")
+context("Match")
 
-test_that("text_parse_error works", {
-  expect_false(text_parse_error("a <- 1"))
-  expect_true(text_parse_error("a <- "))
-})
-
-test_that("extract_expressions works", {
-  text_expr <- c("a <- 1",
-                 "fx <- function(x) {",
-                 "  x + 1",
-                 "}")
-  expect_equal(extract_expressions(text_expr), list(
-    "a <- 1",
-    c("fx <- function(x) {",
-      "  x + 1",
-      "}")
-  ))
-})
-
-test_that("construct_expect_equal works", {
-  text_expr <- c("sum(1, ", "2)")
-  expect_equal(construct_expect_equal(text_expr), c("expect_equal(sum(1, ",
-                                                    "2), )"))
+test_that("str_match() works", {
+  strings <- c(
+    " 219 733 8965", "329-293-8753 ", "banana", "595 794 7569",
+    "387 287 6718", "apple", "233.398.9187  ", "482 952 3315",
+    "239 923 8115 and 842 566 4692", "Work: 579-499-7527", "$1000",
+    "Home: 543.355.3679"
+  )
+  phone <- "([2-9][0-9]{2})[- .]([0-9]{3})[- .]([0-9]{4})"
+  expect_equal(str_extract(strings, phone), 
+               c("219 733 8965", "329-293-8753", NA, "595 794 7569", 
+                 "387 287 6718", NA, "233.398.9187", "482 952 3315", 
+                 "239 923 8115", "579-499-7527", NA, "543.355.3679"))
+  expect_equal(str_match(strings, phone), 
+               matrix(c("219 733 8965", "219", "733", "8965",
+                        "329-293-8753", "329", "293", "8753",
+                        NA,             NA,    NA,    NA,    
+                        "595 794 7569", "595", "794", "7569",
+                        "387 287 6718", "387", "287", "6718",
+                        NA,             NA,    NA,    NA,    
+                        "233.398.9187", "233", "398", "9187",
+                        "482 952 3315", "482", "952", "3315",
+                        "239 923 8115", "239", "923", "8115",
+                        "579-499-7527", "579", "499", "7527",
+                        NA,             NA,    NA,    NA,    
+                        "543.355.3679", "543", "355", "3679"), 
+                      ncol = 4, byrow = TRUE))
+  expect_equal(str_extract_all(strings, phone), 
+               list("219 733 8965", "329-293-8753", character(0), 
+                    "595 794 7569", "387 287 6718", character(0),
+                    "233.398.9187", "482 952 3315", 
+                    c("239 923 8115", "842 566 4692"), "579-499-7527",
+                    character(0), "543.355.3679"))
+  expect_equal(str_match_all(strings, phone), 
+               list(t(c("219 733 8965", "219", "733", "8965")),
+                    t(c("329-293-8753", "329", "293", "8753")),
+                    matrix(character(0), ncol = 4),
+                    t(c("595 794 7569", "595", "794", "7569")),
+                    t(c("387 287 6718", "387", "287", "6718")),
+                    matrix(character(0), ncol = 4),
+                    t(c("233.398.9187", "233", "398", "9187")),
+                    t(c("482 952 3315", "482", "952", "3315")),
+                    matrix(c("239 923 8115", "239", "923", "8115",
+                             "842 566 4692", "842", "566", "4692"),
+                           ncol = 4, byrow = TRUE),
+                    t(c("579-499-7527", "579", "499", "7527")),
+                    matrix(character(0), ncol = 4),
+                    t(c("543.355.3679", "543", "355", "3679"))))
+  x <- c("<a> <b>", "<a> <>", "<a>", "", NA)
+  expect_equal(str_match(x, "<(.*?)> <(.*?)>"),
+               matrix(c("<a> <b>", "a",  "b", 
+                        "<a> <>",  "a",  "",
+                        NA,        NA,   NA,  
+                        NA,        NA,   NA,  
+                        NA,        NA,   NA), ncol = 3, byrow = TRUE))
+  expect_equal(str_match_all(x, "<(.*?)>"), 
+               list(matrix(c("<a>", "a", 
+                             "<b>", "b"), ncol = 2, byrow = TRUE),
+                    matrix(c("<a>", "a", 
+                             "<>", ""), ncol = 2, byrow = TRUE),
+                    t(c("<a>", "a")),
+                    matrix(character(0), ncol = 2),
+                    t(rep(NA_character_, 2))))
+  expect_equal(str_extract(x, "<.*?>"), c("<a>", "<a>", "<a>", NA, NA))
+  expect_equal(str_extract_all(x, "<.*?>"), 
+               list(c("<a>", "<b>"), c("<a>", "<>"), "<a>", character(0),
+                    NA_character_))
 })
 ```
 
 To create these test shell files for each file in the `R/` directory of your package, run `make_tests_shells_pkg()`.
 
 
-```{r setdown, include=FALSE, echo=FALSE}
+```{r setdown, include=FALSE}
 filesstrings::dir.remove("tempkg")
 ```
 

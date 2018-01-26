@@ -16,30 +16,30 @@
 #'   current directory). This is the parent directory of `R/` and `man/`.
 #'
 #' @examples
-#' \dontrun{
 #' devtools::create("tempkg")
 #' setwd("tempkg")
-#' file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
-#'                       package = "exampletestr"), "R")
+#' file.copy(system.file("extdata", "detect.R", package = "exampletestr"), "R")
 #' devtools::document()
-#' exampletestr::extract_examples("exemplar")
-#' exampletestr::extract_examples("exemplar")
+#' exampletestr::extract_examples("detect")
 #' setwd("..")
 #' filesstrings::dir.remove("tempkg")
-#' extract_examples("non_existent_file")}
 #'
 #' @return A list of character vectors.
 #' @export
 extract_examples <- function(r_file_name, pkg_dir = ".") {
-  if (stringr::str_detect(r_file_name, "/")) {
+  checkmate::assert_directory_exists(pkg_dir)
+  if (stringr::str_detect(r_file_name, "/"))
     r_file_name <- filesstrings::str_after_last(r_file_name, "/")
-  }
-  r_file_name <- stringr::str_c(pkg_dir, "/R/", r_file_name) %>%
+  cwd <- getwd()
+  on.exit(setwd(cwd))
+  setwd(pkg_dir)
+  r_file_name <- stringr::str_c("R/", r_file_name) %>%
     filesstrings::give_ext("R")
+  checkmate::assert_file_exists(r_file_name)
   r_file_lines_quotes_gone <- readr::read_lines(r_file_name) %>%
-    formatR::tidy_source(text = ., comment = FALSE, arrow = TRUE,
-                         output = FALSE, width.cutoff = 500) %>%
-    getElement("text.tidy") %>%
+    parse(text = .) %>%
+    purrr::map(deparse) %>%
+    unlist() %>%
     paste0("\n") %>%
     purrr::map(readr::read_lines) %>%
     unlist() %>%
@@ -47,8 +47,8 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
   r_file_funs <- stringr::str_match(r_file_lines_quotes_gone,
                                     "(^[^ ]*) <- function\\(")[, 2] %>%
     stats::na.omit()
-  rd_file_paths <- list.files(paste0(pkg_dir, "/man"), pattern = "\\.Rd$") %>%
-    paste0(pkg_dir, "/man/", .)
+  rd_file_paths <- list.files("man", pattern = "\\.Rd$") %>%
+    paste0("man/", .)
   rd_file_lines <- lapply(rd_file_paths, readr::read_lines)
   rd_file_short_names <- rd_file_paths %>% filesstrings::before_last_dot() %>%
     filesstrings::str_after_last("/")
@@ -59,23 +59,21 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
   documented_funs <- stringr::str_sub(documented_funs_in_alias_tags, 8, -2) %>%
     stringr::str_trim()
   file_documented_funs <- intersect(documented_funs, r_file_funs)
-  if (length(file_documented_funs) == 0) return(list(character(0)))
+  if (!length(file_documented_funs)) return(list())
   documented_where <- paste0("\\alias{", file_documented_funs, "}") %>%
     purrr::map_int(function(x) {
       i <- 1
-      while (!any(stringr::str_detect(rd_file_lines[[i]], stringr::coll(x)))) {
+      while (!any(stringr::str_detect(rd_file_lines[[i]], stringr::coll(x))))
         i <- i + 1
-      }
       as.integer(i)
     }) %>%
     purrr::map_chr(~ rd_file_short_names[.])
   wanted_rds <- unique(documented_where)
-  wanted_rd_paths <- paste0(pkg_dir, "/man/",
-                            filesstrings::give_ext(wanted_rds, "Rd"))
+  wanted_rd_paths <- paste0("man/", filesstrings::give_ext(wanted_rds, "Rd"))
   examples <- lapply(wanted_rd_paths, extract_examples_rd)
   names(examples) <- wanted_rds
   ls_exs <- lengths(examples)
-  if (filesstrings::all_equal(ls_exs, 0)) return(list(character(0)))
+  if (filesstrings::all_equal(ls_exs, 0)) return(list())
   examples[as.logical(lengths(examples))]
 }
 
@@ -102,22 +100,20 @@ extract_examples <- function(r_file_name, pkg_dir = ".") {
 #'   testing all of the calls in the example block.
 #'
 #' @examples
-#' \dontrun{
 #' devtools::create("tempkg")
 #' setwd("tempkg")
-#' file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
-#'                       package = "exampletestr"), "R")
+#' file.copy(system.file("extdata", "detect.R", package = "exampletestr"), "R")
 #' devtools::document()
-#' exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]])
-#' exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]],
-#'                               desc = "xyz", e_e = FALSE)
+#' make_test_shell(extract_examples("detect")[[1]])
+#' make_test_shell(extract_examples("detect")[[1]],
+#'                 desc = "xyz", e_e = FALSE)
 #' setwd("..")
-#' filesstrings::dir.remove("tempkg")}
+#' filesstrings::dir.remove("tempkg")
 #'
 #' @export
 make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
-  stopifnot(is.character(example_block))
-  if (filesstrings::all_equal(example_block, character(0))) return(character(0))
+  checkmate::assert_character(example_block)
+  if (!length(example_block)) return(character(0))
   expressions <- extract_expressions(example_block)
   if (e_e) {
     for_checking <- expressions %>%
@@ -169,29 +165,25 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
 #'   same name as the .R file it was created from except it has "test_" tacked
 #'   onto the front.
 #' @examples
-#' \dontrun{
 #' devtools::create("tempkg")
 #' setwd("tempkg")
-#' file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
-#'                       package = "exampletestr"), "R")
+#' file.copy(system.file("extdata", "detect.R", package = "exampletestr"), "R")
 #' devtools::document()
-#' exampletestr::make_tests_shells_file("exemplar")
-#' devtools::document()
-#' exampletestr::make_tests_shells_pkg(overwrite = TRUE)
+#' make_tests_shells_file("detect")
+#' make_tests_shells_pkg(overwrite = TRUE)
 #' setwd("..")
-#' filesstrings::dir.remove("tempkg")}
+#' filesstrings::dir.remove("tempkg")
 #'
 #' @export
 make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
                                    overwrite = FALSE, e_e = TRUE) {
-  checkmate::check_string(r_file_name)
+  checkmate::assert_string(r_file_name)
   current_wd <- getwd()
   on.exit(setwd(current_wd))
   setwd(pkg_dir)
   if (!dir.exists("tests/testthat")) devtools::use_testthat()
-  if (stringr::str_detect(r_file_name, "/")) {
+  if (stringr::str_detect(r_file_name, "/"))
     r_file_name <- filesstrings::str_after_last(r_file_name, "/")
-  }
   r_file_name <- filesstrings::give_ext(r_file_name, "R")
   exampless <- extract_examples(r_file_name, pkg_dir = ".")
   not_making_message <- paste0("No examples found for file \"",
@@ -203,11 +195,8 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
     return(invisible(character(0)))
   }
   test_shells <- mapply(make_test_shell, SIMPLIFY = FALSE,
-                        exampless, paste(names(exampless), "works"), e_e = e_e)
-  if (filesstrings::all_equal(unique(test_shells), list(character(0)))) {
-    message(not_making_message)
-    return(invisible(character(0)))
-  }
+                        exampless, paste0(names(exampless), "() works"),
+                        e_e = e_e)
   context <- r_file_name %>%
     filesstrings::before_last_dot() %>%
     filesstrings::str_split_camel_case() %>%

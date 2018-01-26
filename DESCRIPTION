@@ -16,7 +16,7 @@ Imports:
     magrittr,
     stringr,
     devtools,
-    formatR,
+    styler,
     purrr,
     roxygen2,
     checkmate,

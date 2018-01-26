@@ -16,7 +16,7 @@ A character vector.
 This is a convenient wrapper to \link[tools:Rd2ex]{tools::Rd2ex} which actually returns a character vector of the examples in the \code{.Rd} file.
 }
 \examples{
-this_function_rd <- system.file("extdata", "extract_examples_rd.Rd",
+this_function_rd <- system.file("extdata", "str_detect.Rd",
                                 package = "exampletestr")
 extract_examples_rd(this_function_rd)
 }

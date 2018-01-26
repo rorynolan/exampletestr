@@ -12,6 +12,7 @@
 #' text_parse_error("a <- ")
 #' @export
 text_parse_error <- function(text_expr) {
+  checkmate::assert_character(text_expr)
   try_res <- try(parse(text = text_expr), silent = TRUE)
   error <- inherits(try_res, "try-error")
   if (error) attr(error, "message") <- attr(try_res, "message")
@@ -24,7 +25,6 @@ text_parse_error <- function(text_expr) {
 #' lines, where each group of lines is a valid R expression.
 #'
 #' @param text_expr A character vector.
-#' @param remove_comments Should comments be removed?
 #'
 #' @return A list of character vectors, each of which can be evaluated as a
 #'   valid R expression.
@@ -32,35 +32,15 @@ text_parse_error <- function(text_expr) {
 #' text_expr <- c("a <- 1",
 #'                "fx <- function(x) {",
 #'                "  x + 1",
-#'                "}  # this comment should disappear")
+#'                "}  # this comment will disappear")
 #' extract_expressions(text_expr)
 #' @export
-extract_expressions <- function(text_expr, remove_comments = TRUE) {
-  checkmate::assert_character(text_expr, min.len = 1)
-  expr_groups <- list()
-  i <- 1
-  while (i <= length(text_expr)) {
-    j <- 0
-    expr <- text_expr[i]
-    while(text_parse_error(expr)) {
-      j <- j + 1
-      expr <- text_expr[i:(i + j)]
-    }
-    expr_groups <- append(expr_groups, list(expr))
-    i <- i + j + 1
-  }
-  if (remove_comments) {
-    expr_groups <- purrr::map(expr_groups, ~ formatR::tidy_source(text = .,
-        comment = !remove_comments, arrow = TRUE, indent = 2, output = FALSE,
-        width.cutoff = 50)) %>%
-      purrr::map(getElement, "text.tidy") %>%
-      purrr::map(paste0, "\n") %>%
-      purrr::map(readr::read_lines)
-  }
-  empties <- purrr::map_lgl(expr_groups, ~ isTRUE(all.equal(., "")))
-  expr_groups <- expr_groups[!empties]
-  purrr::map(expr_groups, stringr::str_trim, side = "right")
-  # str_trim because sometimes formatR leaves unnecessary trailing whitespace
+extract_expressions <- function(text_expr) {
+  checkmate::assert_character(text_expr)
+  text_expr %>%
+    parse(text = .) %>%
+    purrr::map(deparse) %>%
+    purrr::map(styler::style_text)
 }
 
 #' Construct an `expect_equal` expression
@@ -83,6 +63,7 @@ extract_expressions <- function(text_expr, remove_comments = TRUE) {
 #' cat(paste(construct_expect_equal(text_expr), collapse = "\n"))
 #' @export
 construct_expect_equal <- function(text_expr) {
+  checkmate::assert_character(text_expr)
   text_expr[1] <- paste0("expect_equal(", text_expr[1])
   l <- length(text_expr)
   text_expr[l] <- paste0(text_expr[l], ", )")
@@ -98,14 +79,16 @@ construct_expect_equal <- function(text_expr) {
 #' @return A character vector.
 #'
 #' @examples
-#' this_function_rd <- system.file("extdata", "extract_examples_rd.Rd",
+#' this_function_rd <- system.file("extdata", "str_detect.Rd",
 #'                                 package = "exampletestr")
 #' extract_examples_rd(this_function_rd)
 #' @export
 extract_examples_rd <- function(rd_file_path) {
+  checkmate::assert_file_exists(rd_file_path)
   tc <- textConnection(" ", "w")
   tools::Rd2ex(rd_file_path, tc)
   examples_lines <- textConnectionValue(tc)
   close(tc)
   examples_lines
 }
+

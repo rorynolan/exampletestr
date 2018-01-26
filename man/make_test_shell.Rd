@@ -33,16 +33,14 @@ put in the shell of an \code{expect_equal()} statement, set \code{e_e = FALSE}.
 Anything found within a \code{\\dontrun\{...\}} block is ignored.
 }
 \examples{
-\dontrun{
 devtools::create("tempkg")
 setwd("tempkg")
-file.copy(system.file("extdata", c("exemplar.R", "exampletestr.R"),
-                      package = "exampletestr"), "R")
+file.copy(system.file("extdata", "detect.R", package = "exampletestr"), "R")
 devtools::document()
-exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]])
-exampletestr::make_test_shell(exampletestr::extract_examples("exemplar")[[1]],
-                              desc = "xyz", e_e = FALSE)
+make_test_shell(extract_examples("detect")[[1]])
+make_test_shell(extract_examples("detect")[[1]],
+                desc = "xyz", e_e = FALSE)
 setwd("..")
-filesstrings::dir.remove("tempkg")}
+filesstrings::dir.remove("tempkg")
 
 }
