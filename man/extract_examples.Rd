@@ -4,7 +4,7 @@
 \alias{extract_examples}
 \title{Extract examples lines from the functions in a .R file of a package.}
 \usage{
-extract_examples(r_file_name, pkg_dir = ".")
+extract_examples(r_file_name, pkg_dir = ".", document = TRUE)
 }
 \arguments{
 \item{r_file_name}{The name of the \code{.R} file within \code{R/}. There's no need to
@@ -15,6 +15,9 @@ error.}
 
 \item{pkg_dir}{The directory of the R project for this package (defaults to
 current directory). This is the parent directory of \code{R/} and \code{man/}.}
+
+\item{document}{Run \code{\link[devtools:document]{devtools::document()}} to update package documentation
+before starting?}
 }
 \value{
 A list of character vectors.

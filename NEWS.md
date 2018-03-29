@@ -1,3 +1,12 @@
+### 1.3.0
+
+#### NEW FEATURES
+* The naming of created files is now less likely to cause conflicts. Now each file created ends with "examples".
+* There's a new function `make_test_shell_fun()` for making test shells one function at a time. This is thanks to a suggestion by Lorenz Walthert: <https://github.com/rorynolan/exampletestr/issues/6>.
+* Created files are now optionally opened in the editor when they are created.
+* The use of file paths is now more stable thanks to the `rprojroot` package.
+
+
 ### 1.2.0
 
 #### NEW FEATURES
