@@ -62,7 +62,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
     stats::na.omit()
   rd_file_paths <- list.files(rprojroot::find_package_root_file("man"),
                               pattern = "\\.Rd$") %>%
-    paste0(rprojroot::find_package_root_file("man/"), .)
+    paste0(rprojroot::find_package_root_file("man"), "/", .)
   rd_file_lines <- purrr::map(rd_file_paths, readr::read_lines)
   rd_file_short_names <- rd_file_paths %>% filesstrings::before_last_dot() %>%
     filesstrings::str_after_last("/")
@@ -83,7 +83,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
     }) %>%
     purrr::map_chr(~ rd_file_short_names[.])
   wanted_rds <- unique(documented_where)
-  wanted_rd_paths <- paste0(rprojroot::find_package_root_file("man/"),
+  wanted_rd_paths <- paste0(rprojroot::find_package_root_file("man/"), "/",
                             filesstrings::give_ext(wanted_rds, "Rd"))
   examples <- purrr::map(wanted_rd_paths, extract_examples_rd)
   names(examples) <- wanted_rds
