@@ -103,7 +103,7 @@ lapply(extract_examples("match", pkg_dir = "tempkg"), make_test_shell, "whatevs"
 
 We can make the unit tests _shell_ file (_shell_ because it needs to be filled in) via `make_tests_shell_file`. Running 
 ```{r make_tests_shells_file}
-make_tests_shells_file("match", pkg_dir = "tempkg")
+make_tests_shells_file("match", pkg_dir = "tempkg", open = FALSE)
 ```
 ```{r load stringr, include=FALSE}
 library(stringr)
