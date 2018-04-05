@@ -204,7 +204,7 @@ test_that("str_match() works", {
 })
 ```
 
-To create these test shell files for each file in the `R/` directory of your package, run `make_tests_shells_pkg()`.
+To create these test shell files for each file in the `R/` directory of your package, run `make_tests_shells_pkg()`. To create a test shell for the examples of a single function, use `make_test_shell_fun()`.
 
 
 ```{r setdown, include=FALSE}
