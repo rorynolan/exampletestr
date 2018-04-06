@@ -13,7 +13,12 @@
 #'   for convenience, however using the wrong case (e.g. `.r`) will produce an
 #'   error.
 #' @param pkg_dir The directory of the R project for this package (defaults to
-#'   current directory). This is the parent directory of `R/` and `man/`.
+#'   current directory). This is the parent directory of `R/` and `man/`. In
+#'   reality, this specification is somewhat lenient and even if you are in any
+#'   sub-directory of the root, it will work (e.g. it will work if you are in
+#'   `R/` or `man/`). Beware that this behaviour can cause a problem if you have
+#'   an R package inside an R package (but really, you have yourself to blame if
+#'   that's the case).
 #' @param document Run [devtools::document()] to update package documentation
 #'   before starting?
 #'
@@ -35,15 +40,18 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(pkg_dir)
+  pkg_root_dir <- try(rprojroot::find_root("DESCRIPTION"), silent = TRUE)
+  if (inherits(pkg_root_dir, "try-error")) {
+    stop("Your package has no DESCRIPTION file.", "\n",
+         "    * Every R package must have a DESCRIPTION file ",
+         "in the root directory. ",
+         "Perhaps you specified the wrong `pkg_dir` in the argument to ",
+         "`extract_examples()`? The default is the current directory.")
+  }
+  setwd(pkg_root_dir)
   if (document) {
-    if (file.exists(rprojroot::find_package_root_file("DESCRIPTION"))) {
-      message("Running devtools::document() . . .")
-      devtools::document()
-    } else {
-      stop("Your package has no DESCRIPTION file.",
-           "    * Every R package must have a DESCRIPTION file ",
-           "in the root directory.")
-    }
+    message("Running devtools::document() . . .")
+    invisible(utils::capture.output(devtools::document()))
   }
   r_file_name <- stringr::str_c(rprojroot::find_package_root_file("R"),
                                 "/", r_file_name) %>%
@@ -214,6 +222,7 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
   current_wd <- getwd()
   on.exit(setwd(current_wd))
   setwd(pkg_dir)
+  fun %<>% stringr::str_trim()
   if (stringr::str_detect(fun, stringr::coll("("))) {
     if (filesstrings::str_elem(fun, 1) == "(") {
       stop("The function `fun` cannot start with a parenthesis.")
@@ -221,15 +230,18 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
     fun %<>% stringr::str_extract("^.*\\(") %>%
       stringr::str_sub(end = -2)
   }
+  pkg_root_dir <- try(rprojroot::find_root("DESCRIPTION"), silent = TRUE)
+  if (inherits(pkg_root_dir, "try-error")) {
+    stop("Your package has no DESCRIPTION file.", "\n",
+         "    * Every R package must have a DESCRIPTION file ",
+         "in the root directory. ",
+         "Perhaps you specified the wrong `pkg_dir` in the argument to ",
+         "`extract_examples()`? The default is the current directory.")
+  }
+  setwd(pkg_root_dir)
   if (document) {
-    if (file.exists(rprojroot::find_package_root_file("DESCRIPTION"))) {
-      message("Running devtools::document() . . .")
-      devtools::document()
-    } else {
-      stop("Your package has no DESCRIPTION file.",
-           "    * Every R package must have a DESCRIPTION file ",
-           "in the root directory.")
-    }
+    message("Running devtools::document() . . .")
+    invisible(utils::capture.output(devtools::document()))
   }
   examples <- list.files(rprojroot::find_package_root_file("R")) %>%
     purrr::map(extract_examples, document = FALSE) %>%
@@ -282,15 +294,18 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   current_wd <- getwd()
   on.exit(setwd(current_wd))
   setwd(pkg_dir)
+  pkg_root_dir <- try(rprojroot::find_root("DESCRIPTION"), silent = TRUE)
+  if (inherits(pkg_root_dir, "try-error")) {
+    stop("Your package has no DESCRIPTION file.", "\n",
+         "    * Every R package must have a DESCRIPTION file ",
+         "in the root directory. ",
+         "Perhaps you specified the wrong `pkg_dir` in the argument to ",
+         "`extract_examples()`? The default is the current directory.")
+  }
+  setwd(pkg_root_dir)
   if (document) {
-    if (file.exists(rprojroot::find_package_root_file("DESCRIPTION"))) {
-      message("Running devtools::document() . . .")
-      devtools::document()
-    } else {
-      stop("Your package has no DESCRIPTION file.", "\n",
-           "    * Every R package must have a DESCRIPTION file ",
-           "in the root directory.")
-    }
+    message("Running devtools::document() . . .")
+    invisible(utils::capture.output(devtools::document()))
   }
   if (stringr::str_detect(r_file_name, "/"))
     r_file_name <- filesstrings::str_after_last(r_file_name, "/")
@@ -342,17 +357,20 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
 make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE,
                                   e_e = TRUE, open = FALSE, document = TRUE) {
   current_wd <- getwd()
-  setwd(pkg_dir)
   on.exit(setwd(current_wd))
+  setwd(pkg_dir)
+  pkg_root_dir <- try(rprojroot::find_root("DESCRIPTION"), silent = TRUE)
+  if (inherits(pkg_root_dir, "try-error")) {
+    stop("Your package has no DESCRIPTION file.", "\n",
+         "    * Every R package must have a DESCRIPTION file ",
+         "in the root directory. ",
+         "Perhaps you specified the wrong `pkg_dir` in the argument to ",
+         "`extract_examples()`? The default is the current directory.")
+  }
+  setwd(pkg_root_dir)
   if (document) {
-    if (file.exists(rprojroot::find_package_root_file("DESCRIPTION"))) {
-      message("Running devtools::document() . . .")
-      devtools::document()
-    } else {
-      stop("Your package has no DESCRIPTION file.", "\n",
-           "    * Every R package must have a DESCRIPTION file ",
-           "in the root directory.")
-    }
+    message("Running devtools::document() . . .")
+    invisible(utils::capture.output(devtools::document()))
   }
   list.files(path = rprojroot::find_package_root_file("R")) %>%
     purrr::map(make_tests_shells_file, overwrite = overwrite, e_e = e_e,
