@@ -266,8 +266,9 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
     }
   }
   examples %<>% {.[[fun_index]]}
-  test_shell <- make_test_shell(examples, paste0(fun, "() works"), e_e = e_e)
-  context <- paste0("context(\"", fun, "()\")")
+  test_shell <- make_test_shell(examples, paste0("`", fun, "()` works"),
+                                e_e = e_e)
+  context <- paste0("context(\"`", fun, "()`\")")
   combined <- c(context, "", test_shell)
   test_file_name <- paste0(rprojroot::find_package_root_file("tests"),
                            "/testthat/test-", fun, "-examples") %>%
@@ -320,7 +321,7 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
     return(invisible(character(0)))
   }
   test_shells <- mapply(make_test_shell, SIMPLIFY = FALSE,
-                        exampless, paste0(names(exampless), "() works"),
+                        exampless, paste0("`", names(exampless), "()` works"),
                         e_e = e_e)
   context <- r_file_name %>%
     filesstrings::before_last_dot() %>%

@@ -1,5 +1,5 @@
 context("Example extraction")
-test_that("extract_examples() works", {
+test_that("`extract_examples()` works", {
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(tempdir())
@@ -40,7 +40,7 @@ test_that("extract_examples() works", {
 })
 
 context("Test shells")
-test_that("make_test_shell() works", {
+test_that("`make_test_shell()` works", {
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(tempdir())
@@ -77,7 +77,7 @@ test_that("make_test_shell() works", {
 })
 
 context("Functions")
-test_that("make_tests_shell_fun() works", {
+test_that("`make_tests_shell_fun()` works", {
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(tempdir())
@@ -87,9 +87,9 @@ test_that("make_tests_shell_fun() works", {
                                         package = "exampletestr"), "R")))
   make_test_shell_fun("str_detect()", open = FALSE)
   expect_equal(readr::read_lines("tests/testthat/test-str_detect-examples.R"),
-               c("context(\"str_detect()\")",
+               c("context(\"`str_detect()`\")",
                  "",
-                 "test_that(\"str_detect() works\", {",
+                 "test_that(\"`str_detect()` works\", {",
                  "  fruit <- c(\"apple\", \"banana\", \"pear\", \"pinapple\")",
                  "  expect_equal(str_detect(fruit, \"a\"), )",
                  "  expect_equal(str_detect(fruit, \"^a\"), )",
@@ -101,9 +101,9 @@ test_that("make_tests_shell_fun() works", {
   make_test_shell_fun("str_match_all", open = FALSE)
   expect_equal(
     readr::read_lines("tests/testthat/test-str_match_all-examples.R"),
-    c("context(\"str_match_all()\")",
+    c("context(\"`str_match_all()`\")",
       "",
-      "test_that(\"str_match_all() works\", {",
+      "test_that(\"`str_match_all()` works\", {",
       "  strings <- c(",
       "    \" 219 733 8965\", \"329-293-8753 \", \"banana\", \"595 794 7569\",",
       "    \"387 287 6718\", \"apple\", \"233.398.9187  \", \"482 952 3315\",",
@@ -135,7 +135,7 @@ test_that("make_tests_shell_fun() works", {
 
 
 context("Files")
-test_that("make_tests_shells_file() works", {
+test_that("`make_tests_shells_file()` works", {
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(tempdir())
@@ -147,7 +147,7 @@ test_that("make_tests_shells_file() works", {
   expect_equal(readr::read_lines("tests/testthat/test-detect-examples.R"),
                c("context(\"Detect\")",
                  "",
-                 "test_that(\"str_detect() works\", {",
+                 "test_that(\"`str_detect()` works\", {",
                  "  fruit <- c(\"apple\", \"banana\", \"pear\", \"pinapple\")",
                  "  expect_equal(str_detect(fruit, \"a\"), )",
                  "  expect_equal(str_detect(fruit, \"^a\"), )",
@@ -165,7 +165,7 @@ test_that("make_tests_shells_file() works", {
   expect_equal(readr::read_lines("tests/testthat/test-detect-examples.R"),
                c("context(\"Detect\")",
                  "",
-                 "test_that(\"str_detect() works\", {",
+                 "test_that(\"`str_detect()` works\", {",
                  "  fruit <- c(\"apple\", \"banana\", \"pear\", \"pinapple\")",
                  "  expect_equal(str_detect(fruit, \"a\"), )",
                  "  expect_equal(str_detect(fruit, \"^a\"), )",
