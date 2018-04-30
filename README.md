@@ -1,5 +1,5 @@
-exampletestr
-================
+
+# `exampletestr` <img src="junk/sticker.png" height="200" align="right">
 
 An R package to help developers create unit tests (designed for use with
 the testthat package) for their package, based on the examples in their
@@ -51,7 +51,7 @@ devtools::create("tempkg")
     #> Version: 0.0.0.9000
     #> Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
     #> Description: What the package does (one paragraph).
-    #> Depends: R (>= 3.4.3)
+    #> Depends: R (>= 3.5.0)
     #> License: What license is it under?
     #> Encoding: UTF-8
     #> LazyData: true
@@ -161,6 +161,12 @@ So let’s demonstrate `extract_examples`:
 extract_examples("match", pkg_dir = "tempkg")
 ```
 
+    #> Running devtools::document() . . .
+
+    #> Updating tempkg documentation
+
+    #> Loading tempkg
+
     #> $str_match
     #>  [1] "### Name: str_match"                                                             
     #>  [2] "### Title: Extract matched groups from a string."                                
@@ -192,12 +198,18 @@ extract_examples("match", pkg_dir = "tempkg")
     #> [28] ""
 
 Indeed we get all of the lines of the documentation examples. Now with
-`make_test_shell`, we turn it into something usable with
-`testthat`:
+`make_test_shell`, we turn it into something usable with `testthat`:
 
 ``` r
-lapply(extract_examples("match", pkg_dir = "tempkg"), make_test_shell, "whatevs")
+lapply(extract_examples("match", pkg_dir = "tempkg"), make_test_shell, 
+       "whatevs")
 ```
+
+    #> Running devtools::document() . . .
+
+    #> Updating tempkg documentation
+
+    #> Loading tempkg
 
     #> $str_match
     #>  [1] "test_that(\"whatevs\", {"                                                 
@@ -223,8 +235,14 @@ We can make the unit tests *shell* file (*shell* because it needs to be
 filled in) via `make_tests_shell_file`. Running
 
 ``` r
-make_tests_shells_file("match", pkg_dir = "tempkg")
+make_tests_shells_file("match", pkg_dir = "tempkg", open = FALSE)
 ```
+
+    #> Running devtools::document() . . .
+
+    #> Updating tempkg documentation
+
+    #> Loading tempkg
 
 outputs a `test-utils.R` file in the `tests/testthat` folder with
 contents

@@ -1,11 +1,12 @@
 ---
-title: "exampletestr"
 output: github_document
 ---
 
 ```{r knitr setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, comment = "#>")
 ```
+
+# `exampletestr`  <img src="junk/sticker.png" height="200" align="right">
 
 An R package to help developers create unit tests (designed for use with the testthat package) for their package, based on the examples in their package documentation.
 
@@ -107,12 +108,13 @@ extract_examples("match", pkg_dir = "tempkg")
 
 Indeed we get all of the lines of the documentation examples. Now with `make_test_shell`, we turn it into something usable with `testthat`:
 ```{r Demonstrate make_test_shell}
-lapply(extract_examples("match", pkg_dir = "tempkg"), make_test_shell, "whatevs")
+lapply(extract_examples("match", pkg_dir = "tempkg"), make_test_shell, 
+       "whatevs")
 ```
 
 We can make the unit tests _shell_ file (_shell_ because it needs to be filled in) via `make_tests_shell_file`. Running 
 ```{r make_tests_shells_file}
-make_tests_shells_file("match", pkg_dir = "tempkg")
+make_tests_shells_file("match", pkg_dir = "tempkg", open = FALSE)
 ```
 ```{r load stringr, include=FALSE}
 library(stringr)
