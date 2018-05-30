@@ -1,0 +1,7 @@
+*.html linguist-documentation=true 
+*.class linguist-documentation=true 
+*.jar linguist-documentation=true 
+*.java linguist-documentation=true
+*.cpp linguist-documentation=true
+*.tex linguist-documentation=true
+*.log linguist-documentation=true
