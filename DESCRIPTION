@@ -16,7 +16,7 @@ Imports:
     magrittr,
     stringr,
     devtools,
-    styler,
+    styler (>= 1.0.2),
     purrr,
     roxygen2,
     checkmate,
