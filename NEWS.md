@@ -1,3 +1,9 @@
+### 1.3.1
+
+#### BUG FIXES
+* Enforce bug-fixed new verisons of `styler` and `filesstrings`.
+
+
 ### 1.3.0
 
 #### NEW FEATURES
