@@ -1,3 +1,16 @@
+## `exampletestr` 1.4.0
+
+#### NEW FEATURES
+* A `pkgdown` site at https://rorynolan.github.io/exampletestr/index.html.
+* More vignettes.
+
+#### MINOR IMPROVEMENTS
+* Better messages and warnings, in the style of the `usethis` package.
+
+#### BUG FIXES
+* Now depending appropriately on `usethis` instead of relying on `devtools` for things that are now implemented in `usethis`.
+
+
 ## `exampletestr` 1.3.1
 
 #### BUG FIXES

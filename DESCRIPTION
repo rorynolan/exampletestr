@@ -50,9 +50,12 @@ Imports:
 RoxygenNote: 6.1.0
 URL: https://www.github.com/rorynolan/exampletestr
 BugReports: https://www.github.com/rorynolan/exampletestr/issues
-Suggests: testthat,
+Suggests: 
+    testthat,
     covr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    spelling
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
+Language: en-US

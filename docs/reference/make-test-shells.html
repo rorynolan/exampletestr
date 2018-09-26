@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -97,7 +97,7 @@ directory of a package.
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/one-file-at-a-time.html">One R file at a time</a>
+      <a href="../articles/one-file-at-a-time.html">One .R file at a time</a>
     </li>
     <li>
       <a href="../articles/one-function-at-a-time.html">One function at a time</a>
@@ -206,14 +206,14 @@ onto the front.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw pkg'>usethis</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/usethis/topics/create_package'>create_package</a></span>(<span class='fu'>tempdir</span>(), <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; ✔ Setting active project to '/private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/RtmpBS6O8I'
+    <pre class="examples"><div class='input'><span class='kw pkg'>usethis</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/usethis/topics/create_package'>create_package</a></span>(<span class='fu'>tempdir</span>(), <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; ✔ Setting active project to '/private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/Rtmp6CKU8J'
 #&gt; ✔ Creating 'R/'
 #&gt; ✔ Creating 'man/'
 #&gt; ✔ Writing 'DESCRIPTION'
 #&gt; ✔ Writing 'NAMESPACE'</div><div class='input'><span class='fu'>file.copy</span>(<span class='fu'>system.file</span>(<span class='st'>"extdata"</span>, <span class='fu'>c</span>(<span class='st'>"detect.R"</span>, <span class='st'>"match.R"</span>),
                       <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"exampletestr"</span>),
           <span class='fu'>paste0</span>(<span class='fu'>tempdir</span>(), <span class='st'>"/R"</span>))</div><div class='output co'>#&gt; [1] TRUE TRUE</div><div class='input'><span class='fu'>make_test_shell_fun</span>(<span class='st'>"str_detect()"</span>, <span class='kw'>document</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-                    <span class='kw'>pkg_dir</span> <span class='kw'>=</span> <span class='fu'>tempdir</span>())</div><div class='output co'>#&gt; <span class='message'>Running `devtools::document()` . . .</span></div><div class='output co'>#&gt; <span class='message'>Updating RtmpBS6O8I documentation</span></div><div class='output co'>#&gt; <span class='message'>Updating roxygen version in /private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/RtmpBS6O8I/DESCRIPTION</span></div><div class='output co'>#&gt; <span class='message'>Loading RtmpBS6O8I</span></div><div class='output co'>#&gt; ✔ Adding 'testthat' to Suggests field in DESCRIPTION
+                    <span class='kw'>pkg_dir</span> <span class='kw'>=</span> <span class='fu'>tempdir</span>())</div><div class='output co'>#&gt; <span class='message'>Running `devtools::document()` . . .</span></div><div class='output co'>#&gt; <span class='message'>Updating Rtmp6CKU8J documentation</span></div><div class='output co'>#&gt; <span class='message'>Updating roxygen version in /private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/Rtmp6CKU8J/DESCRIPTION</span></div><div class='output co'>#&gt; <span class='message'>Loading Rtmp6CKU8J</span></div><div class='output co'>#&gt; ✔ Adding 'testthat' to Suggests field in DESCRIPTION
 #&gt; ✔ Creating 'tests/testthat/'
 #&gt; ✔ Writing 'tests/testthat.R'
 #&gt; ✔ Wrote `tests/testthat/test-str_detect-examples.R`.
