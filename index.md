@@ -32,9 +32,20 @@ devtools::install_github("rorynolan/exampletestr")
 There are three ways to use `exampletestr` to make unit test shells
 based on function examples:
 
-1.  One function at a time.
-2.  One `.R` file at a time.
-3.  A whole package all at once.
+1.  [One function at a
+    time](https://rorynolan.github.io/exampletestr/articles/one-function-at-a-time.html).
+2.  [One `.R` file at a
+    time](https://rorynolan.github.io/exampletestr/articles/one-file-at-a-time.html).
+3.  [A whole package all at
+    once](https://rorynolan.github.io/exampletestr/articles/whole-package.html).
 
 These three articles should be read in order to learn how the package
 works and how to use it.
+
+## The Goal is NOT Fully Automated Unit Test Creation
+
+I would like to stress that whilst unit testing should be automatic, the
+creation of these tests is a manual process, a manual check. This
+package is supposed to help you to *start* making those tests. It is not
+supposed to create fully functioning tests automatically, nor can it
+help you to write every type of test you might want.

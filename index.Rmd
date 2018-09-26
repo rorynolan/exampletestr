@@ -36,9 +36,9 @@ devtools::install_github("rorynolan/exampletestr")
 
 There are three ways to use `exampletestr` to make unit test shells based on function examples:
 
-1. One function at a time.
-1. One `.R` file at a time.
-1. A whole package all at once.
+1. [One function at a time](https://rorynolan.github.io/exampletestr/articles/one-function-at-a-time.html).
+1. [One `.R` file at a time](https://rorynolan.github.io/exampletestr/articles/one-file-at-a-time.html).
+1. [A whole package all at once](https://rorynolan.github.io/exampletestr/articles/whole-package.html).
 
 These three articles should be read in order to learn how the package works and how to use it.
 

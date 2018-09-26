@@ -191,7 +191,7 @@ test_that("`make_tests_shell_fun()` works", {
   expect_error(make_test_shell_fun("hello", pkg_dir = tempdir(),
                                    document = TRUE),
                paste0("The function .+ is documented but has.+",
-                      "no.+accompanying examples.+",
+                      "no.+accompanying.+examples.+",
                       "only works on.+functions with examples.")
   )
   suppressMessages(empty_dir(tempdir()))
