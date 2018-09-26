@@ -192,7 +192,7 @@ test_that("`make_tests_shell_fun()` works", {
                                    document = TRUE),
                paste0("The function .+ is documented but has.+",
                       "no.+accompanying.+examples.+",
-                      "only works on.+functions with examples.")
+                      "only works on.+functions with.+examples.")
   )
   suppressMessages(empty_dir(tempdir()))
 })
