@@ -1,9 +1,26 @@
 Package: exampletestr
 Type: Package
 Title: Help for Writing Unit Tests Based on Function Examples
-Version: 1.3.1
-Authors@R: c(person("Rory", "Nolan", email = "rorynoolan@gmail.com", role = c("aut", "cre")),
-             person("Sergi", "Padilla-Parra", email = "spadilla@well.ox.ac.uk", role = "ths"))
+Version: 1.4.0
+Authors@R: 
+    c(person(given = "Rory",
+             family = "Nolan",
+             role = c("aut", "cre"),
+             email = "rorynoolan@gmail.com",
+             comment = c(ORCID = "0000-0002-5239-4043")),
+      person(given = "Sergi",
+             family = "Padilla-Parra",
+             role = "ths",
+             email = "spadilla@well.ox.ac.uk",
+             comment = c(ORCID = "0000-0002-8010-9481")),
+      person(given = "Thomas",
+             family = "Quinn",
+             role = "rev",
+             comment = c(ORCID = "0000-0003-0286-6329")),
+      person(given = "Laurent",
+             family = "Gatto",
+             role = "rev",
+             comment = c(ORCID = "0000-0002-1520-2268")))
 Maintainer: Rory Nolan <rorynoolan@gmail.com>
 Description: Take the examples written in your documentation of functions and 
     use them to create shells (skeletons which must be manually completed by
@@ -23,8 +40,14 @@ Imports:
     readr,
     utils,
     ore,
-    rprojroot
-RoxygenNote: 6.0.1
+    rprojroot,
+    usethis,
+    clisymbols,
+    crayon,
+    fs,
+    glue,
+    rlang
+RoxygenNote: 6.1.0
 URL: https://www.github.com/rorynolan/exampletestr
 BugReports: https://www.github.com/rorynolan/exampletestr/issues
 Suggests: testthat,

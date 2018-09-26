@@ -6,7 +6,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE, comment = "#>")
 ```
 
-# `exampletestr`  <img src="junk/sticker.png" height="200" align="right">
+# `exampletestr` <img src="man/figures/logo.png" align="right" height=140/>
 
 An R package to help developers create unit tests (designed for use with the testthat package) for their package, based on the examples in their package documentation.
 
@@ -32,7 +32,7 @@ First, let's set up a dummy package directory with just the `match.R` and `detec
 ```{r setup}
 library(exampletestr)
 library(testthat)
-devtools::create("tempkg")
+usethis::create_package("tempkg")
 devtools::use_testthat("tempkg")
 file.copy(system.file("extdata", c("match.R", "detect.R"), package = "exampletestr"), 
           "tempkg/R")

@@ -1,10 +1,10 @@
-### 1.3.1
+## `exampletestr` 1.3.1
 
 #### BUG FIXES
 * Enforce bug-fixed new verisons of `styler` and `filesstrings`.
 
 
-### 1.3.0
+## `exampletestr` 1.3.0
 
 #### NEW FEATURES
 * The naming of created files is now less likely to cause conflicts. Now each file created ends with "examples".
@@ -13,19 +13,19 @@
 * The use of file paths is now more stable thanks to the `rprojroot` package.
 
 
-### 1.2.0
+## `exampletestr` 1.2.0
 
 #### NEW FEATURES
-* `exampletestr` now names its test files in the same way as `devtools::use_test()`.
+* `exampletestr` now names its test files in the same way as `usethis::use_test()`.
 
 
-### 1.1.1
+## `exampletestr` 1.1.1
 
 #### BUG FIXES
 * The new R doesn't like it when the working directory is changed by running examples. This required a fix which this patch provides.
 
 
-### 1.1.0
+## `exampletestr` 1.1.0
 
 #### MINOR IMPROVEMENTS
 * Add `testthat::context()` to test shells.
@@ -35,32 +35,32 @@
 * Fix issues with open text connections.
 
 
-### 1.0.1
+## `exampletestr` 1.0.1
 
 #### BUG FIXES
 * The CITATION is now correct.
 
 
-## 1.0.0
+## `exampletestr` 1.0.0
 
 * The package has now passed peer review.
 
 
-### 0.5.0
+## `exampletestr` 0.5.0
 
 #### MINOR IMPROVEMENTS
 * Minor documentation improvement.
-* There's no longer an error telling you to run `devtools::use_testthat()`, now this is just done for you.
+* There's no longer an error telling you to run `usethis::use_testthat()`, now this is just done for you.
 
 
-### 0.4.2
+## `exampletestr` 0.4.2
 
 #### MINOR IMPROVEMENTS
 * Add explicit LICENSE file to github.
 * Publish to Wellcome Open Research.
 
 
-### 0.4.1
+## `exampletestr` 0.4.1
 
 #### BUG FIXES
 * Fix to an error in DESCRIPTION.
@@ -69,7 +69,7 @@
 * Minor documentation improvement.
 
 
-### 0.4.0
+## `exampletestr` 0.4.0
 
 #### NEW FEATURES
 * There is now the option to not put stuff in `expect_equal()` statements by default.
@@ -79,10 +79,10 @@
 * Comments in examples are handled better.
 
 
-### 0.3.1
+## `exampletestr` 0.3.1
 
 #### BUG FIXES
 * Minor fix to vignette.
 
-## exampletestr 0.3.0
+## `exampletestr` 0.3.0
 * First CRAN-worthy version.
