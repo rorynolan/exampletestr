@@ -1,0 +1,10 @@
+construct_expect_equal	construct_expect_equal
+extract_examples	extract_examples
+extract_examples_rd	extract_examples_rd
+extract_expressions	extract_expressions
+make_tests_shells_file	test-shells
+make_tests_shells_pkg	test-shells
+make_test_shell	make_test_shell
+make_test_shell_fun	test-shells
+test-shells	test-shells
+text_parse_error	text_parse_error

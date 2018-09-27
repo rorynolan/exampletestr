@@ -1,6 +1,5 @@
 ---
 title: "A whole package"
-author: "Rory Nolan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
