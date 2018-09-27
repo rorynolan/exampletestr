@@ -48,7 +48,7 @@ Imports:
     glue,
     rlang
 RoxygenNote: 6.1.0
-URL: https://www.github.com/rorynolan/exampletestr
+URL: https://rorynolan.github.io/exampletestr
 BugReports: https://www.github.com/rorynolan/exampletestr/issues
 Suggests: 
     testthat,
