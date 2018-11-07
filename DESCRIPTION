@@ -28,6 +28,7 @@ Description: Take the examples written in your documentation of functions and
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.5.0)
 Imports:
     filesstrings (>= 3.0.0),
     magrittr,
@@ -54,7 +55,8 @@ Suggests:
     covr,
     knitr,
     rmarkdown,
-    spelling
+    spelling,
+    pacman
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Language: en-US

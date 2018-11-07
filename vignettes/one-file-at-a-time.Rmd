@@ -12,23 +12,38 @@ vignette: >
 init_wd <- getwd()
 knitr::opts_chunk$set(echo = TRUE, comment = "#>")
 knitr::opts_knit$set(root.dir = tempdir(check = TRUE))
-library(testthat)
+pacman::p_load(testthat, exampletestr, stringr)
 ```
 
 This vignette will teach you how to create a unit test shell for all of the examples in a single `.R` file's documentation.
 
+I'm going to be extra careful and use `rprojroot` for my paths because I'm in the tricky situation of making a package inside a package vignette. If you're a package author and you don't know the `rprojroot` package, it's worth getting to know it.
+
 
 ## Setup
 
-First, let's set up a dummy package directory with just the `detect.R` and `match.R` files from the source code of the `stringr` package.
+First, let's set up a dummy package called `tempkg` with just the `detect.R` and `match.R` files from the source code of the `stringr` package.
 
 ```{r setup, results='hide'}
-library(exampletestr)
 usethis::create_package("tempkg", open = FALSE)
-setwd("tempkg")
-file.copy(system.file("extdata", c("detect.R", "match.R"), 
-                      package = "exampletestr"), 
-          rprojroot::find_package_root_file("R/"))
+file.copy(
+  system.file("extdata", c("detect.R", "match.R"), package = "exampletestr"), 
+  rprojroot::find_root_file(
+    "tempkg/R/", 
+    criterion = rprojroot::has_dir("tempkg")
+  )
+)
+```
+
+Now let's move into the `tempkg` directory.
+
+```{r fake-dir-change, eval=FALSE}
+setwd(
+  rprojroot::find_root_file(
+    "tempkg/", 
+    criterion = rprojroot::has_dir("tempkg")
+  )
+)
 ```
 
 ```{r further-knitr-setup, include=FALSE}
@@ -61,7 +76,8 @@ str_detect <- function(string, pattern) {
          empty = ,
          bound = str_count(string, pattern) > 0,
          fixed = stri_detect_fixed(string, pattern, opts_fixed = opts(pattern)),
-         coll  = stri_detect_coll(string,  pattern, opts_collator = opts(pattern)),
+         coll  = stri_detect_coll(string,  pattern, 
+                                  opts_collator = opts(pattern)),
          regex = stri_detect_regex(string, pattern, opts_regex = opts(pattern))
   )
 }
@@ -90,10 +106,6 @@ test_that("`str_detect()` works", {
 
 which can be sensibly completed as
 
-```{r enter-stringr, include=FALSE}
-library(stringr)
-```
-
 ```{r fill in test shell}
 context("Detect")
 
@@ -111,8 +123,8 @@ test_that("`str_detect()` works", {
 
 
 ```{r setdown, include=FALSE}
-setwd("..")
-filesstrings::dir.remove("tempkg")
+knitr::opts_knit$set(root.dir = tempdir(check = TRUE))
+if (dir.exists("tempkg")) filesstrings::dir.remove("tempkg")
 knitr::opts_knit$set(root.dir = init_wd)
 ```
 
