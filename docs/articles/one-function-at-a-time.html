@@ -67,7 +67,14 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/rorynolan/exampletestr">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -83,7 +90,7 @@
             
             <h4 class="date">2018-11-07</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/rorynolan/exampletestr/blob/master/vignettes/one-function-at-a-time.Rmd"><code>vignettes/one-function-at-a-time.Rmd</code></a></small>
       <div class="hidden name"><code>one-function-at-a-time.Rmd</code></div>
 
     </div>
@@ -91,72 +98,82 @@
     
     
 <p>This vignette will teach you how to create a unit test shell for the examples in a single function’s documentation.</p>
+<p>I’m going to be extra careful and use <code>rprojroot</code> for my paths because I’m in the tricky situation of making a package inside a package vignette. If you’re a package author and you don’t know the <code>rprojroot</code> package, it’s worth getting to know it.</p>
 <div id="setup" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h2>
-<p>First, let’s set up a dummy package directory with just the <code>detect.R</code> and <code>match.R</code> files from the source code of the <code>stringr</code> package.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(exampletestr)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">usethis<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/usethis/topics/create_package">create_package</a></span>(<span class="st">"tempkg"</span>, <span class="dt">open =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">setwd</span>(<span class="st">"tempkg"</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">file.copy</span>(<span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="kw">c</span>(<span class="st">"detect.R"</span>, <span class="st">"match.R"</span>), </a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">                      <span class="dt">package =</span> <span class="st">"exampletestr"</span>), </a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">          rprojroot<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rprojroot/topics/find_root_file">find_package_root_file</a></span>(<span class="st">"R/"</span>))</a></code></pre></div>
+<p>First, let’s set up a dummy package called <code>tempkg</code> with just the <code>detect.R</code> and <code>match.R</code> files from the source code of the <code>stringr</code> package.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">usethis<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/usethis/topics/create_package">create_package</a></span>(<span class="st">"tempkg"</span>, <span class="dt">open =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">file.copy</span>(</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="kw">c</span>(<span class="st">"detect.R"</span>, <span class="st">"match.R"</span>), <span class="dt">package =</span> <span class="st">"exampletestr"</span>), </a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">  rprojroot<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rprojroot/topics/find_root_file">find_root_file</a></span>(</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">    <span class="st">"tempkg/R/"</span>, </a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">    <span class="dt">criterion =</span> rprojroot<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rprojroot/topics/root_criterion">has_dir</a></span>(<span class="st">"tempkg"</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">  )</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">)</a></code></pre></div>
+<p>Now let’s move into the <code>tempkg</code> directory.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">setwd</span>(</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  rprojroot<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rprojroot/topics/find_root_file">find_root_file</a></span>(</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="st">"tempkg/"</span>, </a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">criterion =</span> rprojroot<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rprojroot/topics/root_criterion">has_dir</a></span>(<span class="st">"tempkg"</span>)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">)</a></code></pre></div>
 <p>The <code>detect.R</code> file looks like this (well, I’ve abbreviated it slightly):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">#' Detect the presence or absence of a pattern in a string.</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#'</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#' Vectorised over `string` and `pattern`.</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#'</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#' @param string Input vector. Either a character vector, or something</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#'  coercible to one.</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#' @param pattern Pattern to look for.</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#'</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#' @return A logical vector.</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#' </span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#' @export</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#' @examples</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#' fruit &lt;- c("apple", "banana", "pear", "pinapple")</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#' str_detect(fruit, "a")</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#' str_detect(fruit, "^a")</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#' str_detect(fruit, "a$")</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#' str_detect(fruit, "b")</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#' str_detect(fruit, "[aeiou]")</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#'</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">str_detect &lt;-<span class="st"> </span><span class="cf">function</span>(string, pattern) {</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">  <span class="cf">switch</span>(<span class="kw">type</span>(pattern),</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">         <span class="dt">empty =</span> ,</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">         <span class="dt">bound =</span> <span class="kw">str_count</span>(string, pattern) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24">         <span class="dt">fixed =</span> <span class="kw">stri_detect_fixed</span>(string, pattern, <span class="dt">opts_fixed =</span> <span class="kw">opts</span>(pattern)),</a>
-<a class="sourceLine" id="cb2-25" data-line-number="25">         <span class="dt">coll  =</span> <span class="kw">stri_detect_coll</span>(string,  pattern, <span class="dt">opts_collator =</span> <span class="kw">opts</span>(pattern)),</a>
-<a class="sourceLine" id="cb2-26" data-line-number="26">         <span class="dt">regex =</span> <span class="kw">stri_detect_regex</span>(string, pattern, <span class="dt">opts_regex =</span> <span class="kw">opts</span>(pattern))</a>
-<a class="sourceLine" id="cb2-27" data-line-number="27">  )</a>
-<a class="sourceLine" id="cb2-28" data-line-number="28">}</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#' Detect the presence or absence of a pattern in a string.</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#'</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#' Vectorised over `string` and `pattern`.</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#'</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#' @param string Input vector. Either a character vector, or something</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#'  coercible to one.</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#' @param pattern Pattern to look for.</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#'</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#' @return A logical vector.</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#' </span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#' @export</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#' @examples</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#' fruit &lt;- c("apple", "banana", "pear", "pinapple")</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#' str_detect(fruit, "a")</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#' str_detect(fruit, "^a")</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#' str_detect(fruit, "a$")</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#' str_detect(fruit, "b")</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#' str_detect(fruit, "[aeiou]")</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#'</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">str_detect &lt;-<span class="st"> </span><span class="cf">function</span>(string, pattern) {</a>
+<a class="sourceLine" id="cb3-21" data-line-number="21">  <span class="cf">switch</span>(<span class="kw">type</span>(pattern),</a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">         <span class="dt">empty =</span> ,</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23">         <span class="dt">bound =</span> <span class="kw">str_count</span>(string, pattern) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb3-24" data-line-number="24">         <span class="dt">fixed =</span> <span class="kw">stri_detect_fixed</span>(string, pattern, <span class="dt">opts_fixed =</span> <span class="kw">opts</span>(pattern)),</a>
+<a class="sourceLine" id="cb3-25" data-line-number="25">         <span class="dt">coll  =</span> <span class="kw">stri_detect_coll</span>(string,  pattern, <span class="dt">opts_collator =</span> <span class="kw">opts</span>(pattern)),</a>
+<a class="sourceLine" id="cb3-26" data-line-number="26">         <span class="dt">regex =</span> <span class="kw">stri_detect_regex</span>(string, pattern, <span class="dt">opts_regex =</span> <span class="kw">opts</span>(pattern))</a>
+<a class="sourceLine" id="cb3-27" data-line-number="27">  )</a>
+<a class="sourceLine" id="cb3-28" data-line-number="28">}</a></code></pre></div>
 <p>We can make the unit tests <em>shell</em> file for the <code>str_match()</code> function using <code><a href="../reference/make-test-shells.html">make_test_shell_fun()</a></code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/make-test-shells.html">make_test_shell_fun</a></span>(<span class="st">"str_detect"</span>, <span class="dt">open =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/make-test-shells.html">make_test_shell_fun</a></span>(<span class="st">"str_detect"</span>, <span class="dt">open =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p>This outputs a <code>test-str_detect-examples.R</code> file in the <code>tests/testthat</code> folder with contents</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">context</span>(<span class="st">"`str_detect()`"</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">test_that</span>(<span class="st">"`str_detect()` works"</span>, {</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">  fruit &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span>)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a"</span>), )</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"^a"</span>), )</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a$"</span>), )</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"b"</span>), )</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"[aeiou]"</span>), )</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters), )</a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">})</a></code></pre></div>
-<p>which can be sensibly completed as</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">context</span>(<span class="st">"`str_detect()`"</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">test_that</span>(<span class="st">"`str_detect()` works"</span>, {</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4">  fruit &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span>)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a"</span>), <span class="kw">rep</span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"^a"</span>), <span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="kw">rep</span>(<span class="ot">FALSE</span>, <span class="dv">3</span>)))</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a$"</span>), <span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"b"</span>), <span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"[aeiou]"</span>), <span class="kw">rep</span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters), </a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">               letters <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span>))</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">})</a></code></pre></div>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a"</span>), )</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"^a"</span>), )</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a$"</span>), )</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"b"</span>), )</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"[aeiou]"</span>), )</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters), )</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">})</a></code></pre></div>
+<p>which can be sensibly completed as</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">context</span>(<span class="st">"`str_detect()`"</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">test_that</span>(<span class="st">"`str_detect()` works"</span>, {</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">  fruit &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span>)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a"</span>), <span class="kw">rep</span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"^a"</span>), <span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="kw">rep</span>(<span class="ot">FALSE</span>, <span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a$"</span>), <span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"b"</span>), <span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"[aeiou]"</span>), <span class="kw">rep</span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters), </a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">               letters <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span>))</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">})</a></code></pre></div>
 </div>
   </div>
 

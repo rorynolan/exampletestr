@@ -100,7 +100,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/rorynolan/exampletestr">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -114,7 +119,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1>Changelog <small></small></h1>
-      
+      <small>Source: <a href='https://github.com/rorynolan/exampletestr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
     <div id="exampletestr-1-4-1" class="section level2">
@@ -124,7 +129,11 @@
 <h4 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>BUG FIXES</h4>
 <ul>
-<li>Some calls to <code>tempdir()</code> needed to be <code>tempdir(check = TRUE)</code>.</li>
+<li>Some calls to <code>tempdir()</code> needed to be <code>tempdir(check = TRUE)</code>.
+<ul>
+<li>This necessitates a dependency on R &gt;= 3.5.0 (this is when the <code>check</code> option appeared in <code>tempdir()</code>).</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
