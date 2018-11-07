@@ -1,7 +1,7 @@
 context("Example extraction")
 test_that("`extract_examples()` works", {
   expect_error(
-    extract_examples("detect", tempdir()),
+    extract_examples("detect", tempdir(check = TRUE)),
     "no DESCRIPTION file"
   )
   utils::capture.output(usethis::create_package(tempdir(), open = FALSE)) %>%
@@ -44,7 +44,8 @@ test_that("`extract_examples()` works", {
 
 context("Test shells")
 test_that("`make_test_shell()` works", {
-  utils::capture.output(usethis::create_package(tempdir(), open = FALSE)) %>%
+  utils::capture.output(usethis::create_package(tempdir(check = TRUE),
+                                                open = FALSE)) %>%
     invisible()
   expect_true(file.copy(system.file("extdata", "detect.R",
     package = "exampletestr"
@@ -90,7 +91,8 @@ test_that("`make_test_shell()` works", {
 context("Functions")
 test_that("`make_tests_shell_fun()` works", {
   expect_error(
-    make_test_shell_fun("str_detect", open = FALSE, pkg_dir = tempdir()),
+    make_test_shell_fun("str_detect", open = FALSE,
+                        pkg_dir = tempdir(check = TRUE)),
     "no DESCRIPTION file"
   )
   utils::capture.output(usethis::create_package(tempdir(), open = FALSE)) %>%
@@ -202,7 +204,7 @@ context("Files")
 test_that("`make_tests_shells_file()` works", {
   cwd <- getwd()
   on.exit(setwd(cwd))
-  setwd(tempdir())
+  setwd(tempdir(check = TRUE))
   utils::capture.output(usethis::create_package("tempkg", open = FALSE)) %>%
     invisible()
   setwd("tempkg")

@@ -30,7 +30,7 @@ shell of an \code{expect_equal()} statement.}
 
 \item{open}{Open the created test file in your editor after it is created?}
 
-\item{document}{Run \code{\link[devtools:document]{devtools::document()}} to update package documentation
+\item{document}{Run \code{\link[roxygen2:roxygenize]{roxygen2::roxygenize()}} to update package documentation
 before starting?}
 
 \item{r_file_name}{The name of the \code{.R} file within \code{R/}. There's no need to
@@ -63,7 +63,7 @@ corresponding file \code{test-x-examples.R} in \code{tests/testthat}. \item
 directory of a package.}
 }
 \examples{
-usethis::create_package(tempdir(), open = FALSE)
+usethis::create_package(tempdir(check = TRUE), open = FALSE)
 file.copy(system.file("extdata", c("detect.R", "match.R"),
                       package = "exampletestr"),
           paste0(tempdir(), "/R"))

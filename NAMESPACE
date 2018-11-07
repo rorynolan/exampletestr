@@ -3,7 +3,6 @@
 export(make_test_shell_fun)
 export(make_tests_shells_file)
 export(make_tests_shells_pkg)
-importFrom(devtools,use_cran_badge)
 importFrom(magrittr,'%<>%')
 importFrom(magrittr,'%>%')
 importFrom(magrittr,'%T>%')

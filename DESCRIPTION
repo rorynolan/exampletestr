@@ -1,7 +1,7 @@
 Package: exampletestr
 Type: Package
 Title: Help for Writing Unit Tests Based on Function Examples
-Version: 1.4.0
+Version: 1.4.1
 Authors@R: 
     c(person(given = "Rory",
              family = "Nolan",
@@ -29,10 +29,9 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-    filesstrings (>= 2.7.0),
+    filesstrings (>= 3.0.0),
     magrittr,
     stringr,
-    devtools,
     styler (>= 1.0.2),
     purrr,
     roxygen2,

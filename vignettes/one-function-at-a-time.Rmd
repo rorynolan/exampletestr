@@ -11,7 +11,7 @@ vignette: >
 ```{r knitr-setup, include=FALSE}
 init_wd <- getwd()
 knitr::opts_chunk$set(echo = TRUE, comment = "#>")
-knitr::opts_knit$set(root.dir = tempdir())
+knitr::opts_knit$set(root.dir = tempdir(check = TRUE))
 library(testthat)
 ```
 

@@ -19,7 +19,7 @@
 #'   `R/` or `man/`). Beware that this behaviour can cause a problem if you have
 #'   an R package inside an R package (but really, you have yourself to blame if
 #'   that's the case).
-#' @param document Run [devtools::document()] to update package documentation
+#' @param document Run [roxygen2::roxygenize()] to update package documentation
 #'   before starting?
 #'
 #' @examples
@@ -53,8 +53,8 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
   }
   setwd(pkg_root_dir)
   if (document) {
-    message("Running ", code("devtools::document()"), " . . .")
-    invisible(utils::capture.output(devtools::document()))
+    message("Running ", code("roxygen2::roxygenize()"), " . . .")
+    invisible(utils::capture.output(roxygen2::roxygenize()))
   }
   if (!dir.exists(rprojroot::find_package_root_file("man"))) {
     custom_stop("The package has no {code('man/')} folder.",
@@ -235,7 +235,7 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
 #' @param e_e Set this to `FALSE` to prevent anything from being put in the
 #'   shell of an `expect_equal()` statement.
 #' @param open Open the created test file in your editor after it is created?
-#' @param document Run [devtools::document()] to update package documentation
+#' @param document Run [roxygen2::roxygenize()] to update package documentation
 #'   before starting?
 #'
 #' @return The shell of the test file is written into tests/testthat. It has the
@@ -243,7 +243,7 @@ make_test_shell <- function(example_block, desc = "", e_e = TRUE) {
 #'   onto the front.
 #'
 #' @examples
-#' usethis::create_package(tempdir(), open = FALSE)
+#' usethis::create_package(tempdir(check = TRUE), open = FALSE)
 #' file.copy(system.file("extdata", c("detect.R", "match.R"),
 #'                       package = "exampletestr"),
 #'           paste0(tempdir(), "/R"))
@@ -287,8 +287,8 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
   }
   setwd(pkg_root_dir)
   if (document) {
-    message("Running ", code("devtools::document()"), " . . .")
-    invisible(utils::capture.output(devtools::document()))
+    message("Running ", code("roxygen2::roxygenize()"), " . . .")
+    invisible(utils::capture.output(roxygen2::roxygenize()))
   }
   examples <- list.files(rprojroot::find_package_root_file("R")) %>%
     purrr::map(extract_examples, document = FALSE) %>%
@@ -392,8 +392,8 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   }
   setwd(pkg_root_dir)
   if (document) {
-    message("Running ", code("devtools::document()"), " . . .")
-    invisible(utils::capture.output(devtools::document()))
+    message("Running ", code("roxygen2::roxygenize()"), " . . .")
+    invisible(utils::capture.output(roxygen2::roxygenize()))
   }
   if (stringr::str_detect(r_file_name, "/")) {
     r_file_name <- filesstrings::str_after_last(r_file_name, "/")
@@ -481,8 +481,8 @@ make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE,
   }
   setwd(pkg_root_dir)
   if (document) {
-    message("Running devtools::document() . . .")
-    invisible(utils::capture.output(devtools::document()))
+    message("Running roxygen2::roxygenize() . . .")
+    invisible(utils::capture.output(roxygen2::roxygenize()))
   }
   list.files(path = rprojroot::find_package_root_file("R")) %>%
     purrr::map(make_tests_shells_file,

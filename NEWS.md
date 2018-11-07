@@ -1,3 +1,9 @@
+## `exampletestr` 1.4.1
+
+#### BUG FIXES
+* Some calls to `tempdir()` needed to be `tempdir(check = TRUE)`.
+
+
 ## `exampletestr` 1.4.0
 
 #### NEW FEATURES
