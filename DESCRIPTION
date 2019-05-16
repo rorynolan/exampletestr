@@ -1,7 +1,7 @@
 Package: exampletestr
 Type: Package
 Title: Help for Writing Unit Tests Based on Function Examples
-Version: 1.4.1
+Version: 1.5.0
 Authors@R: 
     c(person(given = "Rory",
              family = "Nolan",
@@ -24,36 +24,34 @@ Authors@R:
 Maintainer: Rory Nolan <rorynoolan@gmail.com>
 Description: Take the examples written in your documentation of functions and 
     use them to create shells (skeletons which must be manually completed by
-    the user) of test files to be tested with the 'testthat' package. 
+    the user) of test files to be tested with the 'testthat' package. Sort of 
+    like python 'doctests' for R.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
 Imports:
-    filesstrings (>= 3.0.0),
+    filesstrings (>= 3.1.1),
     magrittr,
     stringr,
-    styler (>= 1.0.2),
+    styler (>= 1.1.1),
     purrr,
     roxygen2,
-    checkmate,
+    checkmate (>= 1.9.3),
     readr,
-    utils,
     ore (>= 1.4.0),
-    rprojroot,
-    usethis,
-    clisymbols,
-    crayon,
-    fs,
-    glue,
-    rlang
-RoxygenNote: 6.1.0
+    usethis (>= 1.5.0),
+    fs (>= 1.2.3),
+    glue (>= 1.3.0),
+    rlang (>= 0.3.3),
+    withr
+RoxygenNote: 6.1.1
 URL: 
     https://rorynolan.github.io/exampletestr, 
     https://github.com/rorynolan/exampletestr#readme
 BugReports: https://www.github.com/rorynolan/exampletestr/issues
 Suggests: 
-    testthat,
+    testthat (>= 2.1.0),
     covr,
     knitr,
     rmarkdown,

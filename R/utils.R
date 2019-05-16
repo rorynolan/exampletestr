@@ -29,10 +29,12 @@ text_parse_error <- function(text_expr) {
 #' @return A list of character vectors, each of which can be evaluated as a
 #'   valid R expression.
 #' @examples
-#' text_expr <- c("a <- 1",
-#'                "fx <- function(x) {",
-#'                "  x + 1",
-#'                "}  # this comment will disappear")
+#' text_expr <- c(
+#'   "a <- 1",
+#'   "fx <- function(x) {",
+#'   "  x + 1",
+#'   "}  # this comment will disappear"
+#' )
 #' extract_expressions(text_expr)
 #' @noRd
 extract_expressions <- function(text_expr) {
@@ -79,9 +81,10 @@ construct_expect_equal <- function(text_expr) {
 #' @return A character vector.
 #'
 #' @examples
-#' this_function_rd <- system.file("extdata", "str_detect.Rd",
-#'                                 package = "exampletestr")
-#' extract_examples_rd(this_function_rd)
+#' str_detect_rd <- system.file("extdata", "str_detect.Rd",
+#'   package = "exampletestr"
+#' )
+#' extract_examples_rd(str_detect_rd)
 #' @noRd
 extract_examples_rd <- function(rd_file_path) {
   checkmate::assert_file_exists(rd_file_path)
@@ -102,15 +105,13 @@ extract_examples_rd <- function(rd_file_path) {
 #' @noRd
 is_documented <- function(fun) {
   checkmate::assert_string(fun)
-  init_wd <- getwd()
-  on.exit(setwd(getwd()))
-  setwd(rprojroot::find_package_root_file())
-  if (!dir.exists(rprojroot::find_package_root_file("man"))) {
+  if (!fs::dir_exists(usethis::proj_path("man"))) {
     return(FALSE)
   }
-  setwd(rprojroot::find_package_root_file("man"))
-  rd_files <- dir(pattern = "\\.Rd$")
-  if (!length(rd_files)) return(FALSE)
+  rd_files <- fs::dir_ls(usethis::proj_path("man"), regexp = "\\.Rd$")
+  if (!length(rd_files)) {
+    return(FALSE)
+  }
   rd_contents <- purrr::map(rd_files, readr::read_lines) %>%
     purrr::map_chr(stringr::str_c, collapse = "") %>%
     magrittr::set_names(rd_files)
@@ -133,33 +134,44 @@ is_documented <- function(fun) {
   FALSE
 }
 
-cat_line <- function(...) cat(..., "\n", sep = "")
-
-todo_bullet <- function() crayon::red(clisymbols::symbol$bullet)
-done_bullet <- function() crayon::green(clisymbols::symbol$tick)
-
-bulletize <- function(line, bullet = "*", .envir = parent.frame()) {
-  line %<>% glue::glue(.envir = .envir)
-  paste0(bullet, " ", line)
+exampletestr_document <- function(usethis_quiet) {
+  withr::with_options(list(usethis.quiet = usethis_quiet), {
+    usethis::ui_info(paste("Running",
+                           "{usethis::ui_code('roxygen2::roxygenize')}",
+                           ". . ."))
+    proj_location <- withr::with_options(list(usethis.quiet = TRUE),
+                                         usethis::proj_get())
+    invisible(utils::capture.output(roxygen2::roxygenize(proj_location)))
+    usethis::ui_done("Roxygenized :-)")
+  })
 }
 
-code <- function(...) {
-  x <- paste0(...)
-  crayon::make_style("darkgrey")(encodeString(x, quote = "`"))
-}
-
-empty_dir <- function(path) {
-  checkmate::assert_directory(path)
-  init_wd <- setwd(path)
-  on.exit(setwd(init_wd))
-  stuff <- dir()
-  for (s in stuff) {
-    if (isTRUE(checkmate::check_directory_exists(s))) {
-      filesstrings::dir.remove(s)
-    } else {
-      file.remove(s)
+make_available_test_file_name <- function(test_file_name) {
+  checkmate::assert_string(test_file_name)
+  withr::with_options(
+    list(usethis.quiet = TRUE), {
+      testthat_dir <- usethis::proj_path("tests", "testthat")
+      checkmate::assert_directory_exists(testthat_dir)
+    }
+  )
+  test_files <- fs::dir_ls(testthat_dir)
+  if (test_file_name %in% test_files) {
+    if (!stringr::str_detect(test_file_name, stringr::coll("-examples.R$"))) {
+      test_file_name %<>%
+        fs::path_ext_remove() %>%
+        paste0("-examples") %>%
+        filesstrings::give_ext("R")
+    }
+    i <- 1
+    while (test_file_name %in% test_files) {
+      test_file_name %<>%
+        filesstrings::before_last("examples") %>%
+        paste0("examples", "--", i) %>%
+        filesstrings::give_ext("R")
+      i <- i + 1
     }
   }
+  test_file_name
 }
 
 #' Construct the bullet point bits for `custom_stop()`.
@@ -213,18 +225,49 @@ custom_stop <- function(main_message, ..., .envir = parent.frame()) {
   rlang::abort(glue::glue_collapse(out, sep = "\n"))
 }
 
-#' Wrap messages to make them prettier.
-#'
-#' Format messages with line breaks so that single words don't appear on multiple lines.
-#'
-#' @param ... Bits of the message to be pasted together.
-#'
-#' @noRd
-pretty_msg <- function(...) {
-  dots <- unlist(list(...))
-  checkmate::assert_character(dots)
-  glue::glue_collapse(dots) %>%
-    strwrap(width = 63) %>%
-    glue::glue_collapse(sep = "\n") %>%
-    message()
+check_for_DESCRIPTION <- function() {
+  if (!fs::file_exists(usethis::proj_path("DESCRIPTION"))) {
+    pkgdireq <- paste0("pkg_dir = \"", usethis::proj_path(), "\"")
+    custom_stop(
+      "Your package has no {usethis::ui_path('DESCRIPTION')} file.",
+      "
+      Every R package must have a {usethis::ui_path('DESCRIPTION')} file in the
+      root directory.
+      ",
+      "Perhaps you specified the wrong {usethis::ui_code('pkg_dir')}?",
+      "You specified {usethis::ui_code(pkgdireq)}."
+    )
+  }
+  invisible(TRUE)
+}
+
+check_for_man <- function() {
+  pkgdireq <- paste0("pkg_dir = \"", usethis::proj_path(), "\"")
+  if (!fs::dir_exists(usethis::proj_path("man"))) {
+    custom_stop(
+      "
+      Your package has no
+      {usethis::ui_path(usethis::proj_path('man/'),
+                        usethis::proj_path())} folder.",
+      "
+      {usethis::ui_code('exampletestr')} looks for examples in the
+      {usethis::ui_path('*.Rd')} files in the
+      {usethis::ui_path(usethis::proj_path('man/'), usethis::proj_path())}
+      folder of a package and cannot function without them.
+      "
+    )
+  } else if (!length(fs::dir_ls(usethis::proj_path("man")))) {
+    custom_stop(
+      "Your package has no {usethis::ui_path('*.Rd')} files in its
+      {usethis::ui_path(usethis::proj_path('man'), usethis::proj_path())}
+      folder.",
+      "
+      exampletestr looks for examples in the {usethis::ui_path('*.Rd')}
+      files in the {usethis::ui_path(usethis::proj_path('man'),
+                    usethis::proj_path())} folder of a package and cannot
+      function if there are no {usethis::ui_path('*.Rd')} files there.
+      "
+    )
+  }
+  invisible(TRUE)
 }

@@ -17,8 +17,6 @@ pacman::p_load(testthat, exampletestr, stringr)
 
 This vignette will teach you how to create a unit test shell for the examples in a single function's documentation.
 
-I'm going to be extra careful and use `rprojroot` for my paths because I'm in the tricky situation of making a package inside a package vignette. If you're a package author and you don't know the `rprojroot` package, it's worth getting to know it.
-
 
 ## Setup
 
@@ -26,28 +24,26 @@ First, let's set up a dummy package called `tempkg` with just the `detect.R` and
 
 ```{r setup, results='hide'}
 usethis::create_package("tempkg", open = FALSE)
-file.copy(
+fs::file_copy(
   system.file("extdata", c("detect.R", "match.R"), package = "exampletestr"), 
-  rprojroot::find_root_file(
-    "tempkg/R/", 
-    criterion = rprojroot::has_dir("tempkg")
-  )
+  "tempkg/R/"
 )
 ```
 
-Now let's move into the `tempkg` directory.
+Now let's move into the `tempkg` directory:
 
 ```{r fake-dir-change, eval=FALSE}
-setwd(
-  rprojroot::find_root_file(
-    "tempkg/", 
-    criterion = rprojroot::has_dir("tempkg")
-  )
-)
+setwd("tempkg/")
 ```
 
 ```{r further-knitr-setup, include=FALSE}
 knitr::opts_knit$set(root.dir = paste0(tempdir(), "/", "tempkg"))
+```
+
+and set the active project:
+
+```{r proj-set}
+usethis::proj_set(".")
 ```
 
 The `detect.R` file looks like this (well, I've abbreviated it slightly):
@@ -120,10 +116,12 @@ test_that("`str_detect()` works", {
 })
 ```
 
-
-```{r setdown, include=FALSE}
+```{r setdown0}
 knitr::opts_knit$set(root.dir = tempdir(check = TRUE))
-if (dir.exists("tempkg")) filesstrings::dir.remove("tempkg")
+```
+
+```{r setdown}
+if (fs::dir_exists("tempkg")) fs::dir_delete("tempkg")
 knitr::opts_knit$set(root.dir = init_wd)
 ```
 

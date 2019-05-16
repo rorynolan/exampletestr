@@ -26,18 +26,18 @@ current directory). Note that this is the parent directory of R/.}
 exists?}
 
 \item{e_e}{Set this to \code{FALSE} to prevent anything from being put in the
-shell of an \code{expect_equal()} statement.}
+shell of a \code{\link[testthat:expect_equal]{testthat::expect_equal()}} statement.}
 
 \item{open}{Open the created test file in your editor after it is created?}
 
 \item{document}{Run \code{\link[roxygen2:roxygenize]{roxygen2::roxygenize()}} to update package documentation
 before starting?}
 
-\item{r_file_name}{The name of the \code{.R} file within \code{R/}. There's no need to
-specify the file path (as \code{R/x.R}, but you can do this if you want), you
-can just use \code{x.R} for whichever file \code{x} it is. You can also omit the \code{.R}
-for convenience, however using the wrong case (e.g. \code{.r} when the file
-actually has the extension \code{.R}) will produce an error.}
+\item{r_file_name}{The name of the '.R' file within 'R/'. There's no need to
+specify the file path (as 'R/x.R', but you can do this if you want), you
+can just use 'x.R' for whichever file 'x' it is. You can also omit the '.R'
+for convenience, however using the wrong case (e.g. '.r' when the file
+actually has the extension '.R') will produce an error.}
 }
 \value{
 The shell of the test file is written into tests/testthat. It has the
@@ -47,31 +47,40 @@ onto the front.
 \description{
 \itemize{\item For a given function \code{fun()} in a package,
 \link[=make-test-shells]{make_test_shell_fun()} checks if there are examples for
-that function detailed in the \code{man/} directory (in a \code{.Rd} file) and if so
+that function detailed in the 'man/' directory (in a '.Rd' file) and if so
 creates a shell (skeleton) of a \code{\link[testthat:test_that]{testthat::test_that()}} test based on those
-examples via \link[=make-test-shells]{make_test_shell()}. The created shell is then
-written to a corresponding file \code{test-fun-examples.R} in \code{tests/testthat}.
-\item For a given file \code{x.R} in the \code{R/} directory of a package, for each
-function defined in that \code{.R} file, \link[=make-test-shells]{make_tests_shells_file()}
-checks if there are examples for that function detailed in the \code{man/}
-directory (in a \code{.Rd} file) and if so creates a shell (skeleton) of a
-\code{\link[testthat:test_that]{testthat::test_that()}} test based on those examples via
-\link[=make-test-shells]{make_test_shell()}. The created shells are then written to a
-corresponding file \code{test-x-examples.R} in \code{tests/testthat}. \item
+examples. The created shell is then written to a corresponding file
+'test-fun.R' (or if that already exists, 'test-fun-examples.R') in
+'tests/testthat'. \item For a given file 'x.R' in the 'R/' directory of a
+package, for each function defined in that '.R' file,
+\link[=make-test-shells]{make_tests_shells_file()} checks if there are examples for
+that function detailed in the 'man/' directory (in a '.Rd' file) and if so
+creates a shell (skeleton) of a \code{\link[testthat:test_that]{testthat::test_that()}} test based on those
+examples via \link[=make-test-shells]{make_test_shell()}. The created shells are
+then written to a corresponding file 'test-x.R' (or  'test-x-examples.R' if
+'test-x.R' is already taken) in 'tests/testthat'. \item
 \link[=make-test-shells]{make_test_shells_pkg()} runs
-\link[=make-test-shells]{make_test_shells_file()} on every \code{.R} file in the \code{R/}
+\link[=make-test-shells]{make_test_shells_file()} on every '.R' file in the 'R/'
 directory of a package.}
 }
 \examples{
-usethis::create_package(tempdir(check = TRUE), open = FALSE)
-file.copy(system.file("extdata", c("detect.R", "match.R"),
-                      package = "exampletestr"),
-          paste0(tempdir(), "/R"))
-make_test_shell_fun("str_detect()", document = TRUE, open = FALSE,
-                    pkg_dir = tempdir())
-make_tests_shells_file("detect", document = FALSE, open = FALSE,
-                       pkg_dir = tempdir())
-make_tests_shells_pkg(overwrite = TRUE, document = FALSE,
-                      pkg_dir = tempdir())
+pkg_dir <- paste0(tempdir(check = TRUE), "/tmpkg")
+usethis::create_package(pkg_dir, rstudio = FALSE, open = FALSE)
+fs::file_copy(
+  system.file("extdata", c("detect.R", "match.R"),
+    package = "exampletestr"
+  ),
+  paste0(pkg_dir, "/R")
+)
+make_test_shell_fun("str_detect()", pkg_dir,
+  document = TRUE, open = FALSE
+)
+make_tests_shells_file("detect", pkg_dir,
+  document = FALSE, open = FALSE
+)
+make_tests_shells_pkg(pkg_dir,
+  overwrite = TRUE, document = FALSE
+)
+fs::dir_delete(pkg_dir)
 
 }

@@ -1,3 +1,15 @@
+## `exampletestr` 1.5.0
+
+## REFACTORING
+* Move away from `rprojroot` to `usethis_proj_*`.
+
+
+## `exampletestr` 1.4.2
+
+#### BUG FIXES
+* Require necessary version of glue.
+
+
 ## `exampletestr` 1.4.1
 
 #### BUG FIXES
@@ -21,7 +33,7 @@
 ## `exampletestr` 1.3.1
 
 #### BUG FIXES
-* Enforce bug-fixed new verisons of `styler` and `filesstrings`.
+* Enforce bug-fixed new versions of `styler` and `filesstrings`.
 
 
 ## `exampletestr` 1.3.0

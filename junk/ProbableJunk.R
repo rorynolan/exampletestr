@@ -32,3 +32,8 @@ text_eval <- function(text_expr) {
   stopifnot(is.character(text_expr))
   source(textConnection(text_expr), local = parent.env(environment()))
 }
+
+empty_dir <- function(path) {
+  checkmate::assert_directory(path)
+  fs::file_delete(fs::dir_ls(path))
+}
