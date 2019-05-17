@@ -40,16 +40,19 @@ test_that("construct_expect_equal works", {
 })
 
 test_that("`check_for_DESCRIPTION()` works", {
+  skip_if_not_installed("crayon")
   description <- readr::read_lines(paste0(pkg_dir, "/DESCRIPTION"))
   fs::file_delete(paste0(pkg_dir, "/DESCRIPTION"))
   fs::file_create(paste0(pkg_dir, "/.here"))
-  expect_error(
-    make_tests_shells_pkg(pkg_dir),
-    paste0("Your package has no \033[34m'DESCRIPTION'\033[39m file.\n",
-           "    * Every R package must have a \033[34m'DESCRIPTIO",
-           "N'\033[39m file\n      in the root directory.\n    * Pe",
-           "rhaps you specified the wrong \033[90m`pkg_dir`\033[39m?",
-           "\n    * You specified "),
+  no_DESCRIPTION_err_msg <- rlang::catch_cnd(make_tests_shells_pkg(pkg_dir),
+                                             classes = "error")$message
+  expect_match(
+    crayon::strip_style(no_DESCRIPTION_err_msg),
+    paste0("Your package has no 'DESCRIPTION' file.\n",
+           "    * Every R package must have a 'DESCRIPTIO",
+           "N' file in the\nroot directory.\n    * Perhaps ",
+           "you specified the wrong `pkg_dir`?\n    *",
+           " You specified `pkg_dir = "),
     fixed = TRUE)
   readr::write_lines(description, paste0(pkg_dir, "/DESCRIPTION"))
 })

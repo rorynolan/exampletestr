@@ -56,7 +56,8 @@ Suggests:
     knitr,
     rmarkdown,
     spelling,
-    pacman
+    pacman,
+    crayon
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Language: en-US

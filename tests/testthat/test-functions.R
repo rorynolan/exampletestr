@@ -13,17 +13,17 @@ teardown({
 
 test_that("`make_tests_shell_fun()` works", {
   fs::file_copy(system.file("extdata", c("detect.R", "match.R"),
-                                        package = "exampletestr"
+    package = "exampletestr"
   ), paste0(pkg_dir, "/R"))
+  usethis::local_project(pkg_dir)
   expect_false(is_documented("str_detect"))
   fs::dir_create(paste0(pkg_dir, "/man"))
-  usethis::local_project(pkg_dir)
   expect_false(is_documented("str_detect"))
   make_test_shell_fun("str_detect()", open = FALSE, pkg_dir = pkg_dir)
   expect_equal(
     readr::read_lines(
       usethis::proj_path("/tests/testthat/test-str_detect-examples.R")
-      ),
+    ),
     c(
       "test_that(\"`str_detect()` works\", {",
       "  fruit <- c(\"apple\", \"banana\", \"pear\", \"pinapple\")",
@@ -74,44 +74,53 @@ test_that("`make_tests_shell_fun()` works", {
     "Could not find.*non_fun\\(\\)"
   )
   fs::file_copy(system.file("extdata", c("hello.R", "goodbye.R"),
-                            package = "exampletestr"
+    package = "exampletestr"
   ), paste0(pkg_dir2, "/R"))
+  skip_if_not_installed("crayon")
   usethis::with_project(pkg_dir2, {
-    expect_error(
+    no_man_err_msg <- rlang::catch_cnd(
       make_test_shell_fun("hello",
                           pkg_dir = pkg_dir2,
                           document = FALSE
-      ),
-      paste("Your package has no \033[34m'man'\033[39m folder.\n    *",
-            "\033[90m`exampletestr`\033[39m looks for examples in",
-            "the\n      \033[34m'*.Rd'\033[39m files in the",
-            "\033[34m'man'\033[39m folder of\n      a package and",
-            "cannot function without them."),
+      )
+    )$message
+    expect_match(crayon::strip_style(no_man_err_msg),
+                 paste("Your package has no 'man' folder.\n    *",
+                       "`exampletestr` looks for examples in",
+                       "the\n'*.Rd' files in",
+                       "the\n'man'\nfolder of a package and",
+                       "cannot function without them."),
       fixed = TRUE
     )
     fs::dir_create(paste0(pkg_dir2, "/man"))
-    expect_error(
+    no_rd_err_msg <- rlang::catch_cnd(
       make_test_shell_fun("hello",
-                          pkg_dir = pkg_dir2,
-                          document = FALSE
-      ),
-      paste("Your package has no \033[34m'*.Rd'\033[39m files in",
-            "its\n\033[34m'man/'\033[39m folder.\n    * exampletestr",
-            "looks for examples in the \033[34m'*.Rd'\033[39m\n     ",
-            "files in the \033[34m'man/'\033[39m folder of a package",
-            "and\n      cannot function if there are no",
-            "\033[34m'*.Rd'\033[39m files\n      there."),
+        pkg_dir = pkg_dir2,
+        document = FALSE
+      )
+    )$message
+    expect_match(crayon::strip_style(no_rd_err_msg),
+                 paste("Your package has no '*.Rd' files in",
+                       "its\n'man/' folder.\n    * exampletestr",
+                       "looks for examples in the '*.Rd'\nfiles",
+                       "in the 'man/' folder of a package and",
+                       "cannot\nfunction if there are no '*.Rd'",
+                       "files there."),
       fixed = TRUE
     )
-    expect_error(
+    no_examples_err_msg <- rlang::catch_cnd(
       make_test_shell_fun("hello",
                           pkg_dir = pkg_dir2,
                           document = TRUE
       ),
+      classes = "error"
+    )$message
+    expect_match(
+      crayon::strip_style(no_examples_err_msg),
       paste0(
         "The function .+ is documented but has.+",
         "no.+accompanying.+examples.+",
-        "only works on.+functions with.+examples."
+        "only works on.+functions.+with.+examples."
       )
     )
   })

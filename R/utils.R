@@ -184,16 +184,9 @@ make_available_test_file_name <- function(test_file_name) {
 #' @noRd
 custom_stop_bullet <- function(string) {
   checkmate::assert_string(string)
-  string %<>% strwrap(width = 57)
-  string[1] %<>% {
+  string %>% {
     glue::glue("    * {.}")
   }
-  if (length(string) > 1) {
-    string[-1] %<>% {
-      glue::glue("      {.}")
-    }
-  }
-  glue::glue_collapse(string, sep = "\n")
 }
 
 #' Nicely formatted error message.
