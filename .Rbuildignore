@@ -17,3 +17,4 @@
 ^CONDUCT\.md$
 ^revdep$
 ^exampletestr\.Rproj$
+^pkgdown$
