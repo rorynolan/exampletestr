@@ -1,0 +1,8 @@
+pandoc: '2.2'
+pkgdown: 1.3.0
+pkgdown_sha: ~
+articles:
+  one-file-at-a-time: one-file-at-a-time.html
+  one-function-at-a-time: one-function-at-a-time.html
+  whole-package: whole-package.html
+
