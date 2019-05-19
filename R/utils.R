@@ -184,7 +184,8 @@ make_available_test_file_name <- function(test_file_name) {
 #' @noRd
 custom_stop_bullet <- function(string) {
   checkmate::assert_string(string)
-  string %>% {
+  string %>%
+    stringr::str_replace_all("\\s+", " ") %>% {
     glue::glue("    * {.}")
   }
 }
@@ -202,14 +203,17 @@ custom_stop_bullet <- function(string) {
 #' @noRd
 custom_stop <- function(main_message, ..., .envir = parent.frame()) {
   checkmate::assert_string(main_message)
-  main_message %<>% glue::glue(.envir = .envir)
-  out <- strwrap(main_message, width = 63)
+  main_message %<>%
+    stringr::str_replace_all("\\s+", " ") %>%
+    glue::glue(.envir = .envir)
+  out <- main_message
   dots <- unlist(list(...))
   if (length(dots)) {
     if (!is.character(dots)) {
       stop("\nThe arguments in ... must all be of character type.")
     }
-    dots %<>% purrr::map_chr(glue::glue, .envir = .envir) %>%
+    dots %<>%
+      purrr::map_chr(glue::glue, .envir = .envir) %>%
       purrr::map_chr(custom_stop_bullet)
     out %<>% {
       glue::glue_collapse(c(., dots), sep = "\n")

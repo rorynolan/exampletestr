@@ -87,8 +87,8 @@ test_that("`make_tests_shell_fun()` works", {
     expect_match(crayon::strip_style(no_man_err_msg),
                  paste("Your package has no 'man' folder.\n    *",
                        "`exampletestr` looks for examples in",
-                       "the\n'*.Rd' files in",
-                       "the\n'man'\nfolder of a package and",
+                       "the '*.Rd' files in",
+                       "the 'man' folder of a package and",
                        "cannot function without them."),
       fixed = TRUE
     )
@@ -101,10 +101,10 @@ test_that("`make_tests_shell_fun()` works", {
     )$message
     expect_match(crayon::strip_style(no_rd_err_msg),
                  paste("Your package has no '*.Rd' files in",
-                       "its\n'man/' folder.\n    * exampletestr",
-                       "looks for examples in the '*.Rd'\nfiles",
+                       "its 'man/' folder.\n    * exampletestr",
+                       "looks for examples in the '*.Rd' files",
                        "in the 'man/' folder of a package and",
-                       "cannot\nfunction if there are no '*.Rd'",
+                       "cannot function if there are no '*.Rd'",
                        "files there."),
       fixed = TRUE
     )
@@ -115,6 +115,7 @@ test_that("`make_tests_shell_fun()` works", {
       ),
       classes = "error"
     )$message
+    print(paste("hello:", is_documented("hello")))
     expect_match(
       crayon::strip_style(no_examples_err_msg),
       paste0(

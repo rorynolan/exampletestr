@@ -50,7 +50,7 @@ test_that("`check_for_DESCRIPTION()` works", {
     crayon::strip_style(no_DESCRIPTION_err_msg),
     paste0("Your package has no 'DESCRIPTION' file.\n",
            "    * Every R package must have a 'DESCRIPTIO",
-           "N' file in the\nroot directory.\n    * Perhaps ",
+           "N' file in the root directory.\n    * Perhaps ",
            "you specified the wrong `pkg_dir`?\n    *",
            " You specified `pkg_dir = "),
     fixed = TRUE)

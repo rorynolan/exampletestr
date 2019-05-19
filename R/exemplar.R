@@ -93,7 +93,7 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
     purrr::reduce(c)
   available_funs <- names(examples)
   fun_index <- fun
-  if (!fun %in% available_funs) {
+  if (!(fun %in% available_funs)) {
     fun_found <- FALSE
     escaped_fun <- ore::ore.escape(fun)
     for (i in seq_along(examples)) {
