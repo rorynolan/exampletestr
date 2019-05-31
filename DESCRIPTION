@@ -45,7 +45,7 @@ Imports:
     rlang (>= 0.3.3),
     withr,
     usethis
-Remotes: krlmlr/usethis@b-with
+Remotes: r-lib/usethis
 RoxygenNote: 6.1.1
 URL: 
     https://rorynolan.github.io/exampletestr, 
