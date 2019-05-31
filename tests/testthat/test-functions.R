@@ -1,14 +1,16 @@
 usethis_quiet_init <- getOption("usethis.quiet", default = FALSE)
-pkg_dir <- paste0(tempdir(check = TRUE), "/tmpkg")
-pkg_dir2 <- paste0(tempdir(check = TRUE), "/tmpkg2")
+tmp_dir <- tempdir(check = TRUE)
+pkg_dir <- paste0(tmp_dir, "/tmpkg")
+pkg_dir2 <- paste0(tmp_dir, "/tmpkg2")
 setup({
   options(usethis.quiet = TRUE)
+  fs::file_delete(fs::dir_ls(tmp_dir))
   usethis::create_package(pkg_dir, rstudio = FALSE, open = FALSE)
   usethis::create_package(pkg_dir2, rstudio = FALSE, open = FALSE)
 })
 teardown({
   options(usethis.quiet = usethis_quiet_init)
-  fs::dir_delete(c(pkg_dir, pkg_dir2))
+  fs::dir_delete(tmp_dir)
 })
 
 test_that("`make_tests_shell_fun()` works", {
@@ -115,7 +117,6 @@ test_that("`make_tests_shell_fun()` works", {
       ),
       classes = "error"
     )$message
-    print(paste("hello:", is_documented("hello")))
     expect_match(
       crayon::strip_style(no_examples_err_msg),
       paste0(

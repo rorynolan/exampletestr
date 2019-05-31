@@ -39,8 +39,8 @@
 #'   onto the front.
 #'
 #' @examples
-#' \dontrun{
-#' pkg_dir <- paste0(tempdir(check = TRUE), "/tmpkg")
+#' tmp_dir <- tempdir(check = TRUE)
+#' pkg_dir <- paste0(tmp_dir, "/tmpkg")
 #' usethis::create_package(pkg_dir, rstudio = FALSE, open = FALSE)
 #' fs::file_copy(
 #'   system.file("extdata", c("detect.R", "match.R"),
@@ -57,8 +57,8 @@
 #' make_tests_shells_pkg(pkg_dir,
 #'   overwrite = TRUE, document = FALSE
 #' )
-#' fs::dir_delete(pkg_dir)
-#' }
+#' fs::dir_delete(tmp_dir)
+#'
 #'
 #' @name make-test-shells
 NULL

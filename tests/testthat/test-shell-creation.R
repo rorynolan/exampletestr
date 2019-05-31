@@ -1,12 +1,14 @@
 usethis_quiet_init <- getOption("usethis.quiet", default = FALSE)
-pkg_dir <- paste0(tempdir(check = TRUE), "/tmpkg")
+tmp_dir <- tempdir(check = TRUE)
+pkg_dir <- paste0(tmp_dir, "/tmpkg")
 setup({
   options(usethis.quiet = TRUE)
+  fs::file_delete(fs::dir_ls(tmp_dir))
   usethis::create_package(pkg_dir, rstudio = FALSE, open = FALSE)
 })
 teardown({
   options(usethis.quiet = usethis_quiet_init)
-  fs::dir_delete(pkg_dir)
+  fs::dir_delete(tmp_dir)
 })
 
 test_that("`make_test_shell()` works", {
