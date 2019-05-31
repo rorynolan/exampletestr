@@ -223,7 +223,7 @@ onto the front.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pkg_dir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(<span class='kw'>check</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='st'>"/tmpkg"</span>)
+<span class='no'>pkg_dir</span> <span class='kw'>&lt;-</span> <span class='st'>"mylilpkg"</span>
 <span class='kw pkg'>usethis</span><span class='kw ns'>::</span><span class='fu'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span>(<span class='no'>pkg_dir</span>, <span class='kw'>rstudio</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/copy.html'>file_copy</a></span>(
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"detect.R"</span>, <span class='st'>"match.R"</span>),
