@@ -39,6 +39,7 @@
 #'   onto the front.
 #'
 #' @examples
+#' \dontrun{
 #' pkg_dir <- paste0(tempdir(check = TRUE), "/tmpkg")
 #' usethis::create_package(pkg_dir, rstudio = FALSE, open = FALSE)
 #' fs::file_copy(
@@ -57,6 +58,7 @@
 #'   overwrite = TRUE, document = FALSE
 #' )
 #' fs::dir_delete(pkg_dir)
+#' }
 #'
 #' @name make-test-shells
 NULL

@@ -64,6 +64,7 @@ then written to a corresponding file 'test-x.R' (or  'test-x-examples.R' if
 directory of a package.}
 }
 \examples{
+\dontrun{
 pkg_dir <- paste0(tempdir(check = TRUE), "/tmpkg")
 usethis::create_package(pkg_dir, rstudio = FALSE, open = FALSE)
 fs::file_copy(
@@ -82,5 +83,6 @@ make_tests_shells_pkg(pkg_dir,
   overwrite = TRUE, document = FALSE
 )
 fs::dir_delete(pkg_dir)
+}
 
 }
