@@ -1,7 +1,7 @@
 # `exampletestr` 1.5.0
 
 ## REFACTORING
-* Move away from `rprojroot` to `usethis_proj_*`.
+* Move away from `rprojroot` to `usethis::proj_*()`.
 
 ## BUG FIXES
 * Require necessary versions of `glue` and `usethis`.

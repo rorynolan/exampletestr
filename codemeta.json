@@ -334,7 +334,7 @@
   ],
   "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
   "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "fileSize": "34.724KB",
+  "fileSize": "34.722KB",
   "contIntegration": [
     "https://travis-ci.org/rorynolan/exampletestr",
     "https://ci.appveyor.com/project/rorynolan/exampletestr",
