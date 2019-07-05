@@ -4,7 +4,7 @@
 * Move away from `rprojroot` to `usethis_proj_*`.
 
 ## BUG FIXES
-* Require necessary version of `glue`.
+* Require necessary versions of `glue` and `usethis`.
 
 
 # `exampletestr` 1.4.2

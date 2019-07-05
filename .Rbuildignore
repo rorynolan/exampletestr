@@ -18,3 +18,4 @@
 ^revdep$
 ^exampletestr\.Rproj$
 ^pkgdown$
+^codemeta\.json$
