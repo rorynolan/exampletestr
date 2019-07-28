@@ -15,20 +15,20 @@ knitr::opts_chunk$set(
 
 # `exampletestr` <img src="man/figures/logo.png" align="right" height=140/>
 
-`exampletestr` is for creating shells (skeletons) of `testthat` unit test files based on the examples in a package's documentation. When these tests are completed, they will ensure that the examples function correctly and function as an important part of your unit test suite. I have often (but not always) found that I test my functions manually by making sure my examples work as intended, so why not use these as a basis for proper unit testing?
+`exampletestr` is for creating shells (skeletons) of `testthat` unit test files based on the examples in a package's documentation. When these tests are completed, they will ensure that the examples function correctly and form a valuable part of your unit test suite. I have often (but not always) found that I test my functions manually by making sure my examples work as intended, so why not use these as a basis for proper unit testing?
 
 ## Installation
 
-You can install the released version of ijtiff from [CRAN](https://CRAN.R-project.org/package=exampletestr) with:
+You can install the released version of exampletestr from [CRAN](https://CRAN.R-project.org/package=exampletestr) with:
 
 ```{r, eval=FALSE}
 install.packages("exampletestr")
 ```
 
-You can install the released version of ijtiff from [GitHub](https://github.com/rorynolan/exampletestr) with:
+You can install the released version of exampletestr from [GitHub](https://github.com/rorynolan/exampletestr) with:
 
 ```{r, eval=FALSE}
-devtools::install_github("rorynolan/exampletestr")
+remotes::install_github("rorynolan/exampletestr")
 ```
 
 
