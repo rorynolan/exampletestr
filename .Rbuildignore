@@ -19,3 +19,5 @@
 ^exampletestr\.Rproj$
 ^pkgdown$
 ^codemeta\.json$
+^\.github$
+^CODE_OF_CONDUCT\.md$

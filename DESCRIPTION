@@ -1,7 +1,7 @@
-Package: exampletestr
 Type: Package
+Package: exampletestr
 Title: Help for Writing Unit Tests Based on Function Examples
-Version: 1.5.0
+Version: 1.5.1
 Authors@R: 
     c(person(given = "Rory",
              family = "Nolan",
@@ -22,42 +22,43 @@ Authors@R:
              role = "rev",
              comment = c(ORCID = "0000-0002-1520-2268")))
 Maintainer: Rory Nolan <rorynoolan@gmail.com>
-Description: Take the examples written in your documentation of functions and 
-    use them to create shells (skeletons which must be manually completed by
-    the user) of test files to be tested with the 'testthat' package. Sort of 
-    like python 'doctests' for R.
+Description: Take the examples written in your documentation of
+    functions and use them to create shells (skeletons which must be
+    manually completed by the user) of test files to be tested with the
+    'testthat' package. Sort of like python 'doctests' for R.
 License: GPL-3
-Encoding: UTF-8
-LazyData: true
-Depends: R (>= 3.5.0)
-Imports:
-    filesstrings (>= 3.1.5),
-    magrittr (>= 1.5),
-    stringr (>= 1.2.0),
-    styler (>= 1.1.1),
-    purrr,
-    roxygen2,
-    checkmate (>= 1.9.3),
-    readr,
-    ore (>= 1.4.0),
-    fs (>= 1.2.3),
-    glue (>= 1.3.0),
-    rlang (>= 0.3.3),
-    withr (>= 2.1.0),
-    usethis (>= 1.5.1)
-RoxygenNote: 6.1.1
-URL: 
-    https://rorynolan.github.io/exampletestr, 
+URL: https://rorynolan.github.io/exampletestr,
     https://github.com/rorynolan/exampletestr#readme
 BugReports: https://www.github.com/rorynolan/exampletestr/issues
+Depends: 
+    R (>= 3.5.0)
+Imports:
+    checkmate (>= 1.9.3),
+    filesstrings (>= 3.1.5),
+    fs (>= 1.2.3),
+    glue (>= 1.3.0),
+    magrittr (>= 1.5),
+    ore (>= 1.4.0),
+    purrr,
+    readr,
+    rlang (>= 0.3.3),
+    roxygen2,
+    stringr (>= 1.2.0),
+    styler (>= 1.1.1),
+    usethis (>= 1.5.1),
+    withr (>= 2.1.0)
 Suggests: 
-    testthat (>= 2.1.0),
     covr,
+    crayon,
     knitr,
+    pacman,
     rmarkdown,
     spelling,
-    pacman,
-    crayon
-Roxygen: list(markdown = TRUE)
-VignetteBuilder: knitr
+    testthat (>= 2.1.0)
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
 Language: en-US
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1

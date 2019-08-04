@@ -87,8 +87,6 @@ make_tests_shells_pkg()
 This outputs `test-detect.R` and `test-match.R` files in the `tests/testthat` folder. As an example of what to do next, the `test-detect.R` file has contents
 
 ```{r test-utils.R contents, eval=FALSE}
-context("`str_detect()`")
-
 test_that("`str_detect()` works", {
   fruit <- c("apple", "banana", "pear", "pinapple")
   expect_equal(str_detect(fruit, "a"), )
@@ -103,8 +101,6 @@ test_that("`str_detect()` works", {
 which can be sensibly completed as
 
 ```{r fill in test shell}
-context("`str_detect()`")
-
 test_that("`str_detect()` works", {
   fruit <- c("apple", "banana", "pear", "pinapple")
   expect_equal(str_detect(fruit, "a"), rep(TRUE, 4))

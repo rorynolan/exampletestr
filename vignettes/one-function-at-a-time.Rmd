@@ -86,8 +86,6 @@ make_test_shell_fun("str_detect", open = FALSE)
 
 This outputs a `test-str_detect-examples.R` file in the `tests/testthat` folder with contents
 ```{r test-utils.R contents, eval=FALSE}
-context("`str_detect()`")
-
 test_that("`str_detect()` works", {
   fruit <- c("apple", "banana", "pear", "pinapple")
   expect_equal(str_detect(fruit, "a"), )
@@ -102,8 +100,6 @@ test_that("`str_detect()` works", {
 which can be sensibly completed as
 
 ```{r fill in test shell}
-context("`str_detect()`")
-
 test_that("`str_detect()` works", {
   fruit <- c("apple", "banana", "pear", "pinapple")
   expect_equal(str_detect(fruit, "a"), rep(TRUE, 4))

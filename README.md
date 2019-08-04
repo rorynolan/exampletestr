@@ -37,7 +37,7 @@ To install the dev version from
 [GitHub](https://www.github.com/rorynolan/exampletestr):
 
 ``` r
-devtools::install_github("rorynolan/exampletestr")
+remotes::install_github("rorynolan/exampletestr")
 ```
 
 ## Use

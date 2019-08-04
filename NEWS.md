@@ -1,3 +1,9 @@
+# `exampletestr` 1.5.1
+
+## FIXES
+* Fix some documentation typos.
+
+
 # `exampletestr` 1.5.0
 
 ## REFACTORING
