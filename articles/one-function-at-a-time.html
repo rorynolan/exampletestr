@@ -6,12 +6,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>One function at a time • exampletestr</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -37,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">exampletestr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.1</span>
       </span>
     </div>
 
@@ -95,7 +89,7 @@
     <div class="page-header toc-ignore">
       <h1>One function at a time</h1>
             
-            <h4 class="date">2019-07-28</h4>
+            <h4 class="date">2019-08-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rorynolan/exampletestr/blob/master/vignettes/one-function-at-a-time.Rmd"><code>vignettes/one-function-at-a-time.Rmd</code></a></small>
       <div class="hidden name"><code>one-function-at-a-time.Rmd</code></div>
@@ -118,7 +112,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">setwd</a></span>(<span class="st">"tempkg/"</span>)</a></code></pre></div>
 <p>and set the active project:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">usethis<span class="op">::</span><span class="kw"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_set</a></span>(<span class="st">"."</span>)</a></code></pre></div>
-<pre><code>#&gt; ✔ Setting active project to '/tmp/RtmpRNeXBd/tempkg'</code></pre>
+<pre><code>#&gt; ✔ Setting active project to '/tmp/Rtmpe4LvDW/tempkg'</code></pre>
 <p>The <code>detect.R</code> file looks like this (well, I’ve abbreviated it slightly):</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">#' Detect the presence or absence of a pattern in a string.</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#'</span></a>
@@ -151,30 +145,26 @@
 <p>We can make the unit tests <em>shell</em> file for the <code>str_match()</code> function using <code><a href="../reference/make-test-shells.html">make_test_shell_fun()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/make-test-shells.html">make_test_shell_fun</a></span>(<span class="st">"str_detect"</span>, <span class="dt">open =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p>This outputs a <code>test-str_detect-examples.R</code> file in the <code>tests/testthat</code> folder with contents</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">context</span>(<span class="st">"`str_detect()`"</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw">test_that</span>(<span class="st">"`str_detect()` works"</span>, {</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">  fruit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span>)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a"</span>), )</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"^a"</span>), )</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a$"</span>), )</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"b"</span>), )</a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"[aeiou]"</span>), )</a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters), )</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11">})</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">test_that</span>(<span class="st">"`str_detect()` works"</span>, {</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">  fruit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a"</span>), )</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"^a"</span>), )</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a$"</span>), )</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"b"</span>), )</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"[aeiou]"</span>), )</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters), )</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">})</a></code></pre></div>
 <p>which can be sensibly completed as</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">context</span>(<span class="st">"`str_detect()`"</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">test_that</span>(<span class="st">"`str_detect()` works"</span>, {</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">  fruit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span>)</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"^a"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">TRUE</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">FALSE</span>, <span class="dv">3</span>)))</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a$"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"b"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb8-9" data-line-number="9">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"[aeiou]"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb8-10" data-line-number="10">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters), </a>
-<a class="sourceLine" id="cb8-11" data-line-number="11">               letters <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span>))</a>
-<a class="sourceLine" id="cb8-12" data-line-number="12">})</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">test_that</span>(<span class="st">"`str_detect()` works"</span>, {</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  fruit &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"^a"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">TRUE</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">FALSE</span>, <span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a$"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"b"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"[aeiou]"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters), </a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">               letters <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span>))</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">})</a></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">knitr<span class="op">::</span>opts_knit<span class="op">$</span><span class="kw">set</span>(<span class="dt">root.dir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(<span class="dt">check =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="cf">if</span> (fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/file_access.html">dir_exists</a></span>(<span class="st">"tempkg"</span>)) fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span>(<span class="st">"tempkg"</span>)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">knitr<span class="op">::</span>opts_knit<span class="op">$</span><span class="kw">set</span>(<span class="dt">root.dir =</span> init_wd)</a></code></pre></div>
