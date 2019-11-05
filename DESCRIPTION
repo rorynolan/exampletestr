@@ -1,7 +1,7 @@
 Type: Package
 Package: exampletestr
 Title: Help for Writing Unit Tests Based on Function Examples
-Version: 1.5.1
+Version: 1.5.2
 Authors@R: 
     c(person(given = "Rory",
              family = "Nolan",

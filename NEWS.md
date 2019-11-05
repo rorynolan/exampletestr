@@ -1,3 +1,9 @@
+# `exampletestr` 1.5.2
+
+## BUG FIXES
+* Require bug-fixed `styler` v1.2.0.
+
+
 # `exampletestr` 1.5.1
 
 ## FIXES
