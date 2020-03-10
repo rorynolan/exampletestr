@@ -124,6 +124,8 @@ Alternatively, we can use the `roxytest` (https://github.com/mikldk/roxytest) pa
 make_test_shell_fun("str_detect", roxytest = TRUE)
 ```
 
+## RStudio addin for roxytest functionality
+
 This can also be done by highlighting the function name and selecting the RStudio addin _Copy roxytest @testexamples to clipboard_.
 
 # Cleanup
