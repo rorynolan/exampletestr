@@ -5,11 +5,12 @@ doctests
 DOI
 github
 https
-ijtiff
 io
 lifecycle
 Rdocumentation
 rorynolan
+roxygen
+Roxytest
 RStudio
 testthat
 usethis
