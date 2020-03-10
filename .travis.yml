@@ -28,5 +28,9 @@ matrix:
       r_check_args: --no-build-vignettes --no-manual
       warnings_are_errors: false
 
+
 before_script:
   - if [ "$TRAVIS_CLIP" == "xclip" ]; then uptime | xclip -i -sel p -f | xclip -i -sel c; xclip -o -sel clipboard; fi
+before_deploy:
+  - if [ "$TRAVIS_CLIP" == "xclip" ]; then uptime | xclip -i -sel p -f | xclip -i -sel c; xclip -o -sel clipboard; fi
+
