@@ -91,7 +91,7 @@ directory of a package.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">exampletestr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -171,14 +171,32 @@ directory of a package.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>make_test_shell_fun</span>(<span class='no'>fun</span>, <span class='kw'>pkg_dir</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>e_e</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>document</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>make_test_shell_fun</span>(
+  <span class='no'>fun</span>,
+  <span class='kw'>pkg_dir</span> <span class='kw'>=</span> <span class='st'>"."</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>e_e</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>roxytest</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>document</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
 
-<span class='fu'>make_tests_shells_file</span>(<span class='no'>r_file_name</span>, <span class='kw'>pkg_dir</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>e_e</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>document</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>make_tests_shells_file</span>(
+  <span class='no'>r_file_name</span>,
+  <span class='kw'>pkg_dir</span> <span class='kw'>=</span> <span class='st'>"."</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>e_e</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>document</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
 
-<span class='fu'>make_tests_shells_pkg</span>(<span class='kw'>pkg_dir</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>e_e</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>document</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>make_tests_shells_pkg</span>(
+  <span class='kw'>pkg_dir</span> <span class='kw'>=</span> <span class='st'>"."</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>e_e</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>document</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,12 +221,17 @@ exists?</p></td>
 shell of a <code><a href='https://rdrr.io/pkg/testthat/man/equality-expectations.html'>testthat::expect_equal()</a></code> statement.</p></td>
     </tr>
     <tr>
+      <th>roxytest</th>
+      <td><p>Copy <code>roxytest</code> package <code>@testexamples</code> code to clipboard
+instead of creating file in <code>tests/testthat</code>?</p></td>
+    </tr>
+    <tr>
       <th>open</th>
       <td><p>Open the created test file in your editor after it is created?</p></td>
     </tr>
     <tr>
       <th>document</th>
-      <td><p>Run <code><a href='https://rdrr.io/pkg/roxygen2/man/roxygenize.html'>roxygen2::roxygenize()</a></code> to update package documentation
+      <td><p>Run <code><a href='https://roxygen2.r-lib.org/reference/roxygenize.html'>roxygen2::roxygenize()</a></code> to update package documentation
 before starting?</p></td>
     </tr>
     <tr>
@@ -229,13 +252,16 @@ onto the front.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>pkg_dir</span> <span class='kw'>&lt;-</span> <span class='st'>"mylilpkg"</span>
+<span class='no'>pkg_dir</span> <span class='kw'>&lt;-</span> <span class='st'>"~/mylilpkg"</span>
 <span class='kw pkg'>usethis</span><span class='kw ns'>::</span><span class='fu'><a href='https://usethis.r-lib.org/reference/create_package.html'>create_package</a></span>(<span class='no'>pkg_dir</span>, <span class='kw'>rstudio</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='kw pkg'>fs</span><span class='kw ns'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/copy.html'>file_copy</a></span>(
   <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"detect.R"</span>, <span class='st'>"match.R"</span>),
     <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"exampletestr"</span>
   ),
   <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>pkg_dir</span>, <span class='st'>"/R"</span>)
+)
+<span class='fu'>make_test_shell_fun</span>(<span class='st'>"str_detect()"</span>, <span class='no'>pkg_dir</span>,
+  <span class='kw'>document</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>roxytest</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
 <span class='fu'>make_test_shell_fun</span>(<span class='st'>"str_detect()"</span>, <span class='no'>pkg_dir</span>,
   <span class='kw'>document</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
