@@ -1,0 +1,4 @@
+Name: Copy roxytest @testexamples to clipboard
+Description: Call make_test_shell_fun(roxytest = TRUE) on highlighted function.
+Binding: roxytest_addin
+Interactive: false

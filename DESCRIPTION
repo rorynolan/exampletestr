@@ -44,6 +44,7 @@ Imports:
     readr,
     rlang (>= 0.3.3),
     roxygen2,
+    rstudioapi (>= 0.4),
     stringr (>= 1.2.0),
     styler (>= 1.2.0),
     usethis (>= 1.5.1),

@@ -1,3 +1,4 @@
+addin
 AppVeyor
 codecov
 dev
@@ -10,6 +11,7 @@ lifecycle
 Rdocumentation
 rorynolan
 roxygen
+roxytest
 Roxytest
 RStudio
 testthat

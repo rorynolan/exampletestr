@@ -120,6 +120,8 @@ test_that("`str_detect()` works", {
 `test-match.R` must similarly be completed.
 
 
+# Cleanup
+
 ```{r setdown0}
 knitr::opts_knit$set(root.dir = tempdir(check = TRUE))
 ```

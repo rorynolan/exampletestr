@@ -43,7 +43,7 @@ usethis::proj_set(".")
 ```
 
 ```
-#> ✔ Setting active project to '/private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/Rtmpo5JNd4/tempkg'
+#> ✔ Setting active project to '/private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/RtmpcMk0w9/tempkg'
 ```
 
 # Main event
@@ -134,7 +134,7 @@ make_test_shell_fun("str_detect", roxytest = TRUE)
 ```
 
 ```
-#> Updating roxygen version in /private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/Rtmpo5JNd4/tempkg/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/RtmpcMk0w9/tempkg/DESCRIPTION
 ```
 
 ```
@@ -155,6 +155,10 @@ make_test_shell_fun("str_detect", roxytest = TRUE)
 #> ● Complete the tests in the block.
 #> ● Run `devtools::document()` to generate the tests in 'tests/'.
 ```
+
+This can also be done by highlighting the function name and selecting the RStudio addin _Copy roxytest @testexamples to clipboard_.
+
+# Cleanup
 
 
 ```r

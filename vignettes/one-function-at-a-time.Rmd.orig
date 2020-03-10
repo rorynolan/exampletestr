@@ -124,6 +124,10 @@ Alternatively, we can use the `roxytest` (https://github.com/mikldk/roxytest) pa
 make_test_shell_fun("str_detect", roxytest = TRUE)
 ```
 
+This can also be done by highlighting the function name and selecting the RStudio addin _Copy roxytest @testexamples to clipboard_.
+
+# Cleanup
+
 ```{r setdown0}
 knitr::opts_knit$set(root.dir = tempdir(check = TRUE))
 ```

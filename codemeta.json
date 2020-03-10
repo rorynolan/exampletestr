@@ -294,6 +294,19 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "rstudioapi",
+      "name": "rstudioapi",
+      "version": ">= 0.4",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rstudioapi"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "stringr",
       "name": "stringr",
       "version": ">= 1.2.0",
@@ -347,7 +360,7 @@
   ],
   "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
   "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "fileSize": "36.364KB",
+  "fileSize": "36.964KB",
   "contIntegration": [
     "https://travis-ci.org/rorynolan/exampletestr",
     "https://ci.appveyor.com/project/rorynolan/exampletestr",
