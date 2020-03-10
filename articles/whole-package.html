@@ -120,7 +120,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span>(<span class="st">"tempkg/"</span>)</a></code></pre></div>
 <p>and set the active project:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">usethis<span class="op">::</span><span class="kw"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_set</a></span>(<span class="st">"."</span>)</a></code></pre></div>
-<pre><code>#&gt; ✔ Setting active project to '/tmp/RtmpRhXtFK/tempkg'</code></pre>
+<pre><code>#&gt; ✔ Setting active project to '/tmp/RtmpJ9S9xn/tempkg'</code></pre>
 </div>
 <div id="main-event" class="section level1">
 <h1 class="hasAnchor">
@@ -179,6 +179,10 @@
 <a class="sourceLine" id="cb8-11" data-line-number="11">  )</a>
 <a class="sourceLine" id="cb8-12" data-line-number="12">})</a></code></pre></div>
 <p><code>test-match.R</code> must similarly be completed.</p>
+</div>
+<div id="cleanup" class="section level1">
+<h1 class="hasAnchor">
+<a href="#cleanup" class="anchor"></a>Cleanup</h1>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">knitr<span class="op">::</span>opts_knit<span class="op">$</span><span class="kw">set</span>(<span class="dt">root.dir =</span> <span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(<span class="dt">check =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="cf">if</span> (fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/file_access.html">dir_exists</a></span>(<span class="st">"tempkg"</span>)) fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span>(<span class="st">"tempkg"</span>)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">knitr<span class="op">::</span>opts_knit<span class="op">$</span><span class="kw">set</span>(<span class="dt">root.dir =</span> init_wd)</a></code></pre></div>
@@ -193,6 +197,7 @@
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#setup">Setup</a></li>
       <li><a href="#main-event">Main event</a></li>
+      <li><a href="#cleanup">Cleanup</a></li>
       </ul>
 </div>
       </div>

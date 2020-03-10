@@ -113,14 +113,18 @@
 <p>First, let’s set up a dummy package called <code>tempkg</code> with just the <code>detect.R</code> and <code>match.R</code> files from the source code of the <code>stringr</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">usethis<span class="op">::</span><span class="kw"><a href="https://usethis.r-lib.org/reference/create_package.html">create_package</a></span>(<span class="st">"tempkg"</span>, <span class="dt">open =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/copy.html">file_copy</a></span>(</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"detect.R"</span>, <span class="st">"match.R"</span>), <span class="dt">package =</span> <span class="st">"exampletestr"</span>), </a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"detect.R"</span>, <span class="st">"match.R"</span>), <span class="dt">package =</span> <span class="st">"exampletestr"</span>),</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="st">"tempkg/R/"</span></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">)</a></code></pre></div>
 <p>Now let’s move into the <code>tempkg</code> directory:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span>(<span class="st">"tempkg/"</span>)</a></code></pre></div>
 <p>and set the active project:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">usethis<span class="op">::</span><span class="kw"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_set</a></span>(<span class="st">"."</span>)</a></code></pre></div>
-<pre><code>#&gt; ✔ Setting active project to '/tmp/RtmphecOG4/tempkg'</code></pre>
+<pre><code>#&gt; ✔ Setting active project to '/tmp/RtmppLppiH/tempkg'</code></pre>
+</div>
+<div id="main-event" class="section level1">
+<h1 class="hasAnchor">
+<a href="#main-event" class="anchor"></a>Main event</h1>
 <p>The <code>detect.R</code> file looks like this (well, I’ve abbreviated it slightly):</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">#' Detect the presence or absence of a pattern in a string.</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#'</span></a>
@@ -131,7 +135,7 @@
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#' @param pattern Pattern to look for.</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#'</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#' @return A logical vector.</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#' </span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#'</span></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#' @export</span></a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#' @examples</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#' fruit &lt;- c("apple", "banana", "pear", "pinapple")</span></a>
@@ -140,15 +144,15 @@
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#' str_detect(fruit, "a$")</span></a>
 <a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#' str_detect(fruit, "b")</span></a>
 <a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#' str_detect(fruit, "[aeiou]")</span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#'</span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20">str_detect &lt;-<span class="st"> </span><span class="cf">function</span>(string, pattern) {</a>
-<a class="sourceLine" id="cb5-21" data-line-number="21">  <span class="cf">switch</span>(<span class="kw"><a href="https://rdrr.io/r/base/typeof.html">type</a></span>(pattern),</a>
-<a class="sourceLine" id="cb5-22" data-line-number="22">         <span class="dt">empty =</span> ,</a>
-<a class="sourceLine" id="cb5-23" data-line-number="23">         <span class="dt">bound =</span> <span class="kw">str_count</span>(string, pattern) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb5-24" data-line-number="24">         <span class="dt">fixed =</span> <span class="kw">stri_detect_fixed</span>(string, pattern, <span class="dt">opts_fixed =</span> <span class="kw">opts</span>(pattern)),</a>
-<a class="sourceLine" id="cb5-25" data-line-number="25">         <span class="dt">coll  =</span> <span class="kw">stri_detect_coll</span>(string,  pattern, </a>
-<a class="sourceLine" id="cb5-26" data-line-number="26">                                  <span class="dt">opts_collator =</span> <span class="kw">opts</span>(pattern)),</a>
-<a class="sourceLine" id="cb5-27" data-line-number="27">         <span class="dt">regex =</span> <span class="kw">stri_detect_regex</span>(string, pattern, <span class="dt">opts_regex =</span> <span class="kw">opts</span>(pattern))</a>
+<a class="sourceLine" id="cb5-19" data-line-number="19">str_detect &lt;-<span class="st"> </span><span class="cf">function</span>(string, pattern) {</a>
+<a class="sourceLine" id="cb5-20" data-line-number="20">  <span class="cf">switch</span>(<span class="kw"><a href="https://rdrr.io/r/base/typeof.html">type</a></span>(pattern),</a>
+<a class="sourceLine" id="cb5-21" data-line-number="21">    <span class="dt">empty =</span> ,</a>
+<a class="sourceLine" id="cb5-22" data-line-number="22">    <span class="dt">bound =</span> <span class="kw">str_count</span>(string, pattern) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">    <span class="dt">fixed =</span> <span class="kw">stri_detect_fixed</span>(string, pattern, <span class="dt">opts_fixed =</span> <span class="kw">opts</span>(pattern)),</a>
+<a class="sourceLine" id="cb5-24" data-line-number="24">    <span class="dt">coll =</span> <span class="kw">stri_detect_coll</span>(string, pattern,</a>
+<a class="sourceLine" id="cb5-25" data-line-number="25">      <span class="dt">opts_collator =</span> <span class="kw">opts</span>(pattern)</a>
+<a class="sourceLine" id="cb5-26" data-line-number="26">    ),</a>
+<a class="sourceLine" id="cb5-27" data-line-number="27">    <span class="dt">regex =</span> <span class="kw">stri_detect_regex</span>(string, pattern, <span class="dt">opts_regex =</span> <span class="kw">opts</span>(pattern))</a>
 <a class="sourceLine" id="cb5-28" data-line-number="28">  )</a>
 <a class="sourceLine" id="cb5-29" data-line-number="29">}</a></code></pre></div>
 <p>We can make the unit tests <em>shell</em> file for the <code>str_match()</code> function using <code><a href="../reference/make-test-shells.html">make_tests_shells_file()</a></code>:</p>
@@ -171,9 +175,15 @@
 <a class="sourceLine" id="cb8-5" data-line-number="5">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"a$"</span>), <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
 <a class="sourceLine" id="cb8-6" data-line-number="6">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"b"</span>), <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>))</a>
 <a class="sourceLine" id="cb8-7" data-line-number="7">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(fruit, <span class="st">"[aeiou]"</span>), <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="ot">TRUE</span>, <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">  <span class="kw">expect_equal</span>(<span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters), </a>
-<a class="sourceLine" id="cb8-9" data-line-number="9">               letters <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span>))</a>
-<a class="sourceLine" id="cb8-10" data-line-number="10">})</a></code></pre></div>
+<a class="sourceLine" id="cb8-8" data-line-number="8">  <span class="kw">expect_equal</span>(</a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">    <span class="kw">str_detect</span>(<span class="st">"aecfg"</span>, letters),</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">    letters <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span>)</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">  )</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">})</a></code></pre></div>
+</div>
+<div id="cleanup" class="section level1">
+<h1 class="hasAnchor">
+<a href="#cleanup" class="anchor"></a>Cleanup</h1>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">knitr<span class="op">::</span>opts_knit<span class="op">$</span><span class="kw">set</span>(<span class="dt">root.dir =</span> <span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(<span class="dt">check =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="cf">if</span> (fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/file_access.html">dir_exists</a></span>(<span class="st">"tempkg"</span>)) fs<span class="op">::</span><span class="kw"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span>(<span class="st">"tempkg"</span>)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">knitr<span class="op">::</span>opts_knit<span class="op">$</span><span class="kw">set</span>(<span class="dt">root.dir =</span> init_wd)</a></code></pre></div>
@@ -187,6 +197,8 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#setup">Setup</a></li>
+      <li><a href="#main-event">Main event</a></li>
+      <li><a href="#cleanup">Cleanup</a></li>
       </ul>
 </div>
       </div>
