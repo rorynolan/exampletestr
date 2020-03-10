@@ -13,11 +13,12 @@ teardown({
 
 test_that("`make_test_shell()` works", {
   expect_true(file.copy(system.file("extdata", "detect.R",
-                                    package = "exampletestr"
+    package = "exampletestr"
   ), paste0(pkg_dir, "/R")))
   expect_equal(
     make_test_shell(
-      extract_examples("R/detect.R", pkg_dir = pkg_dir)[[1]]),
+      extract_examples("R/detect.R", pkg_dir = pkg_dir)[[1]]
+    ),
     c(
       "test_that(\"\", {",
       "  fruit <- c(\"apple\", \"banana\", \"pear\", \"pinapple\")",
@@ -32,8 +33,8 @@ test_that("`make_test_shell()` works", {
   )
   expect_equal(
     make_test_shell(extract_examples("detect", pkg_dir = pkg_dir)[[1]],
-                    desc = "xyz", e_e = FALSE
-      ),
+      desc = "xyz", e_e = FALSE
+    ),
     c(
       "test_that(\"xyz\", {",
       "  fruit <- c(\"apple\", \"banana\", \"pear\", \"pinapple\")",

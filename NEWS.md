@@ -1,3 +1,9 @@
+# `exampletestr` 1.6.0
+
+## NEW FEATURES
+* Integration with [`roxytest`](https://github.com/mikldk/roxytest)).
+
+
 # `exampletestr` 1.5.2
 
 ## BUG FIXES

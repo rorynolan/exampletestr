@@ -32,12 +32,9 @@ remotes::install_github("rorynolan/exampletestr")
 There are three ways to use `exampletestr` to make unit test shells
 based on function examples:
 
-1.  [One function at a
-    time](https://rorynolan.github.io/exampletestr/articles/one-function-at-a-time.html).
-2.  [One `.R` file at a
-    time](https://rorynolan.github.io/exampletestr/articles/one-file-at-a-time.html).
-3.  [A whole package all at
-    once](https://rorynolan.github.io/exampletestr/articles/whole-package.html).
+1. [One function at a time](https://rorynolan.github.io/exampletestr/articles/one-function-at-a-time.html) (this article also explains the integration with [`roxytest`](https://github.com/mikldk/roxytest)).
+2. [One `.R` file at a     time](https://rorynolan.github.io/exampletestr/articles/one-file-at-a-time.html).
+3. [A whole package all at once](https://rorynolan.github.io/exampletestr/articles/whole-package.html).
 
 These three articles should be read in order to learn how the package
 works and how to use it.

@@ -21,6 +21,24 @@ test_that("`make_tests_shell_fun()` works", {
   expect_false(is_documented("str_detect"))
   fs::dir_create(paste0(pkg_dir, "/man"))
   expect_false(is_documented("str_detect"))
+  if (identical(Sys.getenv("NOT_CRAN"), "true")) {
+    make_test_shell_fun("str_detect",
+      open = FALSE, pkg_dir = pkg_dir,
+      roxytest = TRUE
+    )
+    expect_equal(
+      clipr::read_clip(TRUE),
+      c(
+        "@testexamples",
+        "#' expect_equal(str_detect(fruit, \"a\"), )",
+        "#' expect_equal(str_detect(fruit, \"^a\"), )",
+        "#' expect_equal(str_detect(fruit, \"a$\"), )",
+        "#' expect_equal(str_detect(fruit, \"b\"), )",
+        "#' expect_equal(str_detect(fruit, \"[aeiou]\"), )",
+        "#' expect_equal(str_detect(\"aecfg\", letters), )"
+      )
+    )
+  }
   make_test_shell_fun("str_detect()", open = FALSE, pkg_dir = pkg_dir)
   expect_equal(
     readr::read_lines(
@@ -82,16 +100,18 @@ test_that("`make_tests_shell_fun()` works", {
   usethis::with_project(pkg_dir2, {
     no_man_err_msg <- rlang::catch_cnd(
       make_test_shell_fun("hello",
-                          pkg_dir = pkg_dir2,
-                          document = FALSE
+        pkg_dir = pkg_dir2,
+        document = FALSE
       )
     )$message
     expect_match(crayon::strip_style(no_man_err_msg),
-                 paste("Your package has no 'man' folder.\n    *",
-                       "`exampletestr` looks for examples in",
-                       "the '*.Rd' files in",
-                       "the 'man' folder of a package and",
-                       "cannot function without them."),
+      paste(
+        "Your package has no 'man' folder.\n    *",
+        "`exampletestr` looks for examples in",
+        "the '*.Rd' files in",
+        "the 'man' folder of a package and",
+        "cannot function without them."
+      ),
       fixed = TRUE
     )
     fs::dir_create(paste0(pkg_dir2, "/man"))
@@ -102,18 +122,20 @@ test_that("`make_tests_shell_fun()` works", {
       )
     )$message
     expect_match(crayon::strip_style(no_rd_err_msg),
-                 paste("Your package has no '*.Rd' files in",
-                       "its 'man/' folder.\n    * exampletestr",
-                       "looks for examples in the '*.Rd' files",
-                       "in the 'man/' folder of a package and",
-                       "cannot function if there are no '*.Rd'",
-                       "files there."),
+      paste(
+        "Your package has no '*.Rd' files in",
+        "its 'man/' folder.\n    * exampletestr",
+        "looks for examples in the '*.Rd' files",
+        "in the 'man/' folder of a package and",
+        "cannot function if there are no '*.Rd'",
+        "files there."
+      ),
       fixed = TRUE
     )
     no_examples_err_msg <- rlang::catch_cnd(
       make_test_shell_fun("hello",
-                          pkg_dir = pkg_dir2,
-                          document = TRUE
+        pkg_dir = pkg_dir2,
+        document = TRUE
       ),
       classes = "error"
     )$message

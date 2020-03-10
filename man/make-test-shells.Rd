@@ -7,14 +7,32 @@
 \alias{make_tests_shells_pkg}
 \title{Create test shells.}
 \usage{
-make_test_shell_fun(fun, pkg_dir = ".", overwrite = FALSE,
-  e_e = TRUE, open = TRUE, document = TRUE)
+make_test_shell_fun(
+  fun,
+  pkg_dir = ".",
+  overwrite = FALSE,
+  e_e = TRUE,
+  roxytest = FALSE,
+  open = TRUE,
+  document = TRUE
+)
 
-make_tests_shells_file(r_file_name, pkg_dir = ".", overwrite = FALSE,
-  e_e = TRUE, open = TRUE, document = TRUE)
+make_tests_shells_file(
+  r_file_name,
+  pkg_dir = ".",
+  overwrite = FALSE,
+  e_e = TRUE,
+  open = TRUE,
+  document = TRUE
+)
 
-make_tests_shells_pkg(pkg_dir = ".", overwrite = FALSE, e_e = TRUE,
-  open = FALSE, document = TRUE)
+make_tests_shells_pkg(
+  pkg_dir = ".",
+  overwrite = FALSE,
+  e_e = TRUE,
+  open = FALSE,
+  document = TRUE
+)
 }
 \arguments{
 \item{fun}{The name of the function to make a test shell for.}
@@ -27,6 +45,9 @@ exists?}
 
 \item{e_e}{Set this to \code{FALSE} to prevent anything from being put in the
 shell of a \code{\link[testthat:expect_equal]{testthat::expect_equal()}} statement.}
+
+\item{roxytest}{Copy \code{roxytest} package \verb{@testexamples} code to clipboard
+instead of creating file in \code{tests/testthat}?}
 
 \item{open}{Open the created test file in your editor after it is created?}
 
@@ -65,13 +86,16 @@ directory of a package.}
 }
 \examples{
 \dontrun{
-pkg_dir <- "mylilpkg"
+pkg_dir <- "~/mylilpkg"
 usethis::create_package(pkg_dir, rstudio = FALSE, open = FALSE)
 fs::file_copy(
   system.file("extdata", c("detect.R", "match.R"),
     package = "exampletestr"
   ),
   paste0(pkg_dir, "/R")
+)
+make_test_shell_fun("str_detect()", pkg_dir,
+  document = TRUE, roxytest = TRUE
 )
 make_test_shell_fun("str_detect()", pkg_dir,
   document = TRUE, open = FALSE

@@ -30,6 +30,8 @@
 #'   exists?
 #' @param e_e Set this to `FALSE` to prevent anything from being put in the
 #'   shell of a [testthat::expect_equal()] statement.
+#' @param roxytest Copy `roxytest` package `@testexamples` code to clipboard
+#'   instead of creating file in `tests/testthat`?
 #' @param open Open the created test file in your editor after it is created?
 #' @param document Run [roxygen2::roxygenize()] to update package documentation
 #'   before starting?
@@ -40,13 +42,16 @@
 #'
 #' @examples
 #' \dontrun{
-#' pkg_dir <- "mylilpkg"
+#' pkg_dir <- "~/mylilpkg"
 #' usethis::create_package(pkg_dir, rstudio = FALSE, open = FALSE)
 #' fs::file_copy(
 #'   system.file("extdata", c("detect.R", "match.R"),
 #'     package = "exampletestr"
 #'   ),
 #'   paste0(pkg_dir, "/R")
+#' )
+#' make_test_shell_fun("str_detect()", pkg_dir,
+#'   document = TRUE, roxytest = TRUE
 #' )
 #' make_test_shell_fun("str_detect()", pkg_dir,
 #'   document = TRUE, open = FALSE
@@ -67,6 +72,7 @@ NULL
 #' @export
 make_test_shell_fun <- function(fun, pkg_dir = ".",
                                 overwrite = FALSE, e_e = TRUE,
+                                roxytest = FALSE,
                                 open = TRUE, document = TRUE) {
   checkmate::assert_string(fun)
   checkmate::assert_directory_exists(pkg_dir)
@@ -137,25 +143,50 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
   examples %<>% {
     .[[fun_index]]
   }
-  test_shell <- make_test_shell(examples, paste0("`", fun, "()` works"),
+  if (roxytest) {
+    withr::with_options(list(usethis.quiet = usethis_quiet_init), {
+      roxytest_out <- make_test_that_innards_shell(examples,
+        e_e = e_e,
+        roxytest = TRUE
+      )
+      withr::with_envvar(
+        c(CLIPR_ALLOW = TRUE),
+        usethis::ui_code_block(roxytest_out, copy = TRUE)
+      )
+      usethis::ui_todo("Paste the block into your roxygen documentation.")
+      usethis::ui_todo("Complete the tests in the block.")
+      usethis::ui_todo(
+        glue::glue(
+          "Run {usethis::ui_code('devtools::document()')} to ",
+          "generate the tests in {usethis::ui_path('tests/')}."
+        )
+      )
+      return(invisible(roxytest_out))
+    })
+  }
+  test_shell <- make_test_shell(
+    examples, paste0("`", fun, "()` works"),
     e_e = e_e
   )
   test_file_name <- usethis::proj_path("tests", "testthat",
-                                       paste0("test-", fun, "-examples"),
-                                       ext = "R")
-  if (!fs::dir_exists(usethis::proj_path("tests", "testthat")))
+    paste0("test-", fun, "-examples"),
+    ext = "R"
+  )
+  if (!fs::dir_exists(usethis::proj_path("tests", "testthat"))) {
     usethis::use_testthat()
+  }
   if (!overwrite) test_file_name %<>% make_available_test_file_name()
   readr::write_lines(test_shell, test_file_name)
   withr::with_options(list(usethis.quiet = usethis_quiet_init), {
     usethis::ui_info(
       "Wrote {usethis::ui_path(usethis::proj_path(test_file_name),
                                usethis::proj_path())}."
-      )
+    )
     if (open) file.edit(test_file_name)
     usethis::ui_todo(
-      glue::glue("Complete the unit tests in ",
-                 "{usethis::ui_path(usethis::proj_path(test_file_name),
+      glue::glue(
+        "Complete the unit tests in ",
+        "{usethis::ui_path(usethis::proj_path(test_file_name),
                                     usethis::proj_path())}."
       )
     )
@@ -179,11 +210,13 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   check_for_DESCRIPTION()
   if (document) exampletestr_document(usethis_quiet_init)
   check_for_man()
-  if (stringr::str_detect(r_file_name, "/"))
+  if (stringr::str_detect(r_file_name, "/")) {
     r_file_name %<>% filesstrings::after_last("/")
+  }
   r_file_name %<>% filesstrings::give_ext("R")
   exampless <- extract_examples(r_file_name,
-                                pkg_dir = pkg_dir, document = FALSE)
+    pkg_dir = pkg_dir, document = FALSE
+  )
   if (!length(exampless)) {
     usethis::ui_info(glue::glue(
       "No examples found for file '{r_file_name}', ",
@@ -200,8 +233,9 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
     e_e = e_e
   )
   combined <- purrr::reduce(test_shells, ~ c(.x, "", .y))
-  if (!fs::dir_exists(usethis::proj_path("tests", "testthat")))
+  if (!fs::dir_exists(usethis::proj_path("tests", "testthat"))) {
     usethis::use_testthat()
+  }
   test_file_name <- usethis::proj_path(
     "tests", "testthat", paste0("test-", r_file_name)
   )
@@ -211,11 +245,12 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
     usethis::ui_info(
       "Wrote {usethis::ui_path(usethis::proj_path(test_file_name),
                                usethis::proj_path())}."
-      )
+    )
     if (open) file.edit(test_file_name)
     usethis::ui_todo(
-      glue::glue("Complete the unit tests in ",
-                 "{usethis::ui_path(usethis::proj_path(test_file_name),
+      glue::glue(
+        "Complete the unit tests in ",
+        "{usethis::ui_path(usethis::proj_path(test_file_name),
                                     usethis::proj_path())}."
       )
     )
@@ -238,13 +273,15 @@ make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE,
   if (document) exampletestr_document(usethis_quiet_init)
   check_for_man()
   if (!fs::dir_exists(usethis::proj_path("R")) ||
-      length(fs::dir_ls(usethis::proj_path("R"))) == 0) {
+    length(fs::dir_ls(usethis::proj_path("R"))) == 0) {
     withr::with_options(list(usethis.quiet = usethis_quiet_init), {
       usethis::ui_info(
-        glue::glue("No files found in the ",
-                   "{usethis::ui_path(usethis::proj_path('R'),
+        glue::glue(
+          "No files found in the ",
+          "{usethis::ui_path(usethis::proj_path('R'),
                                       usethis::proj_path())} directory ",
-                   "of the package so no test shells created.")
+          "of the package so no test shells created."
+        )
       )
     })
     return(invisible(list()))
@@ -253,8 +290,8 @@ make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE,
   }
   withr::with_options(list(usethis.quiet = usethis_quiet_init), {
     out <- purrr::map(r_files, make_tests_shells_file,
-                      pkg_dir = pkg_dir, overwrite = overwrite, e_e = e_e,
-                      open = open, document = FALSE
+      pkg_dir = pkg_dir, overwrite = overwrite, e_e = e_e,
+      open = open, document = FALSE
     )
     usethis::ui_done("Finished creating test shells for your package.")
     invisible(out)

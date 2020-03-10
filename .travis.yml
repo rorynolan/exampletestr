@@ -8,14 +8,25 @@ matrix:
   include:
     - os: linux
       dist: xenial
+      env: TRAVIS_CLIP=xclip NOT_CRAN=true
+      addons: {apt: {packages: [xclip]}}
+      services: [xvfb]
       after_success: Rscript -e 'covr::codecov()'
       before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
       deploy:
         provider: script
         script: Rscript -e 'pkgdown::deploy_site_github()'
         skip_cleanup: true
+    - os: linux
+      dist: xenial
+      env: TRAVIS_CLIP=xsel NOT_CRAN=true
+      addons: {apt: {packages: [xsel]}}
+      services: [xvfb]
     - os: osx
-      env: _R_CHECK_LENGTH_1_CONDITION_=true
+      env: _R_CHECK_LENGTH_1_CONDITION_=true _R_CHECK_LENGTH_1_LOGIC2_=true NOT_CRAN=true
       r_build_args: --no-build-vignettes --no-manual
       r_check_args: --no-build-vignettes --no-manual
       warnings_are_errors: false
+
+before_script:
+  - if [ "$TRAVIS_CLIP" == "xclip" ]; then uptime | xclip -i -sel p -f | xclip -i -sel c; xclip -o -sel clipboard; fi
