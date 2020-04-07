@@ -156,7 +156,7 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
       usethis::ui_todo("Paste the block into your roxygen documentation.")
       usethis::ui_todo("Complete the tests in the block.")
       usethis::ui_todo(
-        glue::glue(
+        stringr::str_glue(
           "Run {usethis::ui_code('devtools::document()')} to ",
           "generate the tests in {usethis::ui_path('tests/')}."
         )
@@ -184,7 +184,7 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
     )
     if (open) file.edit(test_file_name)
     usethis::ui_todo(
-      glue::glue(
+      stringr::str_glue(
         "Complete the unit tests in ",
         "{usethis::ui_path(usethis::proj_path(test_file_name),
                                     usethis::proj_path())}."
@@ -218,7 +218,7 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
     pkg_dir = pkg_dir, document = FALSE
   )
   if (!length(exampless)) {
-    usethis::ui_info(glue::glue(
+    usethis::ui_info(stringr::str_glue(
       "No examples found for file '{r_file_name}', ",
       "so no corresponding test file will be made for this file."
     ))
@@ -227,7 +227,7 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   test_shells <- purrr::pmap(
     list(
       example_block = exampless,
-      desc = glue::glue("`{names(exampless)}()` works")
+      desc = stringr::str_glue("`{names(exampless)}()` works")
     ),
     make_test_shell,
     e_e = e_e
@@ -248,7 +248,7 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
     )
     if (open) file.edit(test_file_name)
     usethis::ui_todo(
-      glue::glue(
+      stringr::str_glue(
         "Complete the unit tests in ",
         "{usethis::ui_path(usethis::proj_path(test_file_name),
                                     usethis::proj_path())}."
@@ -276,7 +276,7 @@ make_tests_shells_pkg <- function(pkg_dir = ".", overwrite = FALSE,
     length(fs::dir_ls(usethis::proj_path("R"))) == 0) {
     withr::with_options(list(usethis.quiet = usethis_quiet_init), {
       usethis::ui_info(
-        glue::glue(
+        stringr::str_glue(
           "No files found in the ",
           "{usethis::ui_path(usethis::proj_path('R'),
                                       usethis::proj_path())} directory ",

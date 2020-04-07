@@ -23,20 +23,20 @@ test_that("`make_tests_shells_file()` and `make_tests_shells_pkg()` work", {
     simplify = FALSE
   )
   test_detect_file_paths <- usethis::proj_path("tests/testthat",
-                                               paste0(
-                                                 "test-detect",
-                                                 c(
-                                                   "",
-                                                   paste0(
-                                                     "-examples",
-                                                     c(
-                                                       "",
-                                                       paste0("--", 1:2)
-                                                     )
-                                                   )
-                                                 )
-                                               ),
-                                               ext = "R"
+    paste0(
+      "test-detect",
+      c(
+        "",
+        paste0(
+          "-examples",
+          c(
+            "",
+            paste0("--", 1:2)
+          )
+        )
+      )
+    ),
+    ext = "R"
   )
   expect_true(all(fs::file_exists(test_detect_file_paths)))
   expect_equal(
@@ -57,7 +57,8 @@ test_that("`make_tests_shells_file()` and `make_tests_shells_pkg()` work", {
   )
   expect_true(
     filesstrings::all_equal(
-      purrr::map(test_detect_file_paths, readr::read_lines))
+      purrr::map(test_detect_file_paths, readr::read_lines)
+    )
   )
   empty_lines <- character(2)
   readr::write_lines(empty_lines, usethis::proj_path("R/empty.R"))
@@ -80,10 +81,21 @@ test_that("`make_tests_shells_file()` and `make_tests_shells_pkg()` work", {
   )
   withr::with_options(list(usethis.quiet = FALSE), {
     fs::dir_delete(paste0(pkg_dir, "/R"))
-    expect_match(
-      capture.output(make_tests_shells_pkg(pkg_dir, document = FALSE)),
-      paste("No files found in the 'R' directory of the package so no test",
-            "shells created."),
-      fixed = TRUE)
+    if (packageVersion("usethis") > "1.5.1") {
+      skip_if_not_installed("crayon")
+      expect_match(
+        crayon::strip_style(
+          purrr::quietly(make_tests_shells_pkg)(
+            pkg_dir,
+            document = FALSE
+          )$message
+        ),
+        paste(
+          "No files found in the 'R' directory of the package so no test",
+          "shells created."
+        ),
+        fixed = TRUE
+      )
+    }
   })
 })

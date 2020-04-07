@@ -3,6 +3,9 @@
 ## NEW FEATURES
 * Integration with [`roxytest`](https://github.com/mikldk/roxytest)).
 
+## BUG FIXES
+* Fix for `usethis` 1.6.0 moving from `cat()` to `rlang::inform()` for messaging.
+
 
 # `exampletestr` 1.5.2
 
