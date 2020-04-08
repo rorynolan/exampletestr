@@ -1,8 +1,9 @@
 pandoc: '2.2'
-pkgdown: 1.4.1
-pkgdown_sha: ~
+pkgdown: 1.5.0.9000
+pkgdown_sha: cb9866146685f6924b67c2b95a97a9637e934714
 articles:
   one-file-at-a-time: one-file-at-a-time.html
   one-function-at-a-time: one-function-at-a-time.html
   whole-package: whole-package.html
+last_built: 2020-04-08T06:15Z
 
