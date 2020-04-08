@@ -83,18 +83,14 @@ test_that("`make_tests_shells_file()` and `make_tests_shells_pkg()` work", {
     fs::dir_delete(paste0(pkg_dir, "/R"))
     if (packageVersion("usethis") > "1.5.1") {
       skip_if_not_installed("crayon")
-      expect_match(
-        crayon::strip_style(
-          purrr::quietly(make_tests_shells_pkg)(
+      verify_output(
+        test_path("no-files-in-r-dir.txt"),
+        {
+          make_tests_shells_pkg(
             pkg_dir,
             document = FALSE
-          )$message
-        ),
-        paste(
-          "No files found in the 'R' directory of the package so no test",
-          "shells created."
-        ),
-        fixed = TRUE
+          )
+        }
       )
     }
   })
