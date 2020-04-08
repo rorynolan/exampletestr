@@ -22,6 +22,7 @@ matrix:
       env: TRAVIS_CLIP=xsel NOT_CRAN=true
       addons: {apt: {packages: [xsel]}}
       services: [xvfb]
+      r_github_packages: r-lib/usethis
     - os: osx
       env: _R_CHECK_LENGTH_1_CONDITION_=true _R_CHECK_LENGTH_1_LOGIC2_=true NOT_CRAN=true
       r_build_args: --no-build-vignettes --no-manual
