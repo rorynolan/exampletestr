@@ -26,6 +26,7 @@ test_that("`make_tests_shell_fun()` works", {
       open = FALSE, pkg_dir = pkg_dir,
       roxytest = TRUE
     )
+    skip_if_not_installed("clipr")
     expect_equal(
       clipr::read_clip(TRUE),
       c(

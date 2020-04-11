@@ -1,3 +1,9 @@
+# `exampletestr` 1.6.1
+
+## BUG FIXES
+* `clipr` should be in `Suggests`.
+
+
 # `exampletestr` 1.6.0
 
 ## NEW FEATURES

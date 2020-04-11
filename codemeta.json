@@ -61,6 +61,19 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "clipr",
+      "name": "clipr",
+      "version": ">= 0.7.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=clipr"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "covr",
       "name": "covr",
       "provider": {
@@ -164,19 +177,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=checkmate"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "clipr",
-      "name": "clipr",
-      "version": ">= 0.7.0",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=clipr"
     },
     {
       "@type": "SoftwareApplication",
@@ -347,7 +347,7 @@
   ],
   "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
   "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "fileSize": "37.12KB",
+  "fileSize": "37.149KB",
   "contIntegration": [
     "https://travis-ci.org/rorynolan/exampletestr",
     "https://ci.appveyor.com/project/rorynolan/exampletestr",
