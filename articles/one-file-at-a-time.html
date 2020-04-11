@@ -97,7 +97,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>One .R file at a time</h1>
             
-            <h4 class="date">2020-04-08</h4>
+            <h4 class="date">2020-04-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rorynolan/exampletestr/blob/master/vignettes/one-file-at-a-time.Rmd"><code>vignettes/one-file-at-a-time.Rmd</code></a></small>
       <div class="hidden name"><code>one-file-at-a-time.Rmd</code></div>
@@ -111,22 +111,28 @@
 <h2 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h2>
 <p>First, let’s set up a dummy package called <code>tempkg</code> with just the <code>detect.R</code> and <code>match.R</code> files from the source code of the <code>stringr</code> package.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw pkg">usethis</span><span class="kw ns">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html">create_package</a></span>(<span class="st">"tempkg"</span>, <span class="kw">open</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="kw pkg">fs</span><span class="kw ns">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/copy.html">file_copy</a></span>(
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw pkg">usethis</span><span class="kw ns">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html">create_package</a></span>(<span class="st">"tempkg"</span>, <span class="kw">open</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<pre><code>#&gt; ✔ Creating 'tempkg/'</code></pre>
+<pre><code>#&gt; ✔ Setting active project to '/tmp/RtmpdI1cso/tempkg'</code></pre>
+<pre><code>#&gt; ✔ Creating 'R/'</code></pre>
+<pre><code>#&gt; ✔ Writing 'DESCRIPTION'</code></pre>
+<pre><code>#&gt; ✔ Writing 'NAMESPACE'</code></pre>
+<pre><code>#&gt; ✔ Setting active project to '&lt;no active project&gt;'</code></pre>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="kw pkg">fs</span><span class="kw ns">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/copy.html">file_copy</a></span>(
   <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"detect.R"</span>, <span class="st">"match.R"</span>), <span class="kw">package</span> <span class="kw">=</span> <span class="st">"exampletestr"</span>),
   <span class="st">"tempkg/R/"</span>
 )</pre></body></html></div>
 <p>Now let’s move into the <code>tempkg</code> directory:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span>(<span class="st">"tempkg/"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span>(<span class="st">"tempkg/"</span>)</pre></body></html></div>
 <p>and set the active project:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="kw pkg">usethis</span><span class="kw ns">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_set</a></span>(<span class="st">"."</span>)</pre></body></html></div>
-<pre><code>#&gt; ✔ Setting active project to '/tmp/RtmpibUTlN/tempkg'</code></pre>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="kw pkg">usethis</span><span class="kw ns">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_set</a></span>(<span class="st">"."</span>)</pre></body></html></div>
+<pre><code>#&gt; ✔ Setting active project to '/tmp/RtmpdI1cso/tempkg'</code></pre>
 </div>
 <div id="main-event" class="section level1">
 <h1 class="hasAnchor">
 <a href="#main-event" class="anchor"></a>Main event</h1>
 <p>The <code>detect.R</code> file looks like this (well, I’ve abbreviated it slightly):</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co">#' Detect the presence or absence of a pattern in a string.</span>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co">#' Detect the presence or absence of a pattern in a string.</span>
 <span class="co">#'</span>
 <span class="co">#' Vectorised over `string` and `pattern`.</span>
 <span class="co">#'</span>
@@ -156,9 +162,9 @@
   )
 }</pre></body></html></div>
 <p>We can make the unit tests <em>shell</em> file for the <code>str_match()</code> function using <code><a href="../reference/make-test-shells.html">make_tests_shells_file()</a></code>:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/make-test-shells.html">make_tests_shells_file</a></span>(<span class="st">"detect"</span>, <span class="kw">open</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/make-test-shells.html">make_tests_shells_file</a></span>(<span class="st">"detect"</span>, <span class="kw">open</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <p>This outputs a <code>test-detect.R</code> file in the <code>tests/testthat</code> folder with contents</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu">test_that</span>(<span class="st">"`str_detect()` works"</span>, {
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu">test_that</span>(<span class="st">"`str_detect()` works"</span>, {
   <span class="no">fruit</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span>)
   <span class="fu">expect_equal</span>(<span class="fu">str_detect</span>(<span class="no">fruit</span>, <span class="st">"a"</span>), )
   <span class="fu">expect_equal</span>(<span class="fu">str_detect</span>(<span class="no">fruit</span>, <span class="st">"^a"</span>), )
@@ -168,7 +174,7 @@
   <span class="fu">expect_equal</span>(<span class="fu">str_detect</span>(<span class="st">"aecfg"</span>, <span class="no">letters</span>), )
 })</pre></body></html></div>
 <p>which can be sensibly completed as</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu">test_that</span>(<span class="st">"`str_detect()` works"</span>, {
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu">test_that</span>(<span class="st">"`str_detect()` works"</span>, {
   <span class="no">fruit</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span>)
   <span class="fu">expect_equal</span>(<span class="fu">str_detect</span>(<span class="no">fruit</span>, <span class="st">"a"</span>), <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">TRUE</span>, <span class="fl">4</span>))
   <span class="fu">expect_equal</span>(<span class="fu">str_detect</span>(<span class="no">fruit</span>, <span class="st">"^a"</span>), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">FALSE</span>, <span class="fl">3</span>)))
@@ -184,8 +190,8 @@
 <div id="cleanup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#cleanup" class="anchor"></a>Cleanup</h1>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html">opts_knit</a></span>$<span class="fu">set</span>(<span class="kw">root.dir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(<span class="kw">check</span> <span class="kw">=</span> <span class="fl">TRUE</span>))</pre></body></html></div>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="kw">if</span> (<span class="kw pkg">fs</span><span class="kw ns">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/file_access.html">dir_exists</a></span>(<span class="st">"tempkg"</span>)) <span class="kw pkg">fs</span><span class="kw ns">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span>(<span class="st">"tempkg"</span>)
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html">opts_knit</a></span>$<span class="fu">set</span>(<span class="kw">root.dir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(<span class="kw">check</span> <span class="kw">=</span> <span class="fl">TRUE</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="kw">if</span> (<span class="kw pkg">fs</span><span class="kw ns">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/file_access.html">dir_exists</a></span>(<span class="st">"tempkg"</span>)) <span class="kw pkg">fs</span><span class="kw ns">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span>(<span class="st">"tempkg"</span>)
 <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html">opts_knit</a></span>$<span class="fu">set</span>(<span class="kw">root.dir</span> <span class="kw">=</span> <span class="no">init_wd</span>)</pre></body></html></div>
 </div>
   </div>
@@ -205,7 +211,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
