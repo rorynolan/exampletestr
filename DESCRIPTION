@@ -1,7 +1,7 @@
 Type: Package
 Package: exampletestr
 Title: Help for Writing Unit Tests Based on Function Examples
-Version: 1.6.1
+Version: 1.6.2
 Authors@R: 
     c(person(given = "Rory",
              family = "Nolan",
@@ -27,14 +27,13 @@ Description: Take the examples written in your documentation of
     manually completed by the user) of test files to be tested with the
     'testthat' package. Sort of like python 'doctests' for R.
 License: GPL-3
-URL: https://rorynolan.github.io/exampletestr,
+URL: https://rorynolan.github.io/exampletestr/,
     https://github.com/rorynolan/exampletestr#readme
-BugReports: https://www.github.com/rorynolan/exampletestr/issues
+BugReports: https://github.com/rorynolan/exampletestr/issues
 Depends: 
-    R (>= 3.5.0)
+    R (>= 3.5)
 Imports:
     checkmate (>= 1.9.3),
-    filesstrings (>= 3.1.5),
     fs (>= 1.2.3),
     magrittr (>= 1.5),
     ore (>= 1.4.0),
@@ -43,7 +42,8 @@ Imports:
     rlang (>= 0.3.3),
     roxygen2,
     rstudioapi (>= 0.4),
-    stringr (>= 1.3.0),
+    strex (>= 1.4),
+    stringr (>= 1.4),
     styler (>= 1.2.0),
     usethis (>= 1.5.1),
     withr (>= 2.1.0)
@@ -62,4 +62,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

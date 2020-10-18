@@ -7,22 +7,23 @@ their package documentation.
 
 [![Travis-CI Build
 Status](https://travis-ci.org/rorynolan/exampletestr.svg?branch=master)](https://travis-ci.org/rorynolan/exampletestr)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr)
-[![codecov](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/gh/rorynolan/exampletestr)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr)
+[![Coverage
+status](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/github/rorynolan/exampletestr?branch=master)
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
+![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
 ![RStudio CRAN
 downloads](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr)
-[![RStudio CRAN monthly
-downloads](http://cranlogs.r-pkg.org/badges/exampletestr)](https://cran.r-project.org/package=exampletestr)
-[![Rdocumentation](http://www.rdocumentation.org/badges/version/exampletestr)](http://www.rdocumentation.org/packages/exampletestr)
-[![DOI](https://zenodo.org/badge/82205896.svg)](https://zenodo.org/badge/latestdoi/82205896)
-
-[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
-[![Project Status: Active – The project has reached a stable, usable
-state and is being actively
-developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+![RStudio CRAN monthly
+downloads](http://cranlogs.r-pkg.org/badges/exampletestr)
+[![Rdocumentation](https://www.rdocumentation.org/badges/version/exampletestr)](https://www.rdocumentation.org/packages/exampletestr)
 
 ## Installation
 
@@ -45,10 +46,14 @@ remotes::install_github("rorynolan/exampletestr")
 To learn how to use `exampletestr`, visit the package’s website at
 <https://rorynolan.github.io/exampletestr>.
 
-# Contribution
+## Contributing
 
-Contributions to this package are welcome. The preferred method of
-contribution is through a github pull request. Feel free to contact me
-by creating an issue. Please note that this project is released with a
-[Contributor Code of Conduct](CONDUCT.md). By participating in this
-project you agree to abide by its terms.
+The preferred method of contribution is via GitHub pull request. Please
+note that the ‘exampletestr’ project is released with a [Contributor
+Code of Conduct](inst/CODE_OF_CONDUCT.md). By contributing to this
+project, you agree to abide by its terms. \# Contribution Contributions
+to this package are welcome. The preferred method of contribution is
+through a github pull request. Feel free to contact me by creating an
+issue. Please note that this project is released with a [Contributor
+Code of Conduct](CONDUCT.md). By participating in this project you agree
+to abide by its terms.

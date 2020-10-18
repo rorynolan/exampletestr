@@ -11,18 +11,18 @@
   "relatedLink": [
     "https://rorynolan.github.io/exampletestr",
     "https://github.com/rorynolan/exampletestr#readme",
-    "https://CRAN.R-project.org/package=exampletestr"
+    "https://CRAN.R-project.org/package=exampletestr",
+    "https://rorynolan.github.io/exampletestr/"
   ],
-  "issueTracker": "https://www.github.com/rorynolan/exampletestr/issues",
+  "issueTracker": "https://github.com/rorynolan/exampletestr/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "3.6.1",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 3.6.1 (2019-07-05)",
+  "runtimePlatform": "R version 4.0.2 (2020-06-22)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -163,7 +163,7 @@
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
-      "version": ">= 3.5.0"
+      "version": ">= 3.5"
     },
     {
       "@type": "SoftwareApplication",
@@ -177,19 +177,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=checkmate"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "filesstrings",
-      "name": "filesstrings",
-      "version": ">= 3.1.5",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=filesstrings"
     },
     {
       "@type": "SoftwareApplication",
@@ -294,9 +281,22 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "strex",
+      "name": "strex",
+      "version": ">= 1.4",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=strex"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "stringr",
       "name": "stringr",
-      "version": ">= 1.3.0",
+      "version": ">= 1.4",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -347,16 +347,9 @@
   ],
   "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
   "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "fileSize": "37.153KB",
-  "contIntegration": [
-    "https://travis-ci.org/rorynolan/exampletestr",
-    "https://ci.appveyor.com/project/rorynolan/exampletestr",
-    "https://codecov.io/gh/rorynolan/exampletestr"
-  ],
-  "developmentStatus": [
-    "https://www.tidyverse.org/lifecycle/#stable",
-    "http://www.repostatus.org/#active"
-  ],
+  "fileSize": "7887.409KB",
+  "contIntegration": ["https://travis-ci.org/rorynolan/exampletestr", "https://ci.appveyor.com/project/rorynolan/exampletestr", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
+  "developmentStatus": "https://www.tidyverse.org/lifecycle/#stable",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -376,7 +369,7 @@
       "name": "exampletestr - An easy start to unit testing R packages",
       "identifier": "10.12688/wellcomeopenres.11635.2",
       "url": "https://doi.org/10.12688/wellcomeopenres.11635.2",
-      "paginiation": "31",
+      "pagination": "31",
       "@id": "https://doi.org/10.12688/wellcomeopenres.11635.2",
       "sameAs": "https://doi.org/10.12688/wellcomeopenres.11635.2",
       "isPartOf": {

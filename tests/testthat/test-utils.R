@@ -47,21 +47,25 @@ test_that("`check_for_DESCRIPTION()` works", {
   fs::file_delete(paste0(pkg_dir, "/DESCRIPTION"))
   fs::file_create(paste0(pkg_dir, "/.here"))
   no_DESCRIPTION_err_msg <- rlang::catch_cnd(make_tests_shells_pkg(pkg_dir),
-                                             classes = "error")$message
+    classes = "error"
+  )$message
   expect_match(
     crayon::strip_style(no_DESCRIPTION_err_msg),
-    paste0("Your package has no 'DESCRIPTION' file.\n",
-           "    * Every R package must have a 'DESCRIPTIO",
-           "N' file in the root directory.\n    * Perhaps ",
-           "you specified the wrong `pkg_dir`?\n    *",
-           " You specified `pkg_dir = "),
-    fixed = TRUE)
+    paste0(
+      "Your package has no 'DESCRIPTION' file.\n",
+      "    * Every R package must have a 'DESCRIPTIO",
+      "N' file in the root directory.\n    * Perhaps ",
+      "you specified the wrong `pkg_dir`?\n    *",
+      " You specified `pkg_dir = "
+    ),
+    fixed = TRUE
+  )
   readr::write_lines(description, paste0(pkg_dir, "/DESCRIPTION"))
 })
 
 test_that("custom_stop works", {
-  expect_error(custom_stop("1", 2, 3),
-               "arguments .+ must all be of character type")
+  expect_error(
+    custom_stop("1", 2, 3),
+    "arguments .+ must all be of character type"
+  )
 })
-
-

@@ -87,7 +87,7 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
   check_for_man()
   fun %<>% stringr::str_trim()
   if (stringr::str_detect(fun, stringr::coll("("))) {
-    if (filesstrings::str_elem(fun, 1) %in% c("(", ")")) {
+    if (strex::str_elem(fun, 1) %in% c("(", ")")) {
       custom_stop(
         "The function 'fun' cannot start with a parenthesis.",
         "Your 'fun' is '{fun}'."
@@ -172,9 +172,7 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
     paste0("test-", fun, "-examples"),
     ext = "R"
   )
-  if (!fs::dir_exists(usethis::proj_path("tests", "testthat"))) {
-    usethis::use_testthat()
-  }
+  ensure_testthat()
   if (!overwrite) test_file_name %<>% make_available_test_file_name()
   readr::write_lines(test_shell, test_file_name)
   withr::with_options(list(usethis.quiet = usethis_quiet_init), {
@@ -211,9 +209,9 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   if (document) exampletestr_document(usethis_quiet_init)
   check_for_man()
   if (stringr::str_detect(r_file_name, "/")) {
-    r_file_name %<>% filesstrings::after_last("/")
+    r_file_name %<>% strex::str_after_last("/")
   }
-  r_file_name %<>% filesstrings::give_ext("R")
+  r_file_name %<>% strex::str_give_ext("R")
   exampless <- extract_examples(r_file_name,
     pkg_dir = pkg_dir, document = FALSE
   )

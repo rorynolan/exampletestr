@@ -31,7 +31,6 @@
 #' )
 #' exampletestr:::extract_examples("detect", pkg_dir)
 #' fs::dir_delete(pkg_dir)
-#'
 #' @return A list of character vectors.
 #' @noRd
 extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
@@ -43,13 +42,15 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
   check_for_DESCRIPTION()
   if (document) exampletestr_document(usethis_quiet_init)
   check_for_man()
-  if (filesstrings::str_elem(r_file_name, -1) == "/")
-    r_file_name %<>% filesstrings::before_last("/")
-  if (stringr::str_detect(r_file_name, "/"))
-    r_file_name <- filesstrings::str_after_last(r_file_name, "/")
+  if (strex::str_elem(r_file_name, -1) == "/") {
+    r_file_name %<>% strex::str_before_last("/")
+  }
+  if (stringr::str_detect(r_file_name, "/")) {
+    r_file_name <- strex::str_after_last(r_file_name, "/")
+  }
   r_file_name %<>%
     usethis::proj_path("R", .) %>%
-    filesstrings::give_ext("R")
+    strex::str_give_ext("R")
   checkmate::assert_file_exists(r_file_name)
   r_file_lines_quotes_gone <- readr::read_lines(r_file_name) %>%
     parse(text = .) %>%
@@ -58,14 +59,14 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
     paste0("\n") %>%
     purrr::map(readr::read_lines) %>%
     unlist() %>%
-    filesstrings::remove_quoted()
+    strex::str_remove_quoted()
   r_file_funs <- stringr::str_match(
     r_file_lines_quotes_gone,
     "(^[^ ]*)\\s*(<-|=)\\s*function\\("
   )[, 2] %>%
     stats::na.omit()
   rd_file_paths <- fs::dir_ls(usethis::proj_path("man"),
-                              regexp = "\\.Rd$"
+    regexp = "\\.Rd$"
   )
   rd_file_short_names <- rd_file_paths %>%
     fs::path_file() %>%
@@ -98,7 +99,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
   examples <- purrr::map(wanted_rd_paths, extract_examples_rd)
   names(examples) <- wanted_rds
   ls_exs <- lengths(examples)
-  if (filesstrings::all_equal(unname(ls_exs), 0)) {
+  if (isTRUE(unique(ls_exs) == 0)) {
     return(list())
   }
   examples[as.logical(ls_exs)]

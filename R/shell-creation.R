@@ -45,7 +45,7 @@ make_test_that_innards_shell <- function(example_block, e_e = TRUE,
   expressions <- extract_expressions(example_block)
   if (e_e) {
     for_checking <- expressions %>%
-      purrr::map(filesstrings::remove_quoted) %>%
+      purrr::map(strex::str_remove_quoted) %>%
       purrr::map(stringr::str_replace_all, " ", "")
     leave_alone <- purrr::map_lgl(
       for_checking,

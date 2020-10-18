@@ -44,7 +44,7 @@ current directory). Note that this is the parent directory of R/.}
 exists?}
 
 \item{e_e}{Set this to \code{FALSE} to prevent anything from being put in the
-shell of a \code{\link[testthat:expect_equal]{testthat::expect_equal()}} statement.}
+shell of a \code{\link[testthat:equality-expectations]{testthat::expect_equal()}} statement.}
 
 \item{roxytest}{Copy \code{roxytest} package \verb{@testexamples} code to clipboard
 instead of creating file in \code{tests/testthat}?}

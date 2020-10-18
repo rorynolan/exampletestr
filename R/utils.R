@@ -167,14 +167,14 @@ make_available_test_file_name <- function(test_file_name) {
       test_file_name %<>%
         fs::path_ext_remove() %>%
         paste0("-examples") %>%
-        filesstrings::give_ext("R")
+        strex::str_give_ext("R")
     }
     i <- 1
     while (test_file_name %in% test_files) {
       test_file_name %<>%
-        filesstrings::before_last("examples") %>%
+        strex::str_before_last("examples") %>%
         paste0("examples", "--", i) %>%
-        filesstrings::give_ext("R")
+        strex::str_give_ext("R")
       i <- i + 1
     }
   }
@@ -193,9 +193,7 @@ custom_stop_bullet <- function(string) {
   checkmate::assert_string(string)
   string %>%
     stringr::str_replace_all("\\s+", " ") %>%
-    {
-      stringr::str_glue("    * {.}")
-    }
+    paste("    *", .)
 }
 
 #' Nicely formatted error message.
@@ -232,7 +230,6 @@ custom_stop <- function(main_message, ..., .envir = parent.frame()) {
 
 check_for_DESCRIPTION <- function() {
   if (!fs::file_exists(usethis::proj_path("DESCRIPTION"))) {
-    pkgdireq <- paste0("pkg_dir = \"", usethis::proj_path(), "\"")
     custom_stop(
       "Your package has no {usethis::ui_path('DESCRIPTION')} file.",
       "
@@ -240,14 +237,16 @@ check_for_DESCRIPTION <- function() {
       root directory.
       ",
       "Perhaps you specified the wrong {usethis::ui_code('pkg_dir')}?",
-      "You specified {usethis::ui_code(pkgdireq)}."
+      "You specified {usethis::ui_code(pkgdireq)}.",
+      .envir = list(
+        pkgdireq = paste0("pkg_dir = \"", usethis::proj_path(), "\"")
+      )
     )
   }
   invisible(TRUE)
 }
 
 check_for_man <- function() {
-  pkgdireq <- paste0("pkg_dir = \"", usethis::proj_path(), "\"")
   if (!fs::dir_exists(usethis::proj_path("man"))) {
     custom_stop(
       "
@@ -259,7 +258,10 @@ check_for_man <- function() {
       {usethis::ui_path('*.Rd')} files in the
       {usethis::ui_path(usethis::proj_path('man/'), usethis::proj_path())}
       folder of a package and cannot function without them.
-      "
+      ",
+      .envir = list(
+        pkgdireq = paste0("pkg_dir = \"", usethis::proj_path(), "\"")
+      )
     )
   } else if (!length(fs::dir_ls(usethis::proj_path("man")))) {
     custom_stop(
@@ -273,6 +275,20 @@ check_for_man <- function() {
       function if there are no {usethis::ui_path('*.Rd')} files there.
       "
     )
+  }
+  invisible(TRUE)
+}
+
+#' Ensure that the package has testthat set up.
+#'
+#' Checks if testthat is setup. If not, runs [usethis::use_testthat()].
+#'
+#' @return `TRUE` invisiby.
+#'
+#' @noRd
+ensure_testthat <- function() {
+  if (!fs::dir_exists(usethis::proj_path("tests", "testthat"))) {
+    usethis::use_testthat()
   }
   invisible(TRUE)
 }

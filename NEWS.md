@@ -1,3 +1,9 @@
+# `exampletestr` 1.6.2
+
+## MINOR IMPROVEMENTS
+* Lighten dependencies by importing `strex` rather than `filesstrings`.
+
+
 # `exampletestr` 1.6.1
 
 ## BUG FIXES

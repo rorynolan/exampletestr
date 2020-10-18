@@ -55,10 +55,9 @@ test_that("`make_tests_shells_file()` and `make_tests_shells_pkg()` work", {
       "})"
     )
   )
-  expect_true(
-    filesstrings::all_equal(
-      purrr::map(test_detect_file_paths, readr::read_lines)
-    )
+  expect_equal(
+    length(unique(purrr::map(test_detect_file_paths, readr::read_lines))),
+    1
   )
   empty_lines <- character(2)
   readr::write_lines(empty_lines, usethis::proj_path("R/empty.R"))
