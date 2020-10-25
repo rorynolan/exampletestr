@@ -49,7 +49,7 @@ To learn how to use `exampletestr`, visit the package’s website at
 ## Contributing
 
 The preferred method of contribution is via GitHub pull request. Please
-note that the ‘exampletestr’ project is released with a [Contributor
+note that the `exampletestr` project is released with a [Contributor
 Code of Conduct](inst/CODE_OF_CONDUCT.md). By contributing to this
 project, you agree to abide by its terms. \# Contribution Contributions
 to this package are welcome. The preferred method of contribution is
