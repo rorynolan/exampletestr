@@ -98,7 +98,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A whole package</h1>
             
-            <h4 class="date">2020-10-25</h4>
+            <h4 class="date">2020-11-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rorynolan/exampletestr/blob/master/vignettes/whole-package.Rmd"><code>vignettes/whole-package.Rmd</code></a></small>
       <div class="hidden name"><code>whole-package.Rmd</code></div>
@@ -112,33 +112,33 @@
 <h2 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h2>
 <p>First, let’s set up a dummy package called <code>tempkg</code> with just the <code>detect.R</code> and <code>match.R</code> files from the source code of the <code>stringr</code> package.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html">create_package</a></span><span class="op">(</span><span class="st">"tempkg"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html">create_package</a></span><span class="op">(</span><span class="st">"tempkg"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; ✔ Creating 'tempkg/'</code></pre>
-<pre><code>#&gt; ✔ Setting active project to '/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmphd4FvI/tempkg'</code></pre>
+<pre><code>#&gt; ✔ Setting active project to '/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpXmxQCK/tempkg'</code></pre>
 <pre><code>#&gt; ✔ Creating 'R/'</code></pre>
 <pre><code>#&gt; ✔ Writing 'DESCRIPTION'</code></pre>
 <pre><code>#&gt; ✔ Writing 'NAMESPACE'</code></pre>
 <pre><code>#&gt; ✔ Setting active project to '&lt;no active project&gt;'</code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/copy.html">file_copy</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/copy.html">file_copy</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"detect.R"</span>, <span class="st">"match.R"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"exampletestr"</span><span class="op">)</span>,
   <span class="st">"tempkg/R/"</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p>Now let’s move into the <code>tempkg</code> directory:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"tempkg/"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"tempkg/"</span><span class="op">)</span></code></pre></div>
 <p>and set the active project:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_set</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span></pre></div>
-<pre><code>#&gt; ✔ Setting active project to '/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmphd4FvI/tempkg'</code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_set</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span></code></pre></div>
+<pre><code>#&gt; ✔ Setting active project to '/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpXmxQCK/tempkg'</code></pre>
 </div>
 <div id="main-event" class="section level1">
 <h1 class="hasAnchor">
 <a href="#main-event" class="anchor"></a>Main event</h1>
 <p>The <code>detect.R</code> file looks like this (well, I’ve abbreviated it slightly):</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="co">#' Detect the presence or absence of a pattern in a string.</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#' Detect the presence or absence of a pattern in a string.</span>
 <span class="co">#'</span>
 <span class="co">#' Vectorised over `string` and `pattern`.</span>
 <span class="co">#'</span>
@@ -164,13 +164,13 @@
     coll <span class="op">=</span> <span class="fu">stri_detect_coll</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_collator <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span>,
     regex <span class="op">=</span> <span class="fu">stri_detect_regex</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_regex <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span>
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 <p>We can make a unit tests <em>shell</em> file for each <code>.R</code> file in the package using <code><a href="../reference/make-test-shells.html">make_tests_shells_pkg()</a></code>:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu"><a href="../reference/make-test-shells.html">make_tests_shells_pkg</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/make-test-shells.html">make_tests_shells_pkg</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>This outputs <code>test-detect.R</code> and <code>test-match.R</code> files in the <code>tests/testthat</code> folder. As an example of what to do next, the <code>test-detect.R</code> file has contents</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span>
   <span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span><span class="op">)</span>
   <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a"</span><span class="op">)</span>, <span class="op">)</span>
   <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"^a"</span><span class="op">)</span>, <span class="op">)</span>
@@ -178,10 +178,10 @@
   <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="op">)</span>
   <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"[aeiou]"</span><span class="op">)</span>, <span class="op">)</span>
   <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="st">"aecfg"</span>, <span class="va">letters</span><span class="op">)</span>, <span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></pre></div>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
 <p>which can be sensibly completed as</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span>
   <span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span><span class="op">)</span>
   <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
   <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"^a"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
@@ -192,17 +192,17 @@
     <span class="fu">str_detect</span><span class="op">(</span><span class="st">"aecfg"</span>, <span class="va">letters</span><span class="op">)</span>,
     <span class="va">letters</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span><span class="op">)</span>
   <span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></pre></div>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
 <p><code>test-match.R</code> must similarly be completed.</p>
 </div>
 <div id="cleanup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#cleanup" class="anchor"></a>Cleanup</h1>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html">opts_knit</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>root.dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span>check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="kw">if</span> <span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/file_access.html">dir_exists</a></span><span class="op">(</span><span class="st">"tempkg"</span><span class="op">)</span><span class="op">)</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span><span class="op">(</span><span class="st">"tempkg"</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html">opts_knit</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>root.dir <span class="op">=</span> <span class="va">init_wd</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html">opts_knit</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>root.dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span>check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/file_access.html">dir_exists</a></span><span class="op">(</span><span class="st">"tempkg"</span><span class="op">)</span><span class="op">)</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span><span class="op">(</span><span class="st">"tempkg"</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html">opts_knit</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>root.dir <span class="op">=</span> <span class="va">init_wd</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
