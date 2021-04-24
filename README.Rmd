@@ -15,12 +15,11 @@ An R package to help developers create unit tests (designed for use with the `te
 [![Coverage status](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/github/rorynolan/exampletestr?branch=master)
 
 ![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)
-[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
 [![CRAN status](https://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
 ![RStudio CRAN downloads](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr)
 ![RStudio CRAN monthly downloads](http://cranlogs.r-pkg.org/badges/exampletestr)
-[![Rdocumentation](https://www.rdocumentation.org/badges/version/exampletestr)](https://www.rdocumentation.org/packages/exampletestr)
 
 
 ## Installation
@@ -30,7 +29,7 @@ To install the release version from [CRAN](https://cran.r-project.org/package=ex
 install.packages("exampletestr")
 ```
 
-To install the dev version from [GitHub](https://www.github.com/rorynolan/exampletestr):
+To install the dev version from [GitHub](https://github.com/rorynolan/exampletestr):
 ```{r Install-dev-exampletestr, eval=FALSE}
 remotes::install_github("rorynolan/exampletestr")
 ```
@@ -38,7 +37,7 @@ remotes::install_github("rorynolan/exampletestr")
 
 ## Use
 
-To learn how to use `exampletestr`, visit the package's website at https://rorynolan.github.io/exampletestr.
+To learn how to use `exampletestr`, visit the package's website at https://rorynolan.github.io/exampletestr/.
 
 
 ## Contributing

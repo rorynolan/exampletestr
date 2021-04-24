@@ -15,7 +15,7 @@ status](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.s
 ![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)
-[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
@@ -23,7 +23,6 @@ status](https://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-proje
 downloads](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr)
 ![RStudio CRAN monthly
 downloads](http://cranlogs.r-pkg.org/badges/exampletestr)
-[![Rdocumentation](https://www.rdocumentation.org/badges/version/exampletestr)](https://www.rdocumentation.org/packages/exampletestr)
 
 ## Installation
 
@@ -35,7 +34,7 @@ install.packages("exampletestr")
 ```
 
 To install the dev version from
-[GitHub](https://www.github.com/rorynolan/exampletestr):
+[GitHub](https://github.com/rorynolan/exampletestr):
 
 ``` r
 remotes::install_github("rorynolan/exampletestr")
@@ -44,7 +43,7 @@ remotes::install_github("rorynolan/exampletestr")
 ## Use
 
 To learn how to use `exampletestr`, visit the package’s website at
-<https://rorynolan.github.io/exampletestr>.
+<https://rorynolan.github.io/exampletestr/>.
 
 ## Contributing
 
