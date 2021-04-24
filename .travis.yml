@@ -18,6 +18,7 @@ matrix:
       addons: {apt: {packages: [xsel]}}
       services: [xvfb]
     - os: osx
+      osx_image: xcode12.2
       env: _R_CHECK_LENGTH_1_CONDITION_=true _R_CHECK_LENGTH_1_LOGIC2_=true NOT_CRAN=true
       r_build_args: --no-build-vignettes --no-manual
       r_check_args: --no-build-vignettes --no-manual
@@ -28,4 +29,3 @@ before_script:
   - if [ "$TRAVIS_CLIP" == "xclip" ]; then uptime | xclip -i -sel p -f | xclip -i -sel c; xclip -o -sel clipboard; fi
 before_deploy:
   - if [ "$TRAVIS_CLIP" == "xclip" ]; then uptime | xclip -i -sel p -f | xclip -i -sel c; xclip -o -sel clipboard; fi
-
