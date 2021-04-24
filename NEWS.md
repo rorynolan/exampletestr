@@ -1,3 +1,9 @@
+# `exampletestr` 1.6.3
+
+## BUG FIXES
+* Remove `LazyData` from `DESCRIPTION`.
+
+
 # `exampletestr` 1.6.2
 
 ## MINOR IMPROVEMENTS
