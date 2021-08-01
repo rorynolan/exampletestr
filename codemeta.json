@@ -348,7 +348,7 @@
   ],
   "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
   "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "fileSize": "89.04KB",
+  "fileSize": "89.205KB",
   "contIntegration": ["https://ci.appveyor.com/project/rorynolan/exampletestr", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html",
   "citation": [

@@ -1,3 +1,9 @@
+# `exampletestr` 1.6.4
+
+## BUG FIXES
+* Now that `readr` uses `vroom`, reading with `readr` is safer with `lazy = FALSE`.
+
+
 # `exampletestr` 1.6.3
 
 ## BUG FIXES
