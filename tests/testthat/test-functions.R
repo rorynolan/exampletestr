@@ -28,7 +28,7 @@ test_that("`make_tests_shell_fun()` works", {
     )
     skip_if_not_installed("clipr")
     expect_equal(
-      clipr::read_clip(TRUE),
+      stringr::str_trim(clipr::read_clip(TRUE)),
       c(
         "@testexamples",
         "#' expect_equal(str_detect(fruit, \"a\"), )",
