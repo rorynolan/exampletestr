@@ -1,8 +1,8 @@
-DME.Rmd
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 inst/doc
-*.DS_Store
+**/.DS_Store
 docs/
+.DS_Store
