@@ -21,7 +21,7 @@ test_that("`make_tests_shell_fun()` works", {
   expect_false(is_documented("str_detect"))
   fs::dir_create(paste0(pkg_dir, "/man"))
   expect_false(is_documented("str_detect"))
-  if (identical(Sys.getenv("NOT_CRAN"), "true")) {
+  if (Sys.getenv("NOT_CRAN") == "true" && nchar(Sys.getenv("DISPLAY"))) {
     make_test_shell_fun("str_detect",
       open = FALSE, pkg_dir = pkg_dir,
       roxytest = TRUE

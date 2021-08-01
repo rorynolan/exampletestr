@@ -22,7 +22,5 @@ get_os <- function() {
 }
 
 if (get_os() != "mac" || Sys.getenv("NOT_CRAN") == "true") {
-  if (!(get_os() == "linux" && Sys.getenv("DISPLAY") == "")) {
-    test_check("exampletestr")
-  }
+  test_check("exampletestr")
 }
