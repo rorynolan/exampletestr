@@ -5,7 +5,7 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "exampletestr",
-  "description": "Take the examples written in your documentation of\n    functions and use them to create shells (skeletons which must be\n    manually completed by the user) of test files to be tested with the\n    'testthat' package. Sort of like python 'doctests' for R.",
+  "description": "Take the examples written in your documentation of functions\n    and use them to create shells (skeletons which must be manually\n    completed by the user) of test files to be tested with the 'testthat'\n    package. Sort of like python 'doctests' for R.",
   "name": "exampletestr: Help for Writing Unit Tests Based on Function Examples",
   "codeRepository": "https://github.com/rorynolan/exampletestr",
   "relatedLink": [
@@ -16,7 +16,7 @@
   ],
   "issueTracker": "https://github.com/rorynolan/exampletestr/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -63,7 +63,7 @@
       "@type": "SoftwareApplication",
       "identifier": "clipr",
       "name": "clipr",
-      "version": ">= 0.7.0",
+      "version": ">= 0.7",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -148,7 +148,7 @@
       "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
-      "version": ">= 2.3.0",
+      "version": ">= 2.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -169,7 +169,7 @@
       "@type": "SoftwareApplication",
       "identifier": "checkmate",
       "name": "checkmate",
-      "version": ">= 1.9.3",
+      "version": ">= 2.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -182,7 +182,7 @@
       "@type": "SoftwareApplication",
       "identifier": "fs",
       "name": "fs",
-      "version": ">= 1.2.3",
+      "version": ">= 1.5",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -208,7 +208,7 @@
       "@type": "SoftwareApplication",
       "identifier": "ore",
       "name": "ore",
-      "version": ">= 1.4.0",
+      "version": ">= 1.4",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -233,6 +233,7 @@
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
+      "version": ">= 2.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -245,7 +246,7 @@
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
-      "version": ">= 0.3.3",
+      "version": ">= 0.4",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -283,7 +284,7 @@
       "@type": "SoftwareApplication",
       "identifier": "strex",
       "name": "strex",
-      "version": ">= 1.4.1",
+      "version": ">= 1.4.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -309,7 +310,7 @@
       "@type": "SoftwareApplication",
       "identifier": "styler",
       "name": "styler",
-      "version": ">= 1.2.0",
+      "version": ">= 1.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -322,7 +323,7 @@
       "@type": "SoftwareApplication",
       "identifier": "usethis",
       "name": "usethis",
-      "version": ">= 1.5.1",
+      "version": ">= 2.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -335,7 +336,7 @@
       "@type": "SoftwareApplication",
       "identifier": "withr",
       "name": "withr",
-      "version": ">= 2.1.0",
+      "version": ">= 2.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -347,9 +348,9 @@
   ],
   "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
   "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "fileSize": "7887.055KB",
-  "contIntegration": ["https://travis-ci.org/rorynolan/exampletestr", "https://ci.appveyor.com/project/rorynolan/exampletestr", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
-  "developmentStatus": "https://www.tidyverse.org/lifecycle/#stable",
+  "fileSize": "89.04KB",
+  "contIntegration": ["https://ci.appveyor.com/project/rorynolan/exampletestr", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html",
   "citation": [
     {
       "@type": "ScholarlyArticle",

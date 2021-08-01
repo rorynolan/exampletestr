@@ -114,7 +114,7 @@ is_documented <- function(fun) {
   if (!length(rd_files)) {
     return(FALSE)
   }
-  rd_contents <- purrr::map(rd_files, readr::read_lines) %>%
+  rd_contents <- purrr::map(rd_files, readr::read_lines, lazy = FALSE) %>%
     purrr::map_chr(stringr::str_c, collapse = "") %>%
     magrittr::set_names(rd_files)
   fun_pattern <- stringr::str_c(

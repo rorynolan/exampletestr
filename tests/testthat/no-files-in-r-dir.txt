@@ -1,3 +1,0 @@
-> make_tests_shells_pkg(pkg_dir, document = FALSE)
-Message: i No files found in the 'R' directory of the package so no test shells created.
-

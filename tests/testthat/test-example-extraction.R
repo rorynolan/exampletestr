@@ -22,7 +22,7 @@ test_that("`extract_examples()` works", {
   ), paste0(pkg_dir, "/R"))
   invisible(capture.output(roxygen2::roxygenize(pkg_dir)))
   detect_rd <- paste0(pkg_dir, "/man/str_detect.Rd") %>%
-    readr::read_lines() %>%
+    readr::read_lines(lazy = FALSE) %>%
     stringr::str_trim()
   detect_rd_ex_lines <- match("\\examples{", detect_rd) %>%
     list(c(match("}", detect_rd[seq(., length(detect_rd))]) + . - 1)) %>%

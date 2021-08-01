@@ -21,6 +21,5 @@
 ^codemeta\.json$
 ^\.github$
 ^CODE_OF_CONDUCT\.md$
-^\.pre-commit-config\.yaml$
 ^vignettes/.+\.R$
 ^vignettes/.+\.Rmd\.orig$

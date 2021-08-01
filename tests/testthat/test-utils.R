@@ -43,7 +43,9 @@ test_that("construct_expect_equal works", {
 
 test_that("`check_for_DESCRIPTION()` works", {
   skip_if_not_installed("crayon")
-  description <- readr::read_lines(paste0(pkg_dir, "/DESCRIPTION"))
+  description <- readr::read_lines(paste0(pkg_dir, "/DESCRIPTION"),
+    lazy = FALSE
+  )
   fs::file_delete(paste0(pkg_dir, "/DESCRIPTION"))
   fs::file_create(paste0(pkg_dir, "/.here"))
   no_DESCRIPTION_err_msg <- rlang::catch_cnd(make_tests_shells_pkg(pkg_dir),

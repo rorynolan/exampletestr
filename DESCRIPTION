@@ -1,7 +1,7 @@
 Type: Package
 Package: exampletestr
 Title: Help for Writing Unit Tests Based on Function Examples
-Version: 1.6.3
+Version: 1.6.4
 Authors@R: 
     c(person(given = "Rory",
              family = "Nolan",
@@ -22,10 +22,10 @@ Authors@R:
              role = "rev",
              comment = c(ORCID = "0000-0002-1520-2268")))
 Maintainer: Rory Nolan <rorynoolan@gmail.com>
-Description: Take the examples written in your documentation of
-    functions and use them to create shells (skeletons which must be
-    manually completed by the user) of test files to be tested with the
-    'testthat' package. Sort of like python 'doctests' for R.
+Description: Take the examples written in your documentation of functions
+    and use them to create shells (skeletons which must be manually
+    completed by the user) of test files to be tested with the 'testthat'
+    package. Sort of like python 'doctests' for R.
 License: GPL-3
 URL: https://rorynolan.github.io/exampletestr/,
     https://github.com/rorynolan/exampletestr#readme
@@ -33,31 +33,32 @@ BugReports: https://github.com/rorynolan/exampletestr/issues
 Depends: 
     R (>= 3.5)
 Imports:
-    checkmate (>= 1.9.3),
-    fs (>= 1.2.3),
+    checkmate (>= 2.0),
+    fs (>= 1.5),
     magrittr (>= 1.5),
-    ore (>= 1.4.0),
+    ore (>= 1.4),
     purrr,
-    readr,
-    rlang (>= 0.3.3),
+    readr (>= 2.0),
+    rlang (>= 0.4),
     roxygen2,
     rstudioapi (>= 0.4),
-    strex (>= 1.4.1),
+    strex (>= 1.4.2),
     stringr (>= 1.4),
-    styler (>= 1.2.0),
-    usethis (>= 1.5.1),
-    withr (>= 2.1.0)
+    styler (>= 1.2),
+    usethis (>= 2.0),
+    withr (>= 2.1)
 Suggests: 
-    clipr (>= 0.7.0),
+    clipr (>= 0.7),
     covr,
     crayon,
     knitr,
     pacman,
     rmarkdown,
     spelling,
-    testthat (>= 2.3.0)
+    testthat (>= 2.1)
 VignetteBuilder: 
     knitr
+Config/testthat/edition: 2
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)

@@ -52,12 +52,12 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
     usethis::proj_path("R", .) %>%
     strex::str_give_ext("R")
   checkmate::assert_file_exists(r_file_name)
-  r_file_lines_quotes_gone <- readr::read_lines(r_file_name) %>%
+  r_file_lines_quotes_gone <- readr::read_lines(r_file_name, lazy = FALSE) %>%
     parse(text = .) %>%
     purrr::map(deparse) %>%
     unlist() %>%
     paste0("\n") %>%
-    purrr::map(readr::read_lines) %>%
+    purrr::map(readr::read_lines, lazy = FALSE) %>%
     unlist() %>%
     strex::str_remove_quoted()
   r_file_funs <- stringr::str_match(
@@ -71,7 +71,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
   rd_file_short_names <- rd_file_paths %>%
     fs::path_file() %>%
     fs::path_ext_remove()
-  rd_file_lines <- purrr::map(rd_file_paths, readr::read_lines)
+  rd_file_lines <- purrr::map(rd_file_paths, readr::read_lines, lazy = FALSE)
   names(rd_file_lines) <- rd_file_short_names
   documented_funs_in_alias_tags <- unlist(rd_file_lines) %>%
     stringr::str_extract("\\\\alias\\{.*\\}") %>%

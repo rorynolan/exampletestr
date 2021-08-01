@@ -41,7 +41,8 @@ test_that("`make_tests_shells_file()` and `make_tests_shells_pkg()` work", {
   expect_true(all(fs::file_exists(test_detect_file_paths)))
   expect_equal(
     readr::read_lines(
-      usethis::proj_path("tests/testthat/test-detect.R")
+      usethis::proj_path("tests/testthat/test-detect.R"),
+      lazy = FALSE
     ),
     c(
       "test_that(\"`str_detect()` works\", {",
@@ -64,7 +65,8 @@ test_that("`make_tests_shells_file()` and `make_tests_shells_pkg()` work", {
   make_tests_shells_pkg(pkg_dir, overwrite = TRUE)
   expect_equal(
     readr::read_lines(
-      usethis::proj_path("tests/testthat/test-detect.R")
+      usethis::proj_path("tests/testthat/test-detect.R"),
+      lazy = FALSE
     ),
     c(
       "test_that(\"`str_detect()` works\", {",
@@ -81,15 +83,12 @@ test_that("`make_tests_shells_file()` and `make_tests_shells_pkg()` work", {
   withr::with_options(list(usethis.quiet = FALSE), {
     fs::dir_delete(paste0(pkg_dir, "/R"))
     if (packageVersion("usethis") > "1.5.1") {
-      skip_if_not_installed("crayon")
-      verify_output(
-        test_path("no-files-in-r-dir.txt"),
-        {
-          make_tests_shells_pkg(
-            pkg_dir,
-            document = FALSE
-          )
-        }
+      expect_message(
+        make_tests_shells_pkg(
+          pkg_dir,
+          document = FALSE
+        ),
+        regexp = "No files found in the.+R.+directory.+no test.+created"
       )
     }
   })

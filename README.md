@@ -5,8 +5,7 @@ An R package to help developers create unit tests (designed for use with
 the `testthat` package) for their package, based on the examples in
 their package documentation.
 
-[![Travis-CI Build
-Status](https://travis-ci.org/rorynolan/exampletestr.svg?branch=master)](https://travis-ci.org/rorynolan/exampletestr)
+[![R-CMD-check](https://github.com/rorynolan/exampletestr/workflows/R-CMD-check/badge.svg)](https://github.com/rorynolan/exampletestr/actions)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr)
 [![Coverage

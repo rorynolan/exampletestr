@@ -48,4 +48,5 @@ test_that("`make_test_shell()` works", {
     )
   )
   expect_equal(make_test_shell(character()), character())
+  expect_equal(make_test_that_innards_shell(character()), character())
 })
