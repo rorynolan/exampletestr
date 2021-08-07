@@ -57,7 +57,11 @@ test_that("`make_tests_shells_file()` and `make_tests_shells_pkg()` work", {
     )
   )
   expect_equal(
-    length(unique(purrr::map(test_detect_file_paths, readr::read_lines))),
+    length(
+      unique(
+        purrr::map(test_detect_file_paths, readr::read_lines, lazy = FALSE)
+      )
+    ),
     1
   )
   empty_lines <- character(2)

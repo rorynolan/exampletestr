@@ -1,3 +1,9 @@
+# `exampletestr` 1.6.5
+
+## BUG FIXES
+* Hadn't fixed the `readr` `vroom` thing in the test directory.
+
+
 # `exampletestr` 1.6.4
 
 ## BUG FIXES

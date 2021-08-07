@@ -16,13 +16,13 @@
   ],
   "issueTracker": "https://github.com/rorynolan/exampletestr/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.2 (2020-06-22)",
+  "runtimePlatform": "R version 4.1.0 (2021-05-18)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -348,8 +348,8 @@
   ],
   "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
   "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "fileSize": "89.205KB",
-  "contIntegration": ["https://ci.appveyor.com/project/rorynolan/exampletestr", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
+  "fileSize": "89.35KB",
+  "contIntegration": ["https://github.com/rorynolan/exampletestr/actions", "https://ci.appveyor.com/project/rorynolan/exampletestr", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html",
   "citation": [
     {
