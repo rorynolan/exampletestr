@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,23 +40,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">exampletestr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -77,7 +73,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/rorynolan/exampletestr/">
+  <a href="https://github.com/rorynolan/exampletestr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -97,9 +93,9 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>One function at a time</h1>
             
-            <h4 class="date">2020-03-10</h4>
+            <h4 data-toc-skip class="date">2020-03-10</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/rorynolan/exampletestr/blob/master/vignettes/one-function-at-a-time.Rmd"><code>vignettes/one-function-at-a-time.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rorynolan/exampletestr/blob/HEAD/vignettes/one-function-at-a-time.Rmd" class="external-link"><code>vignettes/one-function-at-a-time.Rmd</code></a></small>
       <div class="hidden name"><code>one-function-at-a-time.Rmd</code></div>
 
     </div>
@@ -107,120 +103,120 @@
     
     
 <p>This vignette will teach you how to create a unit test shell for the examples in a single function’s documentation.</p>
-<div id="setup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h2>
+<div class="section level3">
+<h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h3>
 <p>First, let’s set up a dummy package called <code>tempkg</code> with just the <code>detect.R</code> and <code>match.R</code> files from the source code of the <code>stringr</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html">create_package</a></span><span class="op">(</span><span class="st">"tempkg"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/copy.html">file_copy</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"detect.R"</span>, <span class="st">"match.R"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"exampletestr"</span><span class="op">)</span>,
-  <span class="st">"tempkg/R/"</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html" class="external-link">create_package</a></span><span class="op">(</span><span class="st">"tempkg"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/copy.html" class="external-link">file_copy</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"detect.R"</span>, <span class="st">"match.R"</span><span class="op">)</span>, package <span class="op">=</span> <span class="st">"exampletestr"</span><span class="op">)</span>,</span>
+<span>  <span class="st">"tempkg/R/"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Now let’s move into the <code>tempkg</code> directory:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">setwd</a></span><span class="op">(</span><span class="st">"tempkg/"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="st">"tempkg/"</span><span class="op">)</span></span></code></pre></div>
 <p>and set the active project:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html">proj_set</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt; ✔ Setting active project to '/private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/RtmpPdOSWX/tempkg'</code></pre>
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html" class="external-link">proj_set</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; ✔ Setting active project to '/private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/RtmpPdOSWX/tempkg'</span></span></code></pre>
 </div>
-<div id="main-event" class="section level1">
-<h1 class="hasAnchor">
-<a href="#main-event" class="anchor"></a>Main event</h1>
+<div class="section level2">
+<h2 id="main-event">Main event<a class="anchor" aria-label="anchor" href="#main-event"></a>
+</h2>
 <p>The <code>detect.R</code> file looks like this (well, I’ve abbreviated it slightly):</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#' Detect the presence or absence of a pattern in a string.</span>
-<span class="co">#'</span>
-<span class="co">#' Vectorised over `string` and `pattern`.</span>
-<span class="co">#'</span>
-<span class="co">#' @param string Input vector. Either a character vector, or something</span>
-<span class="co">#'  coercible to one.</span>
-<span class="co">#' @param pattern Pattern to look for.</span>
-<span class="co">#'</span>
-<span class="co">#' @return A logical vector.</span>
-<span class="co">#'</span>
-<span class="co">#' @export</span>
-<span class="co">#' @examples</span>
-<span class="co">#' fruit &lt;- c("apple", "banana", "pear", "pinapple")</span>
-<span class="co">#' str_detect(fruit, "a")</span>
-<span class="co">#' str_detect(fruit, "^a")</span>
-<span class="co">#' str_detect(fruit, "a$")</span>
-<span class="co">#' str_detect(fruit, "b")</span>
-<span class="co">#' str_detect(fruit, "[aeiou]")</span>
-<span class="va">str_detect</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/switch.html">switch</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">type</a></span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span>,
-    empty <span class="op">=</span> ,
-    bound <span class="op">=</span> <span class="fu">str_count</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span>,
-    fixed <span class="op">=</span> <span class="fu">stri_detect_fixed</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_fixed <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span>,
-    coll <span class="op">=</span> <span class="fu">stri_detect_coll</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_collator <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span>,
-    regex <span class="op">=</span> <span class="fu">stri_detect_regex</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_regex <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#' Detect the presence or absence of a pattern in a string.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' Vectorised over `string` and `pattern`.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @param string Input vector. Either a character vector, or something</span></span>
+<span><span class="co">#'  coercible to one.</span></span>
+<span><span class="co">#' @param pattern Pattern to look for.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @return A logical vector.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @export</span></span>
+<span><span class="co">#' @examples</span></span>
+<span><span class="co">#' fruit &lt;- c("apple", "banana", "pear", "pinapple")</span></span>
+<span><span class="co">#' str_detect(fruit, "a")</span></span>
+<span><span class="co">#' str_detect(fruit, "^a")</span></span>
+<span><span class="co">#' str_detect(fruit, "a$")</span></span>
+<span><span class="co">#' str_detect(fruit, "b")</span></span>
+<span><span class="co">#' str_detect(fruit, "[aeiou]")</span></span>
+<span><span class="va">str_detect</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/switch.html" class="external-link">switch</a></span><span class="op">(</span><span class="fu">type</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span>,</span>
+<span>    empty <span class="op">=</span> ,</span>
+<span>    bound <span class="op">=</span> <span class="fu">str_count</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span>,</span>
+<span>    fixed <span class="op">=</span> <span class="fu">stri_detect_fixed</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_fixed <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    coll <span class="op">=</span> <span class="fu">stri_detect_coll</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_collator <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    regex <span class="op">=</span> <span class="fu">stri_detect_regex</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_regex <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>We can make the unit tests <em>shell</em> file for the <code>str_match()</code> function using <code><a href="../reference/make-test-shells.html">make_test_shell_fun()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/make-test-shells.html">make_test_shell_fun</a></span><span class="op">(</span><span class="st">"str_detect"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/make-test-shells.html">make_test_shell_fun</a></span><span class="op">(</span><span class="st">"str_detect"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>This outputs a <code>test-str_detect-examples.R</code> file in the <code>tests/testthat</code> folder with contents</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span>
-  <span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span><span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a"</span><span class="op">)</span>, <span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"^a"</span><span class="op">)</span>, <span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a$"</span><span class="op">)</span>, <span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"[aeiou]"</span><span class="op">)</span>, <span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="st">"aecfg"</span>, <span class="va">letters</span><span class="op">)</span>, <span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span></span>
+<span>  <span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a"</span><span class="op">)</span>, <span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"^a"</span><span class="op">)</span>, <span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a$"</span><span class="op">)</span>, <span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"[aeiou]"</span><span class="op">)</span>, <span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="st">"aecfg"</span>, <span class="va">letters</span><span class="op">)</span>, <span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>which can be sensibly completed as</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span>
-  <span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span><span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"^a"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a$"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"[aeiou]"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu">expect_equal</span><span class="op">(</span>
-    <span class="fu">str_detect</span><span class="op">(</span><span class="st">"aecfg"</span>, <span class="va">letters</span><span class="op">)</span>,
-    <span class="va">letters</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span></span>
+<span>  <span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"^a"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"a$"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"[aeiou]"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">expect_equal</span><span class="op">(</span></span>
+<span>    <span class="fu">str_detect</span><span class="op">(</span><span class="st">"aecfg"</span>, <span class="va">letters</span><span class="op">)</span>,</span>
+<span>    <span class="va">letters</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="roxytest-functionality" class="section level1">
-<h1 class="hasAnchor">
-<a href="#roxytest-functionality" class="anchor"></a>Roxytest functionality</h1>
-<p>Alternatively, we can use the <code>roxytest</code> (<a href="https://github.com/mikldk/roxytest" class="uri">https://github.com/mikldk/roxytest</a>) package’s <code>@testexamples</code> roxygen tag for testing examples.</p>
+<div class="section level2">
+<h2 id="roxytest-functionality">Roxytest functionality<a class="anchor" aria-label="anchor" href="#roxytest-functionality"></a>
+</h2>
+<p>Alternatively, we can use the <code>roxytest</code> (<a href="https://github.com/mikldk/roxytest" class="external-link uri">https://github.com/mikldk/roxytest</a>) package’s <code>@testexamples</code> roxygen tag for testing examples.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/make-test-shells.html">make_test_shell_fun</a></span><span class="op">(</span><span class="st">"str_detect"</span>, roxytest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt; ℹ Running `roxygen2::roxygenize` . . .</code></pre>
-<pre><code>#&gt; Updating roxygen version in /private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/RtmpPdOSWX/tempkg/DESCRIPTION</code></pre>
-<pre><code>#&gt; Loading tempkg</code></pre>
-<pre><code>#&gt; ✔ Roxygenized :-)
-#&gt;   @testexamples
-#&gt;   #' expect_equal(str_detect(fruit, "a"), )
-#&gt;   #' expect_equal(str_detect(fruit, "^a"), )
-#&gt;   #' expect_equal(str_detect(fruit, "a$"), )
-#&gt;   #' expect_equal(str_detect(fruit, "b"), )
-#&gt;   #' expect_equal(str_detect(fruit, "[aeiou]"), )
-#&gt;   #' expect_equal(str_detect("aecfg", letters), )
-#&gt;   [Copied to clipboard]
-#&gt; ● Paste the block into your roxygen documentation.
-#&gt; ● Complete the tests in the block.
-#&gt; ● Run `devtools::document()` to generate the tests in 'tests/'.</code></pre>
-<div id="rstudio-addin-for-roxytest-functionality" class="section level2">
-<h2 class="hasAnchor">
-<a href="#rstudio-addin-for-roxytest-functionality" class="anchor"></a>RStudio addin for roxytest functionality</h2>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/make-test-shells.html">make_test_shell_fun</a></span><span class="op">(</span><span class="st">"str_detect"</span>, roxytest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; ℹ Running `roxygen2::roxygenize` . . .</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Updating roxygen version in /private/var/folders/l_/2mwm03p55zg7zjykv084hhvr0000gn/T/RtmpPdOSWX/tempkg/DESCRIPTION</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Loading tempkg</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; ✔ Roxygenized :-)</span></span>
+<span><span class="co">#&gt;   @testexamples</span></span>
+<span><span class="co">#&gt;   #' expect_equal(str_detect(fruit, "a"), )</span></span>
+<span><span class="co">#&gt;   #' expect_equal(str_detect(fruit, "^a"), )</span></span>
+<span><span class="co">#&gt;   #' expect_equal(str_detect(fruit, "a$"), )</span></span>
+<span><span class="co">#&gt;   #' expect_equal(str_detect(fruit, "b"), )</span></span>
+<span><span class="co">#&gt;   #' expect_equal(str_detect(fruit, "[aeiou]"), )</span></span>
+<span><span class="co">#&gt;   #' expect_equal(str_detect("aecfg", letters), )</span></span>
+<span><span class="co">#&gt;   [Copied to clipboard]</span></span>
+<span><span class="co">#&gt; ● Paste the block into your roxygen documentation.</span></span>
+<span><span class="co">#&gt; ● Complete the tests in the block.</span></span>
+<span><span class="co">#&gt; ● Run `devtools::document()` to generate the tests in 'tests/'.</span></span></code></pre>
+<div class="section level3">
+<h3 id="rstudio-addin-for-roxytest-functionality">RStudio addin for roxytest functionality<a class="anchor" aria-label="anchor" href="#rstudio-addin-for-roxytest-functionality"></a>
+</h3>
 <p>This can also be done by highlighting the function name and selecting the RStudio addin <em>Copy roxytest <span class="citation">@testexamples</span> to clipboard</em>.</p>
 </div>
 </div>
-<div id="cleanup" class="section level1">
-<h1 class="hasAnchor">
-<a href="#cleanup" class="anchor"></a>Cleanup</h1>
+<div class="section level2">
+<h2 id="cleanup">Cleanup<a class="anchor" aria-label="anchor" href="#cleanup"></a>
+</h2>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html">opts_knit</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>root.dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span>check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html" class="external-link">opts_knit</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>root.dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span>check <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/file_access.html">dir_exists</a></span><span class="op">(</span><span class="st">"tempkg"</span><span class="op">)</span><span class="op">)</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/delete.html">dir_delete</a></span><span class="op">(</span><span class="st">"tempkg"</span><span class="op">)</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html">opts_knit</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>root.dir <span class="op">=</span> <span class="va">init_wd</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/file_access.html" class="external-link">dir_exists</a></span><span class="op">(</span><span class="st">"tempkg"</span><span class="op">)</span><span class="op">)</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/delete.html" class="external-link">dir_delete</a></span><span class="op">(</span><span class="st">"tempkg"</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_knit.html" class="external-link">opts_knit</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>root.dir <span class="op">=</span> <span class="va">init_wd</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
@@ -235,11 +231,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Rory Nolan.</p>
+  <p></p>
+<p>Developed by Rory Nolan.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -247,6 +245,8 @@
 
   
 
+
+  
 
   </body>
 </html>
