@@ -103,7 +103,7 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
   fun_index <- fun
   if (!(fun %in% available_funs)) {
     fun_found <- FALSE
-    escaped_fun <- ore::ore.escape(fun)
+    escaped_fun <- stringr::str_escape(fun)
     for (i in seq_along(examples)) {
       if (any(stringr::str_detect(
         examples[[i]],

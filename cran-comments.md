@@ -1,7 +1,7 @@
 ## Test environments
-* local OS X install, R 4.1.0
-* ubuntu 14.04 (on travis-ci), R 4.1.0
-* Windows Server 2012 (on appveyor), R 4.1.0
+* local OS X install, R 4.2.1
+* ubuntu 14.04 (on github actions), R 4.2.1
+* Windows Server 2012 (on github actions), R 4.2.1
 * win-builder (devel and release)
 
 ## R CMD check results

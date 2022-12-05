@@ -119,13 +119,13 @@ is_documented <- function(fun) {
     magrittr::set_names(rd_files)
   fun_pattern <- stringr::str_c(
     "(",
-    ore::ore.escape("\\alias{"),
+    stringr::str_escape("\\alias{"),
     fun,
-    ore::ore.escape("}"),
+    stringr::str_escape("}"),
     "|",
-    ore::ore.escape("\\name{"),
+    stringr::str_escape("\\name{"),
     fun,
-    ore::ore.escape("}"),
+    stringr::str_escape("}"),
     ")"
   )
   for (i in seq_along(rd_contents)) {

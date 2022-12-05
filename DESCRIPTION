@@ -1,7 +1,7 @@
 Type: Package
 Package: exampletestr
 Title: Help for Writing Unit Tests Based on Function Examples
-Version: 1.6.5
+Version: 1.7.0
 Authors@R: 
     c(person(given = "Rory",
              family = "Nolan",
@@ -36,14 +36,13 @@ Imports:
     checkmate (>= 2.0),
     fs (>= 1.5),
     magrittr (>= 1.5),
-    ore (>= 1.4),
     purrr,
     readr (>= 2.0),
     rlang (>= 0.4),
     roxygen2,
     rstudioapi (>= 0.4),
     strex (>= 1.4.2),
-    stringr (>= 1.4),
+    stringr (>= 1.5),
     styler (>= 1.2),
     usethis (>= 2.0),
     withr (>= 2.1)
@@ -62,4 +61,4 @@ Config/testthat/edition: 2
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1

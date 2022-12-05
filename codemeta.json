@@ -1,28 +1,20 @@
 {
-  "@context": [
-    "https://doi.org/10.5063/schema/codemeta-2.0",
-    "http://schema.org"
-  ],
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "exampletestr",
-  "description": "Take the examples written in your documentation of functions\n    and use them to create shells (skeletons which must be manually\n    completed by the user) of test files to be tested with the 'testthat'\n    package. Sort of like python 'doctests' for R.",
+  "description": "Take the examples written in your documentation of functions and use them to create shells (skeletons which must be manually completed by the user) of test files to be tested with the 'testthat' package. Sort of like python 'doctests' for R.",
   "name": "exampletestr: Help for Writing Unit Tests Based on Function Examples",
+  "relatedLink": ["https://rorynolan.github.io/exampletestr/", "https://CRAN.R-project.org/package=exampletestr"],
   "codeRepository": "https://github.com/rorynolan/exampletestr",
-  "relatedLink": [
-    "https://rorynolan.github.io/exampletestr",
-    "https://github.com/rorynolan/exampletestr#readme",
-    "https://CRAN.R-project.org/package=exampletestr",
-    "https://rorynolan.github.io/exampletestr/"
-  ],
   "issueTracker": "https://github.com/rorynolan/exampletestr/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "1.6.5",
+  "version": "1.7.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.0 (2021-05-18)",
+  "runtimePlatform": "R version 4.2.1 (2022-06-23)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -47,8 +39,6 @@
       "@id": "https://orcid.org/0000-0002-8010-9481"
     }
   ],
-  "copyrightHolder": {},
-  "funder": {},
   "maintainer": [
     {
       "@type": "Person",
@@ -158,14 +148,14 @@
       "sameAs": "https://CRAN.R-project.org/package=testthat"
     }
   ],
-  "softwareRequirements": [
-    {
+  "softwareRequirements": {
+    "1": {
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
       "version": ">= 3.5"
     },
-    {
+    "2": {
       "@type": "SoftwareApplication",
       "identifier": "checkmate",
       "name": "checkmate",
@@ -178,7 +168,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=checkmate"
     },
-    {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "fs",
       "name": "fs",
@@ -191,7 +181,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=fs"
     },
-    {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "magrittr",
       "name": "magrittr",
@@ -204,20 +194,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=magrittr"
     },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "ore",
-      "name": "ore",
-      "version": ">= 1.4",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ore"
-    },
-    {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -229,7 +206,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
@@ -242,7 +219,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=readr"
     },
-    {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
@@ -255,7 +232,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
-    {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "roxygen2",
       "name": "roxygen2",
@@ -267,7 +244,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=roxygen2"
     },
-    {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "rstudioapi",
       "name": "rstudioapi",
@@ -280,7 +257,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rstudioapi"
     },
-    {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "strex",
       "name": "strex",
@@ -293,11 +270,11 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=strex"
     },
-    {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "stringr",
       "name": "stringr",
-      "version": ">= 1.4",
+      "version": ">= 1.5",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -306,7 +283,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=stringr"
     },
-    {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "styler",
       "name": "styler",
@@ -319,7 +296,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=styler"
     },
-    {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "usethis",
       "name": "usethis",
@@ -332,7 +309,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=usethis"
     },
-    {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "withr",
       "name": "withr",
@@ -344,13 +321,10 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=withr"
-    }
-  ],
-  "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
-  "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "fileSize": "89.35KB",
-  "contIntegration": ["https://github.com/rorynolan/exampletestr/actions", "https://ci.appveyor.com/project/rorynolan/exampletestr", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
-  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html",
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "89.427KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -383,5 +357,9 @@
         }
       }
     }
-  ]
+  ],
+  "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
+  "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
+  "contIntegration": ["https://github.com/rorynolan/exampletestr/actions", "https://ci.appveyor.com/project/rorynolan/exampletestr", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
+  "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html"
 }

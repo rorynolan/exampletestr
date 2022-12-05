@@ -1,3 +1,9 @@
+# `exampletestr` 1.7.0
+
+## MINOR IMPROVEMENTS
+* Remove `ore` dependency.
+
+
 # `exampletestr` 1.6.5
 
 ## BUG FIXES
