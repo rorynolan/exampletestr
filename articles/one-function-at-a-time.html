@@ -88,7 +88,7 @@
 
       
 
-      </header><script src="one-function-at-a-time_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>One function at a time</h1>
@@ -102,11 +102,14 @@
 
     
     
-<p>This vignette will teach you how to create a unit test shell for the examples in a single function’s documentation.</p>
+<p>This vignette will teach you how to create a unit test shell for the
+examples in a single function’s documentation.</p>
 <div class="section level3">
 <h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
-<p>First, let’s set up a dummy package called <code>tempkg</code> with just the <code>detect.R</code> and <code>match.R</code> files from the source code of the <code>stringr</code> package.</p>
+<p>First, let’s set up a dummy package called <code>tempkg</code> with
+just the <code>detect.R</code> and <code>match.R</code> files from the
+source code of the <code>stringr</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html" class="external-link">create_package</a></span><span class="op">(</span><span class="st">"tempkg"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/copy.html" class="external-link">file_copy</a></span><span class="op">(</span></span>
@@ -124,7 +127,8 @@
 <div class="section level2">
 <h2 id="main-event">Main event<a class="anchor" aria-label="anchor" href="#main-event"></a>
 </h2>
-<p>The <code>detect.R</code> file looks like this (well, I’ve abbreviated it slightly):</p>
+<p>The <code>detect.R</code> file looks like this (well, I’ve
+abbreviated it slightly):</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Detect the presence or absence of a pattern in a string.</span></span>
 <span><span class="co">#'</span></span>
@@ -153,10 +157,13 @@
 <span>    regex <span class="op">=</span> <span class="fu">stri_detect_regex</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_regex <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>We can make the unit tests <em>shell</em> file for the <code>str_match()</code> function using <code><a href="../reference/make-test-shells.html">make_test_shell_fun()</a></code>:</p>
+<p>We can make the unit tests <em>shell</em> file for the
+<code>str_match()</code> function using
+<code><a href="../reference/make-test-shells.html">make_test_shell_fun()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make-test-shells.html">make_test_shell_fun</a></span><span class="op">(</span><span class="st">"str_detect"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>This outputs a <code>test-str_detect-examples.R</code> file in the <code>tests/testthat</code> folder with contents</p>
+<p>This outputs a <code>test-str_detect-examples.R</code> file in the
+<code>tests/testthat</code> folder with contents</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span></span>
 <span>  <span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span><span class="op">)</span></span>
@@ -185,7 +192,8 @@
 <div class="section level2">
 <h2 id="roxytest-functionality">Roxytest functionality<a class="anchor" aria-label="anchor" href="#roxytest-functionality"></a>
 </h2>
-<p>Alternatively, we can use the <code>roxytest</code> (<a href="https://github.com/mikldk/roxytest" class="external-link uri">https://github.com/mikldk/roxytest</a>) package’s <code>@testexamples</code> roxygen tag for testing examples.</p>
+<p>Alternatively, we can use the <code>roxytest</code> (<a href="https://github.com/mikldk/roxytest" class="external-link uri">https://github.com/mikldk/roxytest</a>) package’s
+<code>@testexamples</code> roxygen tag for testing examples.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make-test-shells.html">make_test_shell_fun</a></span><span class="op">(</span><span class="st">"str_detect"</span>, roxytest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; ℹ Running `roxygen2::roxygenize` . . .</span></span></code></pre>
@@ -206,7 +214,8 @@
 <div class="section level3">
 <h3 id="rstudio-addin-for-roxytest-functionality">RStudio addin for roxytest functionality<a class="anchor" aria-label="anchor" href="#rstudio-addin-for-roxytest-functionality"></a>
 </h3>
-<p>This can also be done by highlighting the function name and selecting the RStudio addin <em>Copy roxytest <span class="citation">@testexamples</span> to clipboard</em>.</p>
+<p>This can also be done by highlighting the function name and selecting
+the RStudio addin <em>Copy roxytest <span class="citation">@testexamples</span> to clipboard</em>.</p>
 </div>
 </div>
 <div class="section level2">

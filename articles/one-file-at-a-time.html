@@ -88,12 +88,12 @@
 
       
 
-      </header><script src="one-file-at-a-time_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>One .R file at a time</h1>
             
-            <h4 data-toc-skip class="date">2022-12-05</h4>
+            <h4 data-toc-skip class="date">2022-12-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rorynolan/exampletestr/blob/HEAD/vignettes/one-file-at-a-time.Rmd" class="external-link"><code>vignettes/one-file-at-a-time.Rmd</code></a></small>
       <div class="hidden name"><code>one-file-at-a-time.Rmd</code></div>
@@ -102,15 +102,18 @@
 
     
     
-<p>This vignette will teach you how to create a unit test shell for all of the examples in a single <code>.R</code> file’s documentation.</p>
+<p>This vignette will teach you how to create a unit test shell for all
+of the examples in a single <code>.R</code> file’s documentation.</p>
 <div class="section level3">
 <h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
-<p>First, let’s set up a dummy package called <code>tempkg</code> with just the <code>detect.R</code> and <code>match.R</code> files from the source code of the <code>stringr</code> package.</p>
+<p>First, let’s set up a dummy package called <code>tempkg</code> with
+just the <code>detect.R</code> and <code>match.R</code> files from the
+source code of the <code>stringr</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_package.html" class="external-link">create_package</a></span><span class="op">(</span><span class="st">"tempkg"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Creating <span style="color: #0000BB;">'tempkg/'</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Setting active project to <span style="color: #0000BB;">'/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp3lQtg2/tempkg'</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Setting active project to <span style="color: #0000BB;">'/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpOHqcAj/tempkg'</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Creating <span style="color: #0000BB;">'R/'</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">'DESCRIPTION'</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Writing <span style="color: #0000BB;">'NAMESPACE'</span></span></span>
@@ -127,12 +130,13 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/proj_utils.html" class="external-link">proj_set</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Setting active project to</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">'/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp3lQtg2/tempkg'</span></span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #0000BB;">'/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpOHqcAj/tempkg'</span></span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="main-event">Main event<a class="anchor" aria-label="anchor" href="#main-event"></a>
 </h2>
-<p>The <code>detect.R</code> file looks like this (well, I’ve abbreviated it slightly):</p>
+<p>The <code>detect.R</code> file looks like this (well, I’ve
+abbreviated it slightly):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Detect the presence or absence of a pattern in a string.</span></span>
 <span><span class="co">#'</span></span>
@@ -163,10 +167,13 @@
 <span>    regex <span class="op">=</span> <span class="fu">stri_detect_regex</span><span class="op">(</span><span class="va">string</span>, <span class="va">pattern</span>, opts_regex <span class="op">=</span> <span class="fu">opts</span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>We can make the unit tests <em>shell</em> file for the <code>str_match()</code> function using <code><a href="../reference/make-test-shells.html">make_tests_shells_file()</a></code>:</p>
+<p>We can make the unit tests <em>shell</em> file for the
+<code>str_match()</code> function using
+<code><a href="../reference/make-test-shells.html">make_tests_shells_file()</a></code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make-test-shells.html">make_tests_shells_file</a></span><span class="op">(</span><span class="st">"detect"</span>, open <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>This outputs a <code>test-detect.R</code> file in the <code>tests/testthat</code> folder with contents</p>
+<p>This outputs a <code>test-detect.R</code> file in the
+<code>tests/testthat</code> folder with contents</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"`str_detect()` works"</span>, <span class="op">{</span></span>
 <span>  <span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span>, <span class="st">"pinapple"</span><span class="op">)</span></span>
@@ -191,7 +198,7 @@
 <span>    <span class="va">letters</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 🥇</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 😸</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="cleanup">Cleanup<a class="anchor" aria-label="anchor" href="#cleanup"></a>
