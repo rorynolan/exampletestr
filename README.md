@@ -6,8 +6,6 @@ the `testthat` package) for their package, based on the examples in
 their package documentation.
 
 [![R-CMD-check](https://github.com/rorynolan/exampletestr/workflows/R-CMD-check/badge.svg)](https://github.com/rorynolan/exampletestr/actions)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr)
 [![Coverage
 status](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/github/rorynolan/exampletestr?branch=master)
 

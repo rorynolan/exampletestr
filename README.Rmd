@@ -11,7 +11,6 @@ knitr::opts_chunk$set(echo = TRUE, comment = "#>")
 An R package to help developers create unit tests (designed for use with the `testthat` package) for their package, based on the examples in their package documentation.
 
 [![R-CMD-check](https://github.com/rorynolan/exampletestr/workflows/R-CMD-check/badge.svg)](https://github.com/rorynolan/exampletestr/actions)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/rorynolan/exampletestr?branch=master&svg=true)](https://ci.appveyor.com/project/rorynolan/exampletestr)
 [![Coverage status](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/github/rorynolan/exampletestr?branch=master)
 
 ![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)

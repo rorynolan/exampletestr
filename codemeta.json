@@ -360,6 +360,6 @@
   ],
   "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
   "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "contIntegration": ["https://github.com/rorynolan/exampletestr/actions", "https://ci.appveyor.com/project/rorynolan/exampletestr", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
+  "contIntegration": ["https://github.com/rorynolan/exampletestr/actions", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html"
 }
