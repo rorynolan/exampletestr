@@ -43,7 +43,7 @@ test_that("`make_tests_shell_fun()` works", {
   make_test_shell_fun("str_detect()", open = FALSE, pkg_dir = pkg_dir)
   expect_equal(
     readr::read_lines(
-      usethis::proj_path("/tests/testthat/test-str_detect-examples.R"),
+      usethis::proj_path("tests/testthat/test-str_detect-examples.R"),
       lazy = FALSE
     ),
     c(
