@@ -177,15 +177,15 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
   readr::write_lines(test_shell, test_file_name)
   withr::with_options(list(usethis.quiet = usethis_quiet_init), {
     usethis::ui_info(
-      "Wrote {usethis::ui_path(usethis::proj_path(test_file_name),
+      "Wrote {usethis::ui_path(test_file_name,
                                usethis::proj_path())}."
     )
     if (open) file.edit(test_file_name)
     usethis::ui_todo(
       stringr::str_glue(
         "Complete the unit tests in ",
-        "{usethis::ui_path(usethis::proj_path(test_file_name),
-                                    usethis::proj_path())}."
+        "{usethis::ui_path(test_file_name,
+                           usethis::proj_path())}."
       )
     )
   })
@@ -241,15 +241,15 @@ make_tests_shells_file <- function(r_file_name, pkg_dir = ".",
   readr::write_lines(combined, test_file_name)
   withr::with_options(list(usethis.quiet = usethis_quiet_init), {
     usethis::ui_info(
-      "Wrote {usethis::ui_path(usethis::proj_path(test_file_name),
+      "Wrote {usethis::ui_path(test_file_name,
                                usethis::proj_path())}."
     )
     if (open) file.edit(test_file_name)
     usethis::ui_todo(
       stringr::str_glue(
         "Complete the unit tests in ",
-        "{usethis::ui_path(usethis::proj_path(test_file_name),
-                                    usethis::proj_path())}."
+        "{usethis::ui_path(test_file_name,
+                           usethis::proj_path())}."
       )
     )
   })
