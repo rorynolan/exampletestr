@@ -54,6 +54,7 @@ extract_examples <- function(r_file_name, pkg_dir = ".", document = TRUE) {
   checkmate::assert_file_exists(r_file_name)
   r_file_lines_quotes_gone <- readr::read_lines(r_file_name, lazy = FALSE) %>%
     parse(text = .) %>%
+    as.list() %>%
     purrr::map(deparse) %>%
     unlist() %>%
     paste0("\n") %>%

@@ -32,7 +32,7 @@ test_that("`extract_examples()` works", {
     paste0(pkg_dir, "/man/str_detect.Rd")
   )
   expect_equal(
-    extract_examples("R/detect.R/",
+    extract_examples("R/detect.R",
       pkg_dir = pkg_dir,
       document = FALSE
     ),

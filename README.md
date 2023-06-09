@@ -6,8 +6,6 @@ the `testthat` package) for their package, based on the examples in
 their package documentation.
 
 [![R-CMD-check](https://github.com/rorynolan/exampletestr/workflows/R-CMD-check/badge.svg)](https://github.com/rorynolan/exampletestr/actions)
-[![Coverage
-status](https://codecov.io/gh/rorynolan/exampletestr/branch/master/graph/badge.svg)](https://codecov.io/github/rorynolan/exampletestr?branch=master)
 
 ![Project Status: Active – The project has reached a stable, usable
 state and is being actively

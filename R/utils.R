@@ -41,6 +41,7 @@ extract_expressions <- function(text_expr) {
   checkmate::assert_character(text_expr)
   text_expr %>%
     parse(text = .) %>%
+    as.list() %>%
     purrr::map(deparse) %>%
     purrr::map(styler::style_text)
 }
