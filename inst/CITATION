@@ -1,9 +1,6 @@
-citHeader("To cite exampletestr in publications use:")
-
-citEntry(entry = "Article",
+bibentry(bibtype = "Article",
          key = "Nolan2017",
          doi = "10.12688/wellcomeopenres.11635.2",
-         url = "https://doi.org/10.12688/wellcomeopenres.11635.2",
          year = "2017",
          month = "jun",
          publisher = "F1000 Research,  Ltd.",
@@ -14,11 +11,4 @@ citEntry(entry = "Article",
                     person(given = "Sergi",
                            family = "Padilla-Parra")),
          title = "exampletestr - An easy start to unit testing R packages",
-         journal = "Wellcome Open Research",
-         textVersion = paste("Nolan R and Padilla-Parra S.",
-                             "exampletestr—An easy start to unit testing",
-                             "R packages.",
-                             "Wellcome Open Res 2017, 2:31",
-                             "(doi: 10.12688/wellcomeopenres.11635.2)."
-                             )
-)
+         journal = "Wellcome Open Research")

@@ -324,7 +324,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "89.469KB",
+  "fileSize": "89KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -343,7 +343,6 @@
       ],
       "name": "exampletestr - An easy start to unit testing R packages",
       "identifier": "10.12688/wellcomeopenres.11635.2",
-      "url": "https://doi.org/10.12688/wellcomeopenres.11635.2",
       "pagination": "31",
       "@id": "https://doi.org/10.12688/wellcomeopenres.11635.2",
       "sameAs": "https://doi.org/10.12688/wellcomeopenres.11635.2",
@@ -360,6 +359,6 @@
   ],
   "releaseNotes": "https://github.com/rorynolan/exampletestr/blob/master/NEWS.md",
   "readme": "https://github.com/rorynolan/exampletestr/blob/master/README.md",
-  "contIntegration": ["https://github.com/rorynolan/exampletestr/actions", "https://codecov.io/github/rorynolan/exampletestr?branch=master"],
+  "contIntegration": "https://github.com/rorynolan/exampletestr/actions",
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html"
 }
