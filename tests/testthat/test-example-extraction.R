@@ -11,12 +11,16 @@ teardown({
   fs::dir_delete(tmp_dir)
 })
 
-test_that("`extract_examples()` works", {
+test_that("`extract_examples()` error works", {
+  skip_on_cran()  # testing an error message from another package
   expect_error(
     extract_examples("detect", tempdir(check = TRUE)),
-    "Path .+ does not appear to be inside a project or package.",
+    "Path.+does not appear to be inside a project or package.",
     class = "usethis_error"
   )
+})
+
+test_that("`extract_examples()` works", {
   fs::file_copy(system.file("extdata", "detect.R",
     package = "exampletestr"
   ), paste0(pkg_dir, "/R"))

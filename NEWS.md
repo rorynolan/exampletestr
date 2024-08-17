@@ -1,3 +1,9 @@
+# `exampletestr` 1.7.2
+
+## BUG FIXES
+* `usethis` had breaking changes for which `exampletestr` needed to be fixed.
+
+
 # `exampletestr` 1.7.1
 
 ## BUG FIXES
