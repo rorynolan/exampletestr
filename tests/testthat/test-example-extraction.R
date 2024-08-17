@@ -15,7 +15,7 @@ test_that("`extract_examples()` error works", {
   skip_on_cran()  # testing an error message from another package
   expect_error(
     extract_examples("detect", tempdir(check = TRUE)),
-    "Path.+does not appear to be inside a project or package.",
+    "Path.+does.+not.+appear.+to.+be.+inside.+project.+or.+package.",
     class = "usethis_error"
   )
 })
