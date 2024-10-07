@@ -53,21 +53,8 @@ test_that("`check_for_DESCRIPTION()` works", {
   )$message
   expect_match(
     crayon::strip_style(no_DESCRIPTION_err_msg),
-    paste0(
-      "Your package has no 'DESCRIPTION' file.\n",
-      "    * Every R package must have a 'DESCRIPTIO",
-      "N' file in the root directory.\n    * Perhaps ",
-      "you specified the wrong `pkg_dir`?\n    *",
-      " You specified `pkg_dir = "
-    ),
+    "Your package has no 'DESCRIPTION' file.",
     fixed = TRUE
   )
   readr::write_lines(description, paste0(pkg_dir, "/DESCRIPTION"))
-})
-
-test_that("custom_stop works", {
-  expect_error(
-    custom_stop("1", 2, 3),
-    "arguments .+ must all be of character type"
-  )
 })

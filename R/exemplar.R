@@ -88,9 +88,11 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
   fun %<>% stringr::str_trim()
   if (stringr::str_detect(fun, stringr::coll("("))) {
     if (strex::str_elem(fun, 1) %in% c("(", ")")) {
-      custom_stop(
-        "The function 'fun' cannot start with a parenthesis.",
-        "Your 'fun' is '{fun}'."
+      rlang::abort(
+        c(
+          "The function 'fun' cannot start with a parenthesis.",
+          i = stringr::str_glue("Your 'fun' is '{fun}'.")
+        )
       )
     }
     fun %<>% stringr::str_extract("^.*\\(") %>%
@@ -119,24 +121,21 @@ make_test_shell_fun <- function(fun, pkg_dir = ".",
     }
     if (!fun_found) {
       if (is_documented(fun)) {
-        custom_stop(
-          "
-          The function {usethis::ui_code(stringr::str_c(fun, '()'))}
-          is documented but has no accompanying examples.
-          ", "
-          {usethis::ui_code('make_test_shell_fun()')} only works on functions
-          with examples.
-          "
+        rlang::abort(
+          c(
+            stringr::str_glue(
+              "The function {fun}() is documented but has no examples."
+            ),
+            "i" = "make_test_shell_fun() only works on functions with examples."
+          )
         )
       }
-      custom_stop(
-        "
-        Could not find a documented function called
-        {usethis::ui_code(stringr::str_c(fun, '()'))}.
-        ", "
-        Make sure it's documented in the {usethis::ui_code('man/')} folder of
-        your package.
-        "
+      rlang::abort(
+        c(
+          stringr::str_glue(
+            "Could not find a documented function called '{fun}'."
+          )
+        )
       )
     }
   }

@@ -182,65 +182,15 @@ make_available_test_file_name <- function(test_file_name) {
   test_file_name
 }
 
-#' Construct the bullet point bits for `custom_stop()`.
-#'
-#' @param string The message for the bullet point.
-#'
-#' @return A string with the bullet-pointed message nicely formatted for the
-#'   console.
-#'
-#' @noRd
-custom_stop_bullet <- function(string) {
-  checkmate::assert_string(string)
-  string %>%
-    stringr::str_replace_all("\\s+", " ") %>%
-    paste("    *", .)
-}
-
-#' Nicely formatted error message.
-#'
-#' Format an error message with bullet-pointed sub-messages with nice
-#' line-breaks.
-#'
-#' Arguments should be entered as `glue`-style strings.
-#'
-#' @param main_message The main error message.
-#' @param ... Bullet-pointed sub-messages.
-#'
-#' @noRd
-custom_stop <- function(main_message, ..., .envir = parent.frame()) {
-  checkmate::assert_string(main_message)
-  main_message %<>%
-    stringr::str_replace_all("\\s+", " ") %>%
-    stringr::str_glue(.envir = .envir)
-  out <- main_message
-  dots <- unlist(list(...))
-  if (length(dots)) {
-    if (!is.character(dots)) {
-      stop("\nThe arguments in ... must all be of character type.")
-    }
-    dots %<>%
-      purrr::map_chr(stringr::str_glue, .envir = .envir) %>%
-      purrr::map_chr(custom_stop_bullet)
-    out %<>% {
-      stringr::str_c(c(., dots), collapse = "\n")
-    }
-  }
-  rlang::abort(stringr::str_c(out, collapse = "\n"))
-}
-
 check_for_DESCRIPTION <- function() {
   if (!fs::file_exists(usethis::proj_path("DESCRIPTION"))) {
-    custom_stop(
-      "Your package has no {usethis::ui_path('DESCRIPTION')} file.",
-      "
-      Every R package must have a {usethis::ui_path('DESCRIPTION')} file in the
-      root directory.
-      ",
-      "Perhaps you specified the wrong {usethis::ui_code('pkg_dir')}?",
-      "You specified {usethis::ui_code(pkgdireq)}.",
-      .envir = list(
-        pkgdireq = paste0("pkg_dir = \"", usethis::proj_path(), "\"")
+    rlang::abort(
+      c(
+        "Your package has no 'DESCRIPTION' file.",
+        "i" = "Every R package must have a 'DESCRIPTION' in the root dir.",
+        "i" = stringr::str_glue(
+          "You specified the package '{usethis::proj_path()}'."
+        )
       )
     )
   }
@@ -249,32 +199,20 @@ check_for_DESCRIPTION <- function() {
 
 check_for_man <- function() {
   if (!fs::dir_exists(usethis::proj_path("man"))) {
-    custom_stop(
-      "
-      Your package has no
-      {usethis::ui_path(usethis::proj_path('man/'),
-                        usethis::proj_path())} folder.",
-      "
-      {usethis::ui_code('exampletestr')} looks for examples in the
-      {usethis::ui_path('*.Rd')} files in the
-      {usethis::ui_path(usethis::proj_path('man/'), usethis::proj_path())}
-      folder of a package and cannot function without them.
-      ",
-      .envir = list(
-        pkgdireq = paste0("pkg_dir = \"", usethis::proj_path(), "\"")
+    rlang::abort(
+      c(
+        "Your package has no 'man/' folder.",
+        "i" = "'exampletestr' looks for examples in the .Rd files in 'man/'.",
+        "i" = stringr::str_glue("Package path used: '{usethis::proj_path()}'.")
       )
     )
   } else if (!length(fs::dir_ls(usethis::proj_path("man")))) {
-    custom_stop(
-      "Your package has no {usethis::ui_path('*.Rd')} files in its
-      {usethis::ui_path(usethis::proj_path('man'), usethis::proj_path())}
-      folder.",
-      "
-      exampletestr looks for examples in the {usethis::ui_path('*.Rd')}
-      files in the {usethis::ui_path(usethis::proj_path('man'),
-                    usethis::proj_path())} folder of a package and cannot
-      function if there are no {usethis::ui_path('*.Rd')} files there.
-      "
+    rlang::abort(
+      c(
+        "Your package has no .Rd files in the 'man/' folder.",
+        "i" = "'exampletestr' looks for examples in the .Rd files in 'man/'.",
+        "i" = stringr::str_glue("Package path used: '{usethis::proj_path()}'.")
+      )
     )
   }
   invisible(TRUE)

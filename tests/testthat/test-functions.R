@@ -94,7 +94,7 @@ test_that("`make_tests_shell_fun()` works", {
   )
   expect_error(
     make_test_shell_fun("non_fun", pkg_dir = pkg_dir),
-    "Could not find.*non_fun\\(\\)"
+    "Could not find.*'non_fun'"
   )
   fs::file_copy(system.file("extdata", c("hello.R", "goodbye.R"),
     package = "exampletestr"
@@ -108,14 +108,7 @@ test_that("`make_tests_shell_fun()` works", {
       )
     )$message
     expect_match(crayon::strip_style(no_man_err_msg),
-      paste(
-        "Your package has no 'man' folder.\n    *",
-        "`exampletestr` looks for examples in",
-        "the '*.Rd' files in",
-        "the 'man' folder of a package and",
-        "cannot function without them."
-      ),
-      fixed = TRUE
+      "no.+man.+folder"
     )
     fs::dir_create(paste0(pkg_dir2, "/man"))
     no_rd_err_msg <- rlang::catch_cnd(
@@ -125,15 +118,7 @@ test_that("`make_tests_shell_fun()` works", {
       )
     )$message
     expect_match(crayon::strip_style(no_rd_err_msg),
-      paste(
-        "Your package has no '*.Rd' files in",
-        "its 'man/' folder.\n    * exampletestr",
-        "looks for examples in the '*.Rd' files",
-        "in the 'man/' folder of a package and",
-        "cannot function if there are no '*.Rd'",
-        "files there."
-      ),
-      fixed = TRUE
+      "no.+.Rd.+files.+man.+folder"
     )
     no_examples_err_msg <- rlang::catch_cnd(
       make_test_shell_fun("hello",
@@ -144,11 +129,7 @@ test_that("`make_tests_shell_fun()` works", {
     )$message
     expect_match(
       crayon::strip_style(no_examples_err_msg),
-      paste0(
-        "The function .+ is documented but has.+",
-        "no.+accompanying.+examples.+",
-        "only works on.+functions.+with.+examples."
-      )
+      "function.+documented.+no.+examples"
     )
   })
 })
