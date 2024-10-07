@@ -14,10 +14,10 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/exampletestr)](https://cran.r-project.org/package=exampletestr)
-![RStudio CRAN
-downloads](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr)
-![RStudio CRAN monthly
-downloads](http://cranlogs.r-pkg.org/badges/exampletestr)
+[![RStudio CRAN
+downloads](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr)](http://cranlogs.r-pkg.org/badges/grand-total/exampletestr)
+[![RStudio CRAN monthly
+downloads](http://cranlogs.r-pkg.org/badges/exampletestr)](http://cranlogs.r-pkg.org/badges/exampletestr)
 
 ## Installation
 
